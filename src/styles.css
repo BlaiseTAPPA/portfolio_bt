@@ -1,0 +1,367 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system: austere monochrome editorial (Bugatti-derived "corporate engineering").
+ * Dark canvas only. No accent color beyond --link. No shadows, no gradients.
+ * Radius rule: 0 everywhere, pill only on buttons.
+ */
+
+@theme inline {
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-canvas: var(--canvas);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-card: var(--surface-card);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-body-strong: var(--body-strong);
+  --color-muted: var(--muted);
+  --color-muted-soft: var(--muted-soft);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-link: var(--link);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+
+  --color-card: var(--surface-card);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface-card);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--ink);
+  --color-primary-foreground: var(--canvas);
+  --color-secondary: var(--surface-elevated);
+  --color-secondary-foreground: var(--ink);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--surface-elevated);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--warning);
+  --color-destructive-foreground: var(--canvas);
+  --color-border: var(--hairline);
+  --color-input: var(--hairline-strong);
+  --color-ring: var(--hairline-strong);
+  --color-ring-offset-background: var(--canvas);
+
+  --font-display: "Antonio", "Oswald", sans-serif;
+  --font-body: "PT Serif", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --spacing-section: 120px;
+}
+
+:root {
+  --canvas: oklch(0 0 0);
+  --surface-soft: oklch(0.1 0 0);
+  --surface-card: oklch(0.16 0 0);
+  --surface-elevated: oklch(0.22 0 0);
+  --ink: oklch(1 0 0);
+  --body: oklch(0.85 0 0);
+  --body-strong: oklch(0.93 0 0);
+  --muted: oklch(0.68 0 0);
+  --muted-soft: oklch(0.49 0 0);
+  --hairline: oklch(0.24 0 0);
+  --hairline-strong: oklch(0.33 0 0);
+  --link: oklch(0.88 0.035 250);
+  --warning: oklch(0.74 0.13 85);
+  --success: oklch(0.65 0.13 145);
+
+  --background: var(--canvas);
+  --foreground: var(--ink);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-hairline);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-body);
+    font-family: var(--font-body);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--color-ink);
+    text-transform: uppercase;
+  }
+
+  strong,
+  b {
+    font-weight: 400;
+    color: var(--color-body-strong);
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-canvas);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+}
+
+/* Display scale — weight 400 only, uppercase, wide tracking */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: 2.5px;
+  color: var(--color-ink);
+  @media (width >= 768px) {
+    font-size: 64px;
+    letter-spacing: 4px;
+  }
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: 2px;
+  color: var(--color-ink);
+  @media (width >= 768px) {
+    font-size: 48px;
+    letter-spacing: 3px;
+  }
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: 1.5px;
+  color: var(--color-ink);
+  @media (width >= 768px) {
+    font-size: 32px;
+    letter-spacing: 2px;
+  }
+}
+
+@utility display-sm {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 20px;
+  line-height: 1.3;
+  letter-spacing: 1.5px;
+  color: var(--color-ink);
+  @media (width >= 768px) {
+    font-size: 24px;
+  }
+}
+
+@utility title-md {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 20px;
+  line-height: 1.3;
+  letter-spacing: 1px;
+  color: var(--color-ink);
+}
+
+@utility wordmark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 6px;
+  color: var(--color-ink);
+}
+
+@utility caption-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 2px;
+  color: var(--color-muted);
+}
+
+@utility nav-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 2px;
+}
+
+@utility body-md {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-body);
+}
+
+@utility body-sm {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-body);
+}
+
+/* Pill outline button — the only rounded element in the system */
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 32px;
+  border: 1px solid var(--color-ink);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  line-height: 1;
+  text-transform: uppercase;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+  &:hover {
+    background: var(--color-ink);
+    color: var(--color-canvas);
+  }
+}
+
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 32px;
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--color-body);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  line-height: 1;
+  text-transform: uppercase;
+  transition:
+    border-color 0.25s ease,
+    color 0.25s ease;
+  &:hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+}
+
+@utility link-mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-link);
+  transition: opacity 0.2s ease;
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+/* Hairline-underline input */
+@utility field-line {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-hairline-strong);
+  border-radius: 0;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  transition: border-color 0.25s ease;
+  &::placeholder {
+    color: var(--color-muted-soft);
+  }
+  &:focus {
+    outline: none;
+    border-bottom-color: var(--color-ink);
+  }
+}
+
+@utility section-y {
+  padding-top: 72px;
+  padding-bottom: 72px;
+  @media (width >= 768px) {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+}
+
+@utility shell {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 24px;
+  @media (width >= 768px) {
+    padding-inline: 40px;
+  }
+}
+
+@utility wordmark-ghost {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 15vw;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: color-mix(in oklab, var(--color-ink) 6%, transparent);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+
+@utility rise {
+  animation: rise-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
