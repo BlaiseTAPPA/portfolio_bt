@@ -154,7 +154,7 @@ export function CvPage() {
               ))}
             </ul>
           </Row>
-          <Row id="education" title={c.education}>
+{/*           <Row id="education" title={c.education}>
             <ul className="space-y-4">
               {education.map((e) => (
                 <li key={e.school} className="flex items-baseline justify-between gap-4">
@@ -166,7 +166,7 @@ export function CvPage() {
                 </li>
               ))}
             </ul>
-          </Row>
+          </Row> */}
           <Row id="languages" title={c.languages}>
             <ul className="space-y-3">
               {languages.map((l) => (

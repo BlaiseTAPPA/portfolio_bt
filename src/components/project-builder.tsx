@@ -237,7 +237,7 @@ export function ProjectBuilder() {
                       : "border-hairline text-muted hover:border-ink hover:text-ink bg-surface-soft/40"
                   }`}
                 >
-                  <Sparkles className="size-3.5 mt-0.5 shrink-0 opacity-70" />
+                  {/* <Sparkles className="size-3.5 mt-0.5 shrink-0 opacity-70" /> */}
                   <span className="line-clamp-2">{item.text}</span>
                 </button>
               ))}
@@ -294,7 +294,7 @@ export function ProjectBuilder() {
             <div className="mt-16 border border-hairline p-6 md:p-10 bg-surface-soft/20">
               <div className="flex items-center justify-between gap-4 border-b border-hairline pb-4 mb-6">
                 <span className="caption-mono flex items-center gap-2">
-                  <Sparkles className="size-3.5 text-ink" />
+                  {/* <Sparkles className="size-3.5 text-ink" /> */}
                   {c.result} · {projects.find((p) => p.slug === slug)?.name} Blueprint
                 </span>
                 <div className="flex items-center gap-3">

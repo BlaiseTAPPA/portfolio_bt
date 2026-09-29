@@ -150,7 +150,7 @@ export function AboutQa() {
                         : "border-hairline text-muted hover:border-ink hover:text-ink bg-surface-soft/60"
                     }`}
                   >
-                    <Sparkles className="size-3 opacity-70" />
+                    {/* <Sparkles className="size-3 opacity-70" /> */}
                     <span>{s}</span>
                   </button>
                 ))}
@@ -192,7 +192,7 @@ export function AboutQa() {
               <div className="mt-12 border border-hairline p-8 relative bg-surface-soft/30">
                 <div className="flex items-center justify-between pb-4 mb-4 border-b border-hairline">
                   <span className="caption-mono text-muted flex items-center gap-2">
-                    <Sparkles className="size-3 text-ink" />
+                    {/* <Sparkles className="size-3 text-ink" /> */}
                     AI Answer · Gemini
                   </span>
                   {streaming && (

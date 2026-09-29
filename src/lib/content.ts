@@ -12,7 +12,7 @@ export const identity = {
     fr: "Développeur Full-Stack / Frontend",
   } satisfies Localized,
   location: "Germersheim, Rheinland-Pfalz, Germany",
-  email: "hello@blaisetappa.dev",
+  email: "melvynngaba@gmail.com",
   github: "https://github.com/BlaiseTAPPA",
   linkedin: "https://linkedin.com/in/blaise-tappa",
   calendar: "https://cal.com/blaise-tappa/15min",
@@ -57,8 +57,8 @@ export const projects: Project[] = [
       "TradingView",
       "Vercel",
     ],
-    demo: "https://github.com/BlaiseTAPPA",
-    repo: "https://github.com/BlaiseTAPPA",
+    demo: "https://blaisist-stock-tracker-app.vercel.app/",
+    repo: "https://github.com/BlaiseTAPPA/blaisist_stock-tracker-app.git",
     image: "/images/project-signalist.jpg",
     excerpt: {
       en: "Real-time financial market intelligence and analytics platform.",
@@ -111,8 +111,8 @@ export const projects: Project[] = [
       "Gemini 2.5 Flash",
       "Docker",
     ],
-    demo: "https://github.com/BlaiseTAPPA",
-    repo: "https://github.com/BlaiseTAPPA",
+    demo: "https://roomify-five-eta.vercel.app/",
+    repo: "https://github.com/BlaiseTAPPA/roomify.git",
     image: "/images/project-roomify.jpg",
     excerpt: {
       en: "AI floor plan visualizer that turns uploaded plans into readable room layouts.",
@@ -158,8 +158,8 @@ export const projects: Project[] = [
     name: "Tankstellen-Finder",
     year: "2024",
     stack: ["React", "TypeScript", "Tankerkönig API", "Supabase / SQL", "Vercel"],
-    demo: "https://github.com/BlaiseTAPPA",
-    repo: "https://github.com/BlaiseTAPPA",
+    demo: "https://finder-delta-three.vercel.app/",
+    repo: "https://github.com/BlaiseTAPPA/Finder.git",
     image: "/images/project-tankstellen.jpg",
     excerpt: {
       en: "Real-time fuel price finder for Germany with geo-radius and route queries.",
@@ -203,7 +203,7 @@ export const projects: Project[] = [
     year: "2024",
     stack: ["React 19", "TypeScript", "MongoDB", "Prisma", "Clerk"],
     demo: "https://github.com/BlaiseTAPPA",
-    repo: "https://github.com/BlaiseTAPPA",
+    repo: "https://github.com/BlaiseTAPPA/na_app.git",
     image: "/images/project-femmes.jpg",
     excerpt: {
       en: "E-learning platform with SSR-first architecture and a dependency-free calendar generator.",
@@ -383,11 +383,20 @@ export const education = [
   },
   {
     school: "Lomé Business School",
-    period: "—",
+    period: "2022-2025",
     detail: {
-      en: "Business and management studies",
-      de: "Betriebswirtschaft und Management",
-      fr: "Études en gestion et administration des entreprises",
+      en: "Software Engineering",
+      de: "Software-Ingenieurwesen",
+      fr: "Ingénierie logicielle",
+    } satisfies Localized,
+  },
+    {
+    school: "Ecole Superieure Privee d'Ingenierie et de Technologie (ESPRIT)",
+    period: "2018-2022",
+    detail: {
+      en: "Software Engineering",
+      de: "Software-Ingenieurwesen",
+      fr: "Ingénierie logicielle",
     } satisfies Localized,
   },
 ];

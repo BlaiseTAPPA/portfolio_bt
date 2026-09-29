@@ -134,7 +134,7 @@ export function ProjectMatcher() {
                       : "border-hairline text-muted hover:border-ink hover:text-ink bg-surface-soft/40"
                   }`}
                 >
-                  <Sparkles className="size-3.5 mt-0.5 shrink-0 opacity-70 group-hover:opacity-100" />
+                  {/* <Sparkles className="size-3.5 mt-0.5 shrink-0 opacity-70 group-hover:opacity-100" /> */}
                   <span>{chip}</span>
                 </button>
               ))}

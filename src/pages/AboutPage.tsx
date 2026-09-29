@@ -100,7 +100,7 @@ export function AboutPage() {
               ))}
             </ol>
 
-            <h2 className="display-sm mt-20">{t("education")}</h2>
+{/*             <h2 className="display-sm mt-20">{t("education")}</h2>
             <ul className="mt-10 divide-y divide-hairline border-y border-hairline">
               {education.map((item) => (
                 <li
@@ -114,7 +114,7 @@ export function AboutPage() {
                   <span className="caption-mono">{item.period}</span>
                 </li>
               ))}
-            </ul>
+            </ul> */}
 
             <h2 className="display-sm mt-20">{t("languagesTitle")}</h2>
             <ul className="mt-10 space-y-8 border-y border-hairline py-8">

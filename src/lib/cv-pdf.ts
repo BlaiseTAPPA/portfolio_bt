@@ -29,7 +29,7 @@ export function createCvPdf(lang: Lang): jsPDF {
       experience: "PROFESSIONAL EXPERIENCE",
       skills: "TECHNICAL TOOLKIT",
       projects: "FEATURED CASE STUDIES",
-      education: "EDUCATION",
+      //education: "EDUCATION",
       languages: "LANGUAGES",
       links: "ONLINE & PORTFOLIO",
       footer: "Generated from blaisetappa.dev — Contact: hello@blaisetappa.dev",
@@ -41,7 +41,7 @@ export function createCvPdf(lang: Lang): jsPDF {
       experience: "BERUFSERFAHRUNG",
       skills: "TECHNISCHE KENNTNISSE",
       projects: "AUSGEWÄHLTE PROJEKTE",
-      education: "AUSBILDUNG",
+      //education: "AUSBILDUNG",
       languages: "SPRACHEN",
       links: "LINKS & PORTFOLIO",
       footer: "Erstellt auf blaisetappa.dev — Kontakt: hello@blaisetappa.dev",
@@ -53,7 +53,7 @@ export function createCvPdf(lang: Lang): jsPDF {
       experience: "EXPÉRIENCE PROFESSIONNELLE",
       skills: "COMPÉTENCES TECHNIQUES",
       projects: "PROJETS & ÉTUDES DE CAS",
-      education: "FORMATION & DIPLÔMES",
+      //education: "FORMATION & DIPLÔMES",
       languages: "LANGUES",
       links: "PORTFOLIO & CONTACT",
       footer: "Généré depuis blaisetappa.dev — Contact : hello@blaisetappa.dev",
@@ -194,7 +194,7 @@ export function createCvPdf(lang: Lang): jsPDF {
 
   // 4. Education & Languages in 2 columns
   checkPageBreak(25);
-  renderSectionHeader(t.education + " & " + t.languages);
+ // renderSectionHeader(t.education + " & " + t.languages);
 
   const colWidth = (contentWidth - 10) / 2;
   const startY = y;
@@ -203,7 +203,7 @@ export function createCvPdf(lang: Lang): jsPDF {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.setTextColor(30, 30, 30);
-  doc.text(t.education, margin, y);
+  //doc.text(t.education, margin, y);
   y += 4.5;
 
   for (const edu of education) {

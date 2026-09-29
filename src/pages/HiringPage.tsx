@@ -232,7 +232,7 @@ export function HiringPage() {
                         : "border-hairline text-muted hover:border-ink hover:text-ink bg-surface-soft/40"
                     }`}
                   >
-                    <Sparkles className="size-3.5 mt-0.5 shrink-0 opacity-70" />
+                    {/* <Sparkles className="size-3.5 mt-0.5 shrink-0 opacity-70" /> */}
                     <span>{chip}</span>
                   </button>
                 ))}
@@ -281,7 +281,7 @@ export function HiringPage() {
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <p className="caption-mono text-muted flex items-center gap-2">
-                    <Sparkles className="size-3 text-ink" />
+                    {/* <Sparkles className="size-3 text-ink" /> */}
                     {c.results}
                   </p>
                   {summary && (
