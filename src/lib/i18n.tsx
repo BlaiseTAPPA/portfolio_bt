@@ -12,7 +12,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "de" || stored === "en") setLangState(stored);
+    if (stored === "de" || stored === "en" || stored === "fr") setLangState(stored);
   }, []);
 
   useEffect(() => {
@@ -34,92 +34,141 @@ export function useLang() {
 }
 
 export const dict = {
-  navHome: { en: "Home", de: "Start" },
-  navProjects: { en: "Projects", de: "Projekte" },
-  navAbout: { en: "About", de: "Über mich" },
-  navBlog: { en: "Blog", de: "Blog" },
-  navHiring: { en: "Hiring", de: "Recruiting" },
-  navContact: { en: "Contact", de: "Kontakt" },
-  menu: { en: "Menu", de: "Menü" },
-  close: { en: "Close", de: "Schließen" },
+  navHome: { en: "Home", de: "Start", fr: "Accueil" },
+  navProjects: { en: "Projects", de: "Projekte", fr: "Projets" },
+  navAbout: { en: "About", de: "Über mich", fr: "À propos" },
+  navBlog: { en: "Blog", de: "Blog", fr: "Blog" },
+  navHiring: { en: "Hiring", de: "Recruiting", fr: "Recrutement" },
+  navContact: { en: "Contact", de: "Kontakt", fr: "Contact" },
+  menu: { en: "Menu", de: "Menü", fr: "Menu" },
+  close: { en: "Close", de: "Schließen", fr: "Fermer" },
 
   heroPitch: {
     en: "I build fast, accessible web products with React, TypeScript and Next.js — from real-time data dashboards to AI-assisted tools.",
     de: "Ich baue schnelle, barrierefreie Webprodukte mit React, TypeScript und Next.js — von Echtzeit-Dashboards bis zu KI-gestützten Tools.",
+    fr: "Je conçois des produits web véloces et accessibles avec React, TypeScript et Next.js — des tableaux de bord temps réel aux outils propulsés par l'IA.",
   },
-  viewProjects: { en: "View projects", de: "Projekte ansehen" },
-  getInTouch: { en: "Get in touch", de: "Kontakt aufnehmen" },
+  viewProjects: { en: "View projects", de: "Projekte ansehen", fr: "Voir les projets" },
+  getInTouch: { en: "Get in touch", de: "Kontakt aufnehmen", fr: "Prendre contact" },
   availableTitle: {
     en: "Available for Werkstudent positions",
     de: "Verfügbar für Werkstudentenstellen",
+    fr: "Disponible pour contrat étudiant / Werkstudent",
   },
   availableBody: {
     en: "20 h / week, remote or hybrid in Rheinland-Pfalz, available immediately. Also open to freelance work.",
     de: "20 Std./Woche, remote oder hybrid in Rheinland-Pfalz, ab sofort verfügbar. Auch offen für Freelance-Arbeit.",
+    fr: "20 h / semaine, télétravail ou hybride en Rhénanie-Palatinat, disponible immédiatement. Également ouvert aux missions freelance.",
   },
-  exploreWork: { en: "Explore my work →", de: "Meine Arbeit ansehen →" },
+  exploreWork: {
+    en: "Explore my work →",
+    de: "Meine Arbeit ansehen →",
+    fr: "Découvrir mes réalisations →",
+  },
 
-  featuredProjects: { en: "Featured projects", de: "Ausgewählte Projekte" },
-  allProjects: { en: "All projects", de: "Alle Projekte" },
-  viewCaseStudy: { en: "View case study →", de: "Case Study ansehen →" },
-  ctaHeadline: { en: "Let's build something", de: "Lassen Sie uns etwas bauen" },
+  featuredProjects: { en: "Featured projects", de: "Ausgewählte Projekte", fr: "Projets phares" },
+  allProjects: { en: "All projects", de: "Alle Projekte", fr: "Tous les projets" },
+  viewCaseStudy: {
+    en: "View case study →",
+    de: "Case Study ansehen →",
+    fr: "Lire l'étude de cas →",
+  },
+  ctaHeadline: {
+    en: "Let's build something",
+    de: "Lassen Sie uns etwas bauen",
+    fr: "Bâtissons un projet ensemble",
+  },
   ctaBody: {
     en: "Open to Werkstudent roles and freelance engagements from Germersheim, Rheinland-Pfalz.",
     de: "Offen für Werkstudentenstellen und Freelance-Projekte, von Germersheim aus, Rheinland-Pfalz.",
+    fr: "Disponible pour des postes étudiants (Werkstudent) et des missions freelance depuis Germersheim, Allemagne.",
   },
-  contactMe: { en: "Contact me", de: "Kontaktieren" },
+  contactMe: { en: "Contact me", de: "Kontaktieren", fr: "Me contacter" },
 
   projectsIntro: {
     en: "Case studies from production work and self-directed builds — architecture decisions, stack, and what each one had to solve.",
     de: "Case Studies aus Produktivarbeit und eigenen Projekten — Architekturentscheidungen, Stack und das jeweils zu lösende Problem.",
+    fr: "Études de cas issues de projets réels et personnels — choix d'architecture, stack technique et problématiques concrètes résolues.",
   },
-  problem: { en: "The problem", de: "Das Problem" },
-  approach: { en: "Approach", de: "Vorgehen" },
-  technicalHighlights: { en: "Technical highlights", de: "Technische Highlights" },
-  liveDemo: { en: "Live demo", de: "Live-Demo" },
-  githubRepo: { en: "GitHub repo", de: "GitHub-Repo" },
-  nextProject: { en: "Next project", de: "Nächstes Projekt" },
-  backToProjects: { en: "← All projects", de: "← Alle Projekte" },
-  stack: { en: "Stack", de: "Stack" },
+  problem: { en: "The problem", de: "Das Problem", fr: "Le défi" },
+  approach: { en: "Approach", de: "Vorgehen", fr: "La démarche" },
+  technicalHighlights: {
+    en: "Technical highlights",
+    de: "Technische Highlights",
+    fr: "Points clés techniques",
+  },
+  liveDemo: { en: "Live demo", de: "Live-Demo", fr: "Démo en direct" },
+  githubRepo: { en: "GitHub repo", de: "GitHub-Repo", fr: "Dépôt GitHub" },
+  nextProject: { en: "Next project", de: "Nächstes Projekt", fr: "Projet suivant" },
+  backToProjects: { en: "← All projects", de: "← Alle Projekte", fr: "← Tous les projets" },
+  stack: { en: "Stack", de: "Stack", fr: "Technologies" },
 
   aboutIntro: {
     en: "B.Sc. Computer Science student at SRH University, based in Germersheim. I work across the frontend and the delivery layer: interface engineering, performance, and keeping technical decisions legible to the people who fund them.",
     de: "B.Sc.-Informatikstudent an der SRH University, wohnhaft in Germersheim. Ich arbeite im Frontend und in der Auslieferung: Interface-Engineering, Performance und technische Entscheidungen so erklären, dass Entscheider sie nachvollziehen.",
+    fr: "Étudiant en B.Sc. Informatique à la SRH University, basé à Germersheim. J'interviens sur le frontend et l'ingénierie applicative : architecture d'interfaces, haute performance et clarté des choix techniques auprès des décideurs.",
   },
-  experience: { en: "Experience", de: "Berufserfahrung" },
-  education: { en: "Education", de: "Ausbildung" },
-  languagesTitle: { en: "Languages", de: "Sprachen" },
+  experience: { en: "Experience", de: "Berufserfahrung", fr: "Expérience professionnelle" },
+  education: { en: "Education", de: "Ausbildung", fr: "Formation & Diplômes" },
+  languagesTitle: { en: "Languages", de: "Sprachen", fr: "Langues" },
 
   blogIntro: {
     en: "Notes on architecture, AI integration and working as a developer in Germany.",
     de: "Notizen zu Architektur, KI-Integration und der Arbeit als Entwickler in Deutschland.",
+    fr: "Articles sur l'architecture logicielle, l'intégration de l'IA et le quotidien de développeur en Allemagne.",
   },
-  readArticle: { en: "Read article →", de: "Artikel lesen →" },
-  backToBlog: { en: "← All articles", de: "← Alle Artikel" },
+  readArticle: { en: "Read article →", de: "Artikel lesen →", fr: "Lire l'article →" },
+  backToBlog: { en: "← All articles", de: "← Alle Artikel", fr: "← Tous les articles" },
 
-  contactTitle: { en: "Get in touch", de: "Kontakt aufnehmen" },
+  contactTitle: { en: "Get in touch", de: "Kontakt aufnehmen", fr: "Prendre contact" },
   contactIntro: {
     en: "Looking for a Werkstudent position (20 h / week, remote or hybrid) and available immediately. Freelance and consulting enquiries welcome.",
     de: "Auf der Suche nach einer Werkstudentenstelle (20 Std./Woche, remote oder hybrid), ab sofort verfügbar. Freelance- und Beratungsanfragen willkommen.",
+    fr: "À la recherche d'un poste en contrat étudiant / Werkstudent (20 h / semaine, remote ou hybride) et disponible immédiatement. Ouvert également aux opportunités freelance et de conseil.",
   },
-  fieldName: { en: "Name", de: "Name" },
-  fieldEmail: { en: "Email", de: "E-Mail" },
-  fieldMessage: { en: "Message", de: "Nachricht" },
-  send: { en: "Send", de: "Senden" },
+  fieldName: { en: "Name", de: "Name", fr: "Nom" },
+  fieldEmail: { en: "Email", de: "E-Mail", fr: "E-mail" },
+  fieldMessage: { en: "Message", de: "Nachricht", fr: "Message" },
+  send: { en: "Send", de: "Senden", fr: "Envoyer" },
   sent: {
     en: "Thank you — your message is ready to send. Mail client opening.",
     de: "Danke — Ihre Nachricht ist bereit. Das E-Mail-Programm öffnet sich.",
+    fr: "Merci — votre message est prêt. Ouverture de votre client e-mail.",
   },
-  direct: { en: "Direct", de: "Direkt" },
-  validationName: { en: "Please enter your name.", de: "Bitte geben Sie Ihren Namen ein." },
-  validationEmail: { en: "Please enter a valid email address.", de: "Bitte geben Sie eine gültige E-Mail-Adresse ein." },
-  validationMessage: { en: "Please write a short message.", de: "Bitte schreiben Sie eine kurze Nachricht." },
+  direct: { en: "Direct", de: "Direkt", fr: "Coordonnées directes" },
+  validationName: {
+    en: "Please enter your name.",
+    de: "Bitte geben Sie Ihren Namen ein.",
+    fr: "Veuillez renseigner votre nom.",
+  },
+  validationEmail: {
+    en: "Please enter a valid email address.",
+    de: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    fr: "Veuillez saisir une adresse e-mail valide.",
+  },
+  validationMessage: {
+    en: "Please write a short message.",
+    de: "Bitte schreiben Sie eine kurze Nachricht.",
+    fr: "Veuillez saisir un court message.",
+  },
 
-  footerWork: { en: "Work", de: "Arbeit" },
-  footerAbout: { en: "About", de: "Über" },
-  footerConnect: { en: "Connect", de: "Kontakt" },
-  footerStatus: { en: "Available for projects", de: "Verfügbar für Projekte" },
-  footerLocation: { en: "Germersheim, DE — {time}", de: "Germersheim, DE — {time}" },
-  backToTop: { en: "Back to top ↑", de: "Nach oben ↑" },
-  rights: { en: "All rights reserved.", de: "Alle Rechte vorbehalten." },
+  footerWork: { en: "Work", de: "Arbeit", fr: "Projets" },
+  footerAbout: { en: "About", de: "Über", fr: "À propos" },
+  footerConnect: { en: "Connect", de: "Kontakt", fr: "Réseaux" },
+  footerStatus: {
+    en: "Available for projects",
+    de: "Verfügbar für Projekte",
+    fr: "Disponible pour de nouveaux projets",
+  },
+  footerLocation: {
+    en: "Germersheim, DE — {time}",
+    de: "Germersheim, DE — {time}",
+    fr: "Germersheim, DE — {time}",
+  },
+  backToTop: { en: "Back to top ↑", de: "Nach oben ↑", fr: "Haut de page ↑" },
+  rights: {
+    en: "All rights reserved.",
+    de: "Alle Rechte vorbehalten.",
+    fr: "Tous droits réservés.",
+  },
 } satisfies Record<string, Record<Lang, string>>;

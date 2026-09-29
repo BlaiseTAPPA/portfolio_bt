@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState, type ReactNode } from "react";
 import { identity } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
@@ -35,6 +35,17 @@ function LangSwitch() {
       >
         DE
       </button>
+      <span aria-hidden="true" className="text-muted-soft">
+        |
+      </span>
+      <button
+        type="button"
+        onClick={() => setLang("fr")}
+        className={lang === "fr" ? "text-ink" : "hover:text-ink transition-colors"}
+        aria-pressed={lang === "fr"}
+      >
+        FR
+      </button>
     </div>
   );
 }
@@ -52,15 +63,16 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {navItems.map((item) => (
-            <Link
+            <NavLink
               key={item.to}
               to={item.to}
-              className="nav-mono text-muted transition-colors hover:text-ink"
-              activeProps={{ className: "nav-mono text-ink" }}
-              activeOptions={{ exact: item.to === "/" }}
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                `nav-mono transition-colors ${isActive ? "text-ink" : "text-muted hover:text-ink"}`
+              }
             >
               {t(item.key)}
-            </Link>
+            </NavLink>
           ))}
           <LangSwitch />
         </nav>
@@ -85,16 +97,17 @@ export function SiteHeader() {
         <nav className="border-y border-hairline bg-canvas md:hidden" aria-label="Mobile">
           <div className="shell flex flex-col py-4">
             {navItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.to}
                 to={item.to}
+                end={item.to === "/"}
                 onClick={() => setOpen(false)}
-                className="nav-mono py-4 text-muted"
-                activeProps={{ className: "nav-mono py-4 text-ink" }}
-                activeOptions={{ exact: item.to === "/" }}
+                className={({ isActive }) =>
+                  `nav-mono py-4 ${isActive ? "text-ink" : "text-muted"}`
+                }
               >
                 {t(item.key)}
-              </Link>
+              </NavLink>
             ))}
           </div>
         </nav>
@@ -108,7 +121,7 @@ export function SiteFooter() {
   const [clock, setClock] = useState("");
 
   useEffect(() => {
-    const locale = lang === "de" ? "de-DE" : "en-GB";
+    const locale = lang === "de" ? "de-DE" : lang === "fr" ? "fr-FR" : "en-GB";
     const timeFmt = new Intl.DateTimeFormat(locale, {
       hour: "2-digit",
       minute: "2-digit",
@@ -121,9 +134,8 @@ export function SiteFooter() {
     });
     const tick = () => {
       const zone =
-        zoneFmt
-          .formatToParts(new Date())
-          .find((part) => part.type === "timeZoneName")?.value ?? "CET";
+        zoneFmt.formatToParts(new Date()).find((part) => part.type === "timeZoneName")?.value ??
+        "CET";
       setClock(`${timeFmt.format(new Date())} ${zone}`);
     };
     tick();
@@ -168,7 +180,10 @@ export function SiteFooter() {
                 {column.links.map((link) => (
                   <li key={link.label}>
                     {link.to ? (
-                      <Link to={link.to} className="body-md italic text-body transition-colors duration-300 hover:text-link">
+                      <Link
+                        to={link.to}
+                        className="body-md italic text-body transition-colors duration-300 hover:text-link"
+                      >
                         {link.label}
                       </Link>
                     ) : (

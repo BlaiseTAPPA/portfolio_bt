@@ -1,31 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
+import { Calendar } from "lucide-react";
 import { Page, Tags } from "@/components/site-chrome";
 import { identity, projects, skills } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Blaise Tappa — Full-Stack / Frontend Developer" },
-      {
-        name: "description",
-        content:
-          "Portfolio of Blaise Tappa, Full-Stack / Frontend Developer in Germersheim, Germany. React, TypeScript, Next.js. Available for Werkstudent positions.",
-      },
-      { property: "og:title", content: "Blaise Tappa — Full-Stack / Frontend Developer" },
-      {
-        property: "og:description",
-        content:
-          "React, TypeScript and Next.js work from Germersheim, Rheinland-Pfalz. Available for Werkstudent positions and freelance projects.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Home,
-});
-
-function Home() {
+export function HomePage() {
   const { t, lang } = useLang();
   const featured = projects.slice(0, 3);
 
@@ -89,7 +68,7 @@ function Home() {
           <div className="mt-14 grid gap-12 md:grid-cols-3">
             {featured.map((project) => (
               <article key={project.slug}>
-                <Link to="/projects/$slug" params={{ slug: project.slug }} className="group block">
+                <Link to={`/projects/${project.slug}`} className="group block">
                   <div className="aspect-video overflow-hidden bg-surface-soft">
                     <img
                       src={project.image}
@@ -125,9 +104,26 @@ function Home() {
         <div className="shell relative z-10 flex flex-col items-center py-24 text-center md:py-32">
           <h2 className="display-md">{t("ctaHeadline")}</h2>
           <p className="body-md mt-5 max-w-lg">{t("ctaBody")}</p>
-          <Link to="/contact" className="btn-outline mt-10">
-            {t("contactMe")}
-          </Link>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Link to="/contact" className="btn-outline bg-ink text-canvas">
+              {t("contactMe")}
+            </Link>
+            <a
+              href={identity.calendar}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-outline inline-flex items-center gap-2 bg-canvas/80 backdrop-blur-sm"
+            >
+              <Calendar className="size-4" />
+              <span>
+                {lang === "fr"
+                  ? "Planifier 15 min d'échange"
+                  : lang === "de"
+                    ? "15-Min.-Gespräch buchen"
+                    : "Book 15-min call"}
+              </span>
+            </a>
+          </div>
         </div>
       </section>
     </Page>

@@ -1,25 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
+import { Download, Calendar, Printer, ExternalLink, ArrowLeft } from "lucide-react";
 import { Page } from "@/components/site-chrome";
 import { useLang } from "@/lib/i18n";
 import { identity, skills, experience, education, languages, projects } from "@/lib/content";
-
-export const Route = createFileRoute("/cv")({
-  head: () => ({
-    meta: [
-      { title: "CV — Blaise Tappa, Full-Stack / Frontend Developer" },
-      {
-        name: "description",
-        content:
-          "Curriculum vitae of Blaise Tappa: professional experience, skills, projects, education and languages, in English and German.",
-      },
-      { property: "og:title", content: "CV — Blaise Tappa" },
-      { property: "og:description", content: "Experience, skills, projects, education and languages." },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: CV,
-});
+import { downloadCvPdf } from "@/lib/cv-pdf";
 
 const copy = {
   en: {
@@ -30,8 +14,11 @@ const copy = {
     education: "Education",
     languages: "Languages",
     contact: "Contact",
-    print: "Print / save PDF",
+    print: "Print format",
+    downloadPdf: "Download PDF",
+    bookMeeting: "Book 15-min call",
     back: "Back to hiring",
+    onlineProfile: "View on portfolio",
   },
   de: {
     eyebrow: "Lebenslauf",
@@ -41,23 +28,44 @@ const copy = {
     education: "Ausbildung",
     languages: "Sprachen",
     contact: "Kontakt",
-    print: "Drucken / PDF speichern",
+    print: "Druckansicht",
+    downloadPdf: "PDF herunterladen",
+    bookMeeting: "15-Min.-Termin buchen",
     back: "Zurück zu Recruiting",
+    onlineProfile: "Im Portfolio ansehen",
+  },
+  fr: {
+    eyebrow: "Curriculum vitæ",
+    experience: "Expérience professionnelle",
+    skills: "Compétences techniques",
+    projects: "Projets sélectionnés",
+    education: "Formation & Diplômes",
+    languages: "Langues",
+    contact: "Contact",
+    print: "Format impression",
+    downloadPdf: "Télécharger le PDF",
+    bookMeeting: "Planifier 15 min d'échange",
+    back: "Retour à l'espace recrutement",
+    onlineProfile: "Voir sur le portfolio",
   },
 };
 
 function Row({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="scroll-mt-24 grid gap-6 border-t border-hairline py-12 md:grid-cols-[220px_1fr]">
+    <section
+      id={id}
+      className="scroll-mt-24 grid gap-6 border-t border-hairline py-12 md:grid-cols-[220px_1fr]"
+    >
       <h2 className="caption-mono">{title}</h2>
       <div>{children}</div>
     </section>
   );
 }
 
-function CV() {
+export function CvPage() {
   const { lang } = useLang();
   const c = copy[lang];
+
   return (
     <Page>
       <div className="shell pt-40 pb-24">
@@ -65,12 +73,38 @@ function CV() {
         <h1 className="display-lg mt-4">{identity.name}</h1>
         <p className="title-md mt-4">{identity.role[lang]}</p>
         <p className="body-sm mt-2 text-muted">{identity.location}</p>
-        <div className="mt-8 flex flex-wrap gap-4 print:hidden">
-          <button type="button" onClick={() => window.print()} className="btn-outline">
-            {c.print}
+
+        {/* Action bar for recruiters & visitors */}
+        <div className="mt-8 flex flex-wrap items-center gap-3 print:hidden">
+          <button
+            type="button"
+            onClick={() => downloadCvPdf(lang)}
+            className="btn-outline bg-ink text-canvas inline-flex items-center gap-2"
+          >
+            <Download className="size-4" />
+            <span>{c.downloadPdf}</span>
           </button>
-          <Link to="/hiring" className="btn-ghost">
-            {c.back}
+          <a
+            href={identity.calendar}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-outline inline-flex items-center gap-2"
+          >
+            <Calendar className="size-4" />
+            <span>{c.bookMeeting}</span>
+            <ExternalLink className="size-3.5 opacity-60" />
+          </a>
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="btn-outline inline-flex items-center gap-2"
+          >
+            <Printer className="size-4" />
+            <span>{c.print}</span>
+          </button>
+          <Link to="/hiring" className="btn-ghost inline-flex items-center gap-1.5 ml-auto">
+            <ArrowLeft className="size-3.5" />
+            <span>{c.back}</span>
           </Link>
         </div>
 
@@ -86,7 +120,9 @@ function CV() {
                   <p className="caption-mono mt-2 text-muted">{r.title[lang]}</p>
                   <ul className="mt-4 space-y-2">
                     {r.points[lang].map((p) => (
-                      <li key={p} className="body-sm">— {p}</li>
+                      <li key={p} className="body-sm">
+                        — {p}
+                      </li>
                     ))}
                   </ul>
                 </li>
@@ -96,7 +132,9 @@ function CV() {
           <Row id="skills" title={c.skills}>
             <ul className="flex flex-wrap gap-3">
               {skills.map((s) => (
-                <li key={s} className="caption-mono border border-hairline-strong px-4 py-2">{s}</li>
+                <li key={s} className="caption-mono border border-hairline-strong px-4 py-2">
+                  {s}
+                </li>
               ))}
             </ul>
           </Row>
@@ -105,7 +143,7 @@ function CV() {
               {projects.map((p) => (
                 <li key={p.slug}>
                   <div className="flex items-baseline justify-between gap-4">
-                    <Link to="/projects/$slug" params={{ slug: p.slug }} className="title-md hover:underline">
+                    <Link to={`/projects/${p.slug}`} className="title-md hover:underline">
                       {p.name}
                     </Link>
                     <span className="caption-mono">{p.year}</span>
@@ -141,9 +179,26 @@ function CV() {
           </Row>
           <Row id="contact" title={c.contact}>
             <ul className="space-y-2">
-              <li><a className="link-mono" href={`mailto:${identity.email}`}>{identity.email}</a></li>
-              <li><a className="link-mono" href={identity.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></li>
-              <li><a className="link-mono" href={identity.github} target="_blank" rel="noreferrer">GitHub</a></li>
+              <li>
+                <a className="link-mono" href={`mailto:${identity.email}`}>
+                  {identity.email}
+                </a>
+              </li>
+              <li>
+                <a className="link-mono" href={identity.calendar} target="_blank" rel="noreferrer">
+                  Cal.com (15 min call)
+                </a>
+              </li>
+              <li>
+                <a className="link-mono" href={identity.linkedin} target="_blank" rel="noreferrer">
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a className="link-mono" href={identity.github} target="_blank" rel="noreferrer">
+                  GitHub
+                </a>
+              </li>
             </ul>
           </Row>
         </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
+import { Sparkles } from "lucide-react";
 import { useLang } from "@/lib/i18n";
-import { askAbout } from "@/lib/qa.functions";
+import { askAboutStream } from "@/lib/qa.functions";
 
 const copy = {
   en: {
@@ -13,10 +13,13 @@ const copy = {
     placeholder: "e.g. Has he worked with AI in production?",
     submit: "Ask",
     loading: "Thinking…",
+    streaming: "Streaming answer…",
     tooShort: "Please write at least 5 characters.",
+    chipsLabel: "Suggested questions:",
     suggestions: [
-      "What did he do at OMOA Group?",
       "Which languages does he speak?",
+      "What is his exact availability for Werkstudent roles?",
+      "What did he do at OMOA Group?",
       "Has he worked with AI in production?",
     ],
   },
@@ -29,11 +32,33 @@ const copy = {
     placeholder: "z. B. Hat er mit KI in der Produktion gearbeitet?",
     submit: "Fragen",
     loading: "Denke nach…",
+    streaming: "Antwort wird generiert…",
     tooShort: "Bitte mindestens 5 Zeichen eingeben.",
+    chipsLabel: "Vorgeschlagene Fragen:",
     suggestions: [
-      "Was hat er bei der OMOA Group gemacht?",
       "Welche Sprachen spricht er?",
+      "Wie sieht seine Verfügbarkeit als Werkstudent aus?",
+      "Was hat er bei der OMOA Group gemacht?",
       "Hat er mit KI in der Produktion gearbeitet?",
+    ],
+  },
+  fr: {
+    eyebrow: "Posez-moi vos questions",
+    title: "Des questions sur mon parcours ?",
+    intro:
+      "Interrogez l'IA sur mon expérience, mes études, mes langues ou mes projets. Elle répond strictement à partir des faits documentés sur ce site.",
+    label: "Votre question",
+    placeholder: "ex. A-t-il déjà intégré de l'IA en production ?",
+    submit: "Poser la question",
+    loading: "Réflexion en cours…",
+    streaming: "Génération en direct…",
+    tooShort: "Veuillez saisir au moins 5 caractères.",
+    chipsLabel: "Questions suggérées :",
+    suggestions: [
+      "Quelles langues maîtrise-t-il ?",
+      "Quelle est sa disponibilité exacte en Werkstudent ?",
+      "Quel était son rôle chez OMOA Group ?",
+      "A-t-il déjà intégré de l'IA en production ?",
     ],
   },
 };
@@ -41,25 +66,31 @@ const copy = {
 export function AboutQa() {
   const { lang } = useLang();
   const c = copy[lang];
-  const run = useServerFn(askAbout);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
+  const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [answer, setAnswer] = useState<string | null>(null);
 
   async function submit(q: string) {
     if (q.trim().length < 5) return setError(c.tooShort);
     setLoading(true);
+    setStreaming(true);
     setError(null);
-    setAnswer(null);
+    setAnswer("");
+
     try {
-      const res = await run({ data: { question: q, lang } });
-      if (res.ok) setAnswer(res.answer);
-      else setError(res.error);
+      const res = await askAboutStream({ data: { question: q, lang } }, (chunk) => {
+        setAnswer(chunk);
+      });
+      if (!res.ok && res.error) {
+        setError(res.error);
+      }
     } catch {
       setError("Something went wrong.");
     } finally {
       setLoading(false);
+      setStreaming(false);
     }
   }
 
@@ -77,27 +108,56 @@ export function AboutQa() {
             {c.title}
           </h2>
           <p className="body-md mt-6 text-body">{c.intro}</p>
-          <ul className="mt-8 space-y-3">
-            {c.suggestions.map((s) => (
-              <li key={s}>
-                <button
-                  type="button"
-                  className="link-mono text-left"
-                  disabled={loading}
-                  onClick={() => {
-                    setQuestion(s);
-                    void submit(s);
-                  }}
-                >
-                  {s}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className="mt-8">
+            <span className="caption-mono text-muted block mb-3">{c.chipsLabel}</span>
+            <ul className="space-y-2.5">
+              {c.suggestions.map((s) => (
+                <li key={s}>
+                  <button
+                    type="button"
+                    className="link-mono text-left inline-flex items-center gap-2 group transition-colors"
+                    disabled={loading}
+                    onClick={() => {
+                      setQuestion(s);
+                      void submit(s);
+                    }}
+                  >
+                    <span className="text-muted group-hover:text-ink transition-colors">→</span>
+                    <span>{s}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div>
           <form onSubmit={onSubmit} noValidate>
-            <label htmlFor="qa-question" className="caption-mono block">
+            <div className="mb-4">
+              <span className="caption-mono block mb-2">{c.chipsLabel}</span>
+              <div className="flex flex-wrap gap-2">
+                {c.suggestions.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    disabled={loading}
+                    onClick={() => {
+                      setQuestion(s);
+                      void submit(s);
+                    }}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 border text-xs tracking-wider uppercase font-mono transition-all duration-200 ${
+                      question === s
+                        ? "border-ink bg-ink text-canvas"
+                        : "border-hairline text-muted hover:border-ink hover:text-ink bg-surface-soft/60"
+                    }`}
+                  >
+                    <Sparkles className="size-3 opacity-70" />
+                    <span>{s}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <label htmlFor="qa-question" className="caption-mono block mt-6">
               {c.label}
             </label>
             <textarea
@@ -114,14 +174,37 @@ export function AboutQa() {
                 {error}
               </p>
             )}
-            <button type="submit" className="btn-outline mt-8" disabled={loading}>
-              {loading ? c.loading : c.submit}
-            </button>
+            <div className="mt-8 flex items-center gap-4">
+              <button type="submit" className="btn-outline" disabled={loading}>
+                {streaming ? c.streaming : loading ? c.loading : c.submit}
+              </button>
+              {streaming && (
+                <span className="inline-flex items-center gap-2 text-xs font-mono text-muted uppercase tracking-widest animate-pulse">
+                  <span className="size-2 rounded-full bg-emerald-400 inline-block" />
+                  SSE Live
+                </span>
+              )}
+            </div>
           </form>
+
           <div aria-live="polite">
-            {answer && (
-              <div className="mt-12 border border-hairline p-8">
-                <p className="body-md">{answer}</p>
+            {answer !== null && answer.length > 0 && (
+              <div className="mt-12 border border-hairline p-8 relative bg-surface-soft/30">
+                <div className="flex items-center justify-between pb-4 mb-4 border-b border-hairline">
+                  <span className="caption-mono text-muted flex items-center gap-2">
+                    <Sparkles className="size-3 text-ink" />
+                    AI Answer · Gemini
+                  </span>
+                  {streaming && (
+                    <span className="caption-mono text-emerald-400 animate-pulse">● Streaming</span>
+                  )}
+                </div>
+                <p className="body-md whitespace-pre-line text-body-strong">
+                  {answer}
+                  {streaming && (
+                    <span className="inline-block w-1.5 h-4 ml-1 bg-ink animate-pulse align-middle" />
+                  )}
+                </p>
               </div>
             )}
           </div>

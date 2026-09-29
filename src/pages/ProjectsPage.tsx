@@ -1,32 +1,40 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
+import { motion, type Variants } from "framer-motion";
 import { Page, PageHeader, Tags } from "@/components/site-chrome";
 import { projects } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 import { ProjectMatcher } from "@/components/project-matcher";
 import { ProjectBuilder } from "@/components/project-builder";
 
-export const Route = createFileRoute("/projects/")({
-  head: () => ({
-    meta: [
-      { title: "Projects — Blaise Tappa" },
-      {
-        name: "description",
-        content:
-          "Case studies: Signalist, Roomify, Tankstellen-Finder, Femmes d'Audace and Grand-Bassam Tourisme — architecture, stack and decisions.",
-      },
-      { property: "og:title", content: "Projects — Blaise Tappa" },
-      {
-        property: "og:description",
-        content: "Five case studies in React, TypeScript, Next.js and AI integration.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: ProjectsIndex,
-});
+// Staggered entrance animation orchestrator matching the design system's 'rise' utility
+// (0.8s, cubic-bezier(0.22, 1, 0.36, 1), 16px vertical translation)
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05,
+    },
+  },
+};
 
-function ProjectsIndex() {
+const cardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 16,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+export function ProjectsPage() {
   const { t, lang } = useLang();
 
   return (
@@ -34,10 +42,19 @@ function ProjectsIndex() {
       <PageHeader title={t("navProjects")} intro={t("projectsIntro")} eyebrow="01 — 05" />
 
       <section className="section-y">
-        <div className="shell grid gap-16 md:grid-cols-2">
+        <motion.div
+          className="shell grid gap-16 md:grid-cols-2"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {projects.map((project) => (
-            <article key={project.slug}>
-              <Link to="/projects/$slug" params={{ slug: project.slug }} className="group block">
+            <motion.article
+              key={project.slug}
+              variants={cardVariants}
+              className="rise [animation:none]"
+            >
+              <Link to={`/projects/${project.slug}`} className="group block">
                 <div className="aspect-video overflow-hidden bg-surface-soft">
                   <img
                     src={project.image}
@@ -56,9 +73,9 @@ function ProjectsIndex() {
                 <p className="body-sm mt-5">{project.excerpt[lang]}</p>
                 <span className="link-mono mt-5 inline-block">{t("viewCaseStudy")}</span>
               </Link>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       <ProjectMatcher />

@@ -1,29 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Page, PageHeader, Tags } from "@/components/site-chrome";
 import { formatDate, posts } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 
-export const Route = createFileRoute("/blog/")({
-  head: () => ({
-    meta: [
-      { title: "Blog — Blaise Tappa" },
-      {
-        name: "description",
-        content: "Notes on architecture, AI integration and working as a developer in Germany.",
-      },
-      { property: "og:title", content: "Blog — Blaise Tappa" },
-      {
-        property: "og:description",
-        content: "Articles on event-driven pipelines, Gemini integration and engineering in German.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: BlogIndex,
-});
-
-function BlogIndex() {
+export function BlogPage() {
   const { t, lang } = useLang();
 
   return (
@@ -34,7 +14,7 @@ function BlogIndex() {
         <div className="shell grid gap-16 md:grid-cols-2">
           {posts.map((post) => (
             <article key={post.slug}>
-              <Link to="/blog/$slug" params={{ slug: post.slug }} className="group block">
+              <Link to={`/blog/${post.slug}`} className="group block">
                 <div className="aspect-video overflow-hidden bg-surface-soft">
                   <img
                     src={post.image}

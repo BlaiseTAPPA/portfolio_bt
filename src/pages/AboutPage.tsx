@@ -1,29 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { AboutQa } from "@/components/about-qa";
 import { Page, PageHeader } from "@/components/site-chrome";
 import { education, experience, identity, languages, skills } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
-
-export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Blaise Tappa" },
-      {
-        name: "description",
-        content:
-          "Blaise Tappa: B.Sc. Computer Science student at SRH University, previously OMOA Group, Société Logex and SBS Network.",
-      },
-      { property: "og:title", content: "About — Blaise Tappa" },
-      {
-        property: "og:description",
-        content: "Career path, education and languages of a Full-Stack / Frontend Developer in Germany.",
-      },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: About,
-});
 
 const facts = {
   en: [
@@ -38,17 +17,27 @@ const facts = {
     { label: "Verfügbarkeit", value: "20 Std./Woche, remote oder hybrid" },
     { label: "Offen für", value: "Werkstudent & Freelance" },
   ],
+  fr: [
+    { label: "Localisation", value: "Germersheim, Allemagne" },
+    { label: "Études", value: "B.Sc. Informatique" },
+    { label: "Disponibilité", value: "20 h / semaine, remote ou hybride" },
+    { label: "Statut recherché", value: "Werkstudent & freelance" },
+  ],
 };
 
 const labels = {
   en: { facts: "At a glance", skillsTitle: "Toolkit", viewProjects: "See the work →" },
   de: { facts: "Auf einen Blick", skillsTitle: "Werkzeuge", viewProjects: "Zur Arbeit →" },
+  fr: {
+    facts: "En un coup d'œil",
+    skillsTitle: "Boîte à outils",
+    viewProjects: "Voir les projets →",
+  },
 };
 
-// Relative proficiency, used only for the bar lengths.
 const languageScore: Record<string, number> = { English: 90, French: 100, German: 45 };
 
-function About() {
+export function AboutPage() {
   const { t, lang } = useLang();
   const l = labels[lang];
 
@@ -114,7 +103,10 @@ function About() {
             <h2 className="display-sm mt-20">{t("education")}</h2>
             <ul className="mt-10 divide-y divide-hairline border-y border-hairline">
               {education.map((item) => (
-                <li key={item.school} className="flex flex-col gap-2 py-6 md:flex-row md:items-baseline md:justify-between">
+                <li
+                  key={item.school}
+                  className="flex flex-col gap-2 py-6 md:flex-row md:items-baseline md:justify-between"
+                >
                   <div>
                     <p className="title-md">{item.school}</p>
                     <p className="body-sm mt-2">{item.detail[lang]}</p>

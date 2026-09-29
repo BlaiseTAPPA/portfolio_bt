@@ -1,41 +1,31 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useParams, Link } from "react-router-dom";
 import { Page, Tags } from "@/components/site-chrome";
 import { projects } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 
-export const Route = createFileRoute("/projects/$slug")({
-  loader: ({ params }) => {
-    const index = projects.findIndex((p) => p.slug === params.slug);
-    if (index === -1) throw notFound();
-    return { slug: params.slug };
-  },
-  head: ({ params }) => {
-    const project = projects.find((p) => p.slug === params.slug);
-    if (!project) {
-      return {
-        meta: [{ title: "Project not found — Blaise Tappa" }, { name: "robots", content: "noindex" }],
-      };
-    }
-    return {
-      meta: [
-        { title: `${project.name} — Case study — Blaise Tappa` },
-        { name: "description", content: project.excerpt.en },
-        { property: "og:title", content: `${project.name} — Case study` },
-        { property: "og:description", content: project.excerpt.en },
-        { property: "og:type", content: "article" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-    };
-  },
-  component: ProjectDetail,
-});
-
-function ProjectDetail() {
-  const { slug } = Route.useLoaderData();
+export function ProjectDetailPage() {
+  const { slug } = useParams<{ slug: string }>();
   const { t, lang } = useLang();
 
   const index = projects.findIndex((p) => p.slug === slug);
-  const project = projects[index]!;
+  const project = index !== -1 ? projects[index] : undefined;
+
+  if (!project) {
+    return (
+      <Page>
+        <section className="section-y">
+          <div className="shell text-center py-20">
+            <h1 className="display-lg">Project not found</h1>
+            <p className="body-md mt-4 text-muted">The requested case study could not be found.</p>
+            <Link to="/projects" className="btn-outline mt-8 inline-block">
+              {t("backToProjects")}
+            </Link>
+          </div>
+        </section>
+      </Page>
+    );
+  }
+
   const next = projects[(index + 1) % projects.length]!;
 
   return (
@@ -96,7 +86,7 @@ function ProjectDetail() {
       </section>
 
       <section className="border-t border-hairline">
-        <Link to="/projects/$slug" params={{ slug: next.slug }} className="group block">
+        <Link to={`/projects/${next.slug}`} className="group block">
           <div className="relative flex min-h-[45vh] items-center overflow-hidden">
             <img
               src={next.image}

@@ -1,39 +1,28 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useParams, Link } from "react-router-dom";
 import { Page, Tags } from "@/components/site-chrome";
 import { formatDate, posts } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 
-export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = posts.find((p) => p.slug === params.slug);
-    if (!post) throw notFound();
-    return { slug: params.slug };
-  },
-  head: ({ params }) => {
-    const post = posts.find((p) => p.slug === params.slug);
-    if (!post) {
-      return {
-        meta: [{ title: "Article not found — Blaise Tappa" }, { name: "robots", content: "noindex" }],
-      };
-    }
-    return {
-      meta: [
-        { title: `${post.title.en} — Blaise Tappa` },
-        { name: "description", content: post.excerpt.en },
-        { property: "og:title", content: post.title.en },
-        { property: "og:description", content: post.excerpt.en },
-        { property: "og:type", content: "article" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-    };
-  },
-  component: Article,
-});
-
-function Article() {
-  const { slug } = Route.useLoaderData();
+export function BlogDetailPage() {
+  const { slug } = useParams<{ slug: string }>();
   const { t, lang } = useLang();
-  const post = posts.find((p) => p.slug === slug)!;
+  const post = posts.find((p) => p.slug === slug);
+
+  if (!post) {
+    return (
+      <Page>
+        <section className="section-y">
+          <div className="shell text-center py-20">
+            <h1 className="display-lg">Article not found</h1>
+            <p className="body-md mt-4 text-muted">The requested blog post could not be found.</p>
+            <Link to="/blog" className="btn-outline mt-8 inline-block">
+              {t("backToBlog")}
+            </Link>
+          </div>
+        </section>
+      </Page>
+    );
+  }
 
   return (
     <Page>
