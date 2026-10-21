@@ -1,4 +1,4 @@
-/** Page-specific UI copy, one entry per locale. Shared strings live in `i18n.tsx`. */
+/** Page-specific UI copy, one entry per locale. Shared strings live in `i18n.ts`. */
 
 export const aboutFacts = {
   en: [
