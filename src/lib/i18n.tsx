@@ -56,9 +56,17 @@ export const dict = {
     fr: "Disponible pour contrat étudiant / Werkstudent",
   },
   availableBody: {
-    en: "20 h / week, remote or hybrid in Rheinland-Pfalz, available immediately. Also open to freelance work.",
-    de: "20 Std./Woche, remote oder hybrid in Rheinland-Pfalz, ab sofort verfügbar. Auch offen für Freelance-Arbeit.",
-    fr: "20 h / semaine, télétravail ou hybride en Rhénanie-Palatinat, disponible immédiatement. Également ouvert aux missions freelance.",
+    en: "20 h / week during semester, full-time during semester breaks. Remote or hybrid from Germersheim, available immediately.",
+    de: "20 Std./Woche im Semester, Vollzeit in den Semesterferien. Remote oder hybrid ab Germersheim, ab sofort verfügbar.",
+    fr: "20 h / semaine pendant le semestre, temps plein pendant les vacances universitaires. À distance ou hybride depuis Germersheim, disponible immédiatement.",
+  },
+  keyFactsTitle: { en: "Key facts", de: "Eckdaten", fr: "En bref" },
+  emailMe: { en: "Email me", de: "E-Mail schreiben", fr: "M'écrire" },
+  linkedinProfile: { en: "LinkedIn profile", de: "LinkedIn-Profil", fr: "Profil LinkedIn" },
+  ndaLabel: {
+    en: "Client project (NDA)",
+    de: "Kundenprojekt (NDA)",
+    fr: "Projet client (confidentiel)",
   },
   exploreWork: {
     en: "Explore my work →",
@@ -79,9 +87,9 @@ export const dict = {
     fr: "Bâtissons un projet ensemble",
   },
   ctaBody: {
-    en: "Open to Werkstudent roles and freelance engagements from Germersheim, Rheinland-Pfalz.",
-    de: "Offen für Werkstudentenstellen und Freelance-Projekte, von Germersheim aus, Rheinland-Pfalz.",
-    fr: "Disponible pour des postes étudiants (Werkstudent) et des missions freelance depuis Germersheim, Allemagne.",
+    en: "Open to Werkstudent roles in frontend development, based in Germersheim (Rheinland-Pfalz).",
+    de: "Offen für Werkstudentenstellen im Frontend – mit Sitz in Germersheim (Rheinland-Pfalz).",
+    fr: "Disponible pour des postes étudiants (Werkstudent) en développement frontend, depuis Germersheim (Rhénanie-Palatinat).",
   },
   contactMe: { en: "Contact me", de: "Kontaktieren", fr: "Me contacter" },
 
@@ -97,7 +105,7 @@ export const dict = {
     de: "Technische Highlights",
     fr: "Points clés techniques",
   },
-  liveDemo: { en: "Live demo", de: "Live-Demo", fr: "Démo en direct" },
+  liveDemo: { en: "Live app", de: "Live-App", fr: "Application en ligne" },
   githubRepo: { en: "GitHub repo", de: "GitHub-Repo", fr: "Dépôt GitHub" },
   nextProject: { en: "Next project", de: "Nächstes Projekt", fr: "Projet suivant" },
   backToProjects: { en: "← All projects", de: "← Alle Projekte", fr: "← Tous les projets" },
@@ -109,7 +117,7 @@ export const dict = {
     fr: "Étudiant en B.Sc. Informatique à la SRH University, basé à Germersheim. J'interviens sur le frontend et l'ingénierie applicative : architecture d'interfaces, haute performance et clarté des choix techniques auprès des décideurs.",
   },
   experience: { en: "Experience", de: "Berufserfahrung", fr: "Expérience professionnelle" },
-  education: { en: "Education", de: "Ausbildung", fr: "Formation & Diplômes" },
+  education: { en: "Education", de: "Studium", fr: "Formation & Diplômes" },
   languagesTitle: { en: "Languages", de: "Sprachen", fr: "Langues" },
 
   blogIntro: {
@@ -122,9 +130,9 @@ export const dict = {
 
   contactTitle: { en: "Get in touch", de: "Kontakt aufnehmen", fr: "Prendre contact" },
   contactIntro: {
-    en: "Looking for a Werkstudent position (20 h / week, remote or hybrid) and available immediately. Freelance and consulting enquiries welcome.",
-    de: "Auf der Suche nach einer Werkstudentenstelle (20 Std./Woche, remote oder hybrid), ab sofort verfügbar. Freelance- und Beratungsanfragen willkommen.",
-    fr: "À la recherche d'un poste en contrat étudiant / Werkstudent (20 h / semaine, remote ou hybride) et disponible immédiatement. Ouvert également aux opportunités freelance et de conseil.",
+    en: "Looking for a Werkstudent position (20 h / week, remote or hybrid) and available immediately. Email or LinkedIn is the fastest way to reach me.",
+    de: "Auf der Suche nach einer Werkstudentenstelle (20 Std./Woche, remote oder hybrid), ab sofort verfügbar. Am schnellsten erreichen Sie mich per E-Mail oder LinkedIn.",
+    fr: "À la recherche d'un poste en contrat étudiant / Werkstudent (20 h / semaine, remote ou hybride) et disponible immédiatement. Le plus rapide : e-mail ou LinkedIn.",
   },
   fieldName: { en: "Name", de: "Name", fr: "Nom" },
   fieldEmail: { en: "Email", de: "E-Mail", fr: "E-mail" },
@@ -156,9 +164,9 @@ export const dict = {
   footerAbout: { en: "About", de: "Über", fr: "À propos" },
   footerConnect: { en: "Connect", de: "Kontakt", fr: "Réseaux" },
   footerStatus: {
-    en: "Available for projects",
-    de: "Verfügbar für Projekte",
-    fr: "Disponible pour de nouveaux projets",
+    en: "Open to Werkstudent roles",
+    de: "Offen für Werkstudentenstellen",
+    fr: "Disponible en Werkstudent",
   },
   footerLocation: {
     en: "Germersheim, DE — {time}",

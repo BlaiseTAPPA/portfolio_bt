@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Calendar, Download, Mail, ExternalLink, ArrowRight } from "lucide-react";
+import { Download, Mail, ExternalLink, Linkedin } from "lucide-react";
 import { Page, PageHeader } from "@/components/site-chrome";
 import { identity } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
@@ -7,34 +7,28 @@ import { downloadCvPdf } from "@/lib/cv-pdf";
 
 const copy = {
   en: {
-    bookingEyebrow: "Fastest way to connect",
-    bookingTitle: "Schedule a 15-min intro call",
-    bookingIntro:
-      "Skip the back-and-forth emails. Pick a 15-minute slot directly on my calendar for an informal introduction, Werkstudent opportunity, or project briefing.",
-    bookingBtn: "Book 15-min meeting",
-    bookingDetails: "15 min · Video call (Google Meet) · No commitment",
+    directEyebrow: "Fastest way to reach me",
+    directTitle: "Email or LinkedIn",
+    directIntro:
+      "For Werkstudent opportunities, send me an email or a message on LinkedIn.",
     cvDownloadTitle: "Need my résumé right away?",
     cvDownloadBtn: "Download CV (PDF)",
     orWriteForm: "Or send a message below:",
   },
   de: {
-    bookingEyebrow: "Schnellster Weg zum Austausch",
-    bookingTitle: "15-Minuten-Kennenlerngespräch vereinbaren",
-    bookingIntro:
-      "Sparen Sie sich das E-Mail-Pingpong. Wählen Sie direkt einen passenden 15-Minuten-Slot in meinem Kalender für ein erstes Kennenlernen oder Projekt-Briefing.",
-    bookingBtn: "15-Minuten-Termin buchen",
-    bookingDetails: "15 Min. · Videocall (Google Meet) · Unverbindlich",
+    directEyebrow: "Schnellster Weg zu mir",
+    directTitle: "E-Mail oder LinkedIn",
+    directIntro:
+      "Für Werkstudentenstellen schreiben Sie mir am besten eine E-Mail oder eine Nachricht auf LinkedIn.",
     cvDownloadTitle: "Lebenslauf direkt herunterladen?",
     cvDownloadBtn: "Lebenslauf als PDF laden",
     orWriteForm: "Oder schreiben Sie mir über das Formular:",
   },
   fr: {
-    bookingEyebrow: "Le moyen le plus rapide d'échanger",
-    bookingTitle: "Planifier un échange de 15 minutes",
-    bookingIntro:
-      "Évitez les allers-retours par e-mail. Réservez directement un créneau de 15 minutes dans mon agenda pour faire connaissance, échanger sur un poste étudiant ou cadrer un projet.",
-    bookingBtn: "Choisir un créneau de 15 min",
-    bookingDetails: "15 min · Visioconférence (Google Meet) · Sans engagement",
+    directEyebrow: "Le moyen le plus rapide",
+    directTitle: "E-mail ou LinkedIn",
+    directIntro:
+      "Pour un poste en Werkstudent, écrivez-moi par e-mail ou sur LinkedIn.",
     cvDownloadTitle: "Besoin de mon CV immédiatement ?",
     cvDownloadBtn: "Télécharger le CV (PDF)",
     orWriteForm: "Ou envoyez-moi un message via le formulaire :",
@@ -69,28 +63,33 @@ export function ContactPage() {
     <Page>
       <PageHeader title={t("contactTitle")} intro={t("contactIntro")} />
 
-      {/* Prominent Direct Calendar Booking Banner */}
       <section className="border-b border-hairline py-12 bg-surface-soft/30">
         <div className="shell">
           <div className="border border-hairline p-8 md:p-10 bg-canvas flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="max-w-2xl">
               <span className="caption-mono text-muted flex items-center gap-2 mb-2">
-                <Calendar className="size-4 text-ink" />
-                {c.bookingEyebrow}
+                <Mail className="size-4 text-ink" />
+                {c.directEyebrow}
               </span>
-              <h2 className="display-sm">{c.bookingTitle}</h2>
-              <p className="body-md mt-3 text-body">{c.bookingIntro}</p>
-              <p className="caption-mono mt-4 text-muted">{c.bookingDetails}</p>
+              <h2 className="display-sm">{c.directTitle}</h2>
+              <p className="body-md mt-3 text-body">{c.directIntro}</p>
             </div>
             <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-4">
               <a
-                href={identity.calendar}
-                target="_blank"
-                rel="noreferrer"
+                href={`mailto:${identity.email}`}
                 className="btn-outline bg-ink text-canvas inline-flex items-center justify-center gap-2.5 py-4 px-6 text-center leading-normal"
               >
-                <span>{c.bookingBtn}</span>
-                <ExternalLink className="size-4" />
+                <Mail className="size-4" />
+                <span>{t("emailMe")}</span>
+              </a>
+              <a
+                href={identity.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-outline inline-flex items-center justify-center gap-2.5 py-4 px-6 text-center leading-normal"
+              >
+                <Linkedin className="size-4" />
+                <span>{t("linkedinProfile")}</span>
               </a>
               <button
                 type="button"
@@ -187,17 +186,6 @@ export function ContactPage() {
                 >
                   <Mail className="size-4 opacity-70" />
                   <span>{identity.email}</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href={identity.calendar}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="body-md text-link hover:opacity-70 inline-flex items-center gap-2"
-                >
-                  <Calendar className="size-4 opacity-70" />
-                  <span>cal.com/blaise-tappa</span>
                 </a>
               </li>
               <li>

@@ -21,42 +21,44 @@ export function createCvPdf(lang: Lang): jsPDF {
     }
   }
 
+  const stripScheme = (url: string) => url.replace(/^https?:\/\//, "");
+  const siteHost = stripScheme(identity.siteUrl);
   const translations = {
     en: {
       docTitle: "CURRICULUM VITAE",
       availability:
-        "Available immediately for Werkstudent roles (20h/week, remote/hybrid) and freelance missions.",
+        "Available immediately for Werkstudent roles: 20 h/week during semester, full-time during semester breaks, remote or hybrid.",
       experience: "PROFESSIONAL EXPERIENCE",
       skills: "TECHNICAL TOOLKIT",
       projects: "FEATURED CASE STUDIES",
-      //education: "EDUCATION",
+      education: "EDUCATION",
       languages: "LANGUAGES",
       links: "ONLINE & PORTFOLIO",
-      footer: "Generated from blaisetappa.dev — Contact: hello@blaisetappa.dev",
+      footer: `Generated from ${siteHost} — Contact: ${identity.email}`,
     },
     de: {
       docTitle: "LEBENSLAUF",
       availability:
-        "Ab sofort verfügbar für Werkstudentenstellen (20 Std./Woche, remote/hybrid) und Freelance-Projekte.",
+        "Ab sofort verfügbar als Werkstudent: 20 Std./Woche im Semester, Vollzeit in den Semesterferien, remote oder hybrid.",
       experience: "BERUFSERFAHRUNG",
       skills: "TECHNISCHE KENNTNISSE",
       projects: "AUSGEWÄHLTE PROJEKTE",
-      //education: "AUSBILDUNG",
+      education: "STUDIUM",
       languages: "SPRACHEN",
       links: "LINKS & PORTFOLIO",
-      footer: "Erstellt auf blaisetappa.dev — Kontakt: hello@blaisetappa.dev",
+      footer: `Erstellt auf ${siteHost} — Kontakt: ${identity.email}`,
     },
     fr: {
       docTitle: "CURRICULUM VITÆ",
       availability:
-        "Disponible immédiatement pour contrat étudiant / Werkstudent (20h/semaine, remote/hybride) et missions freelance.",
+        "Disponible immédiatement en Werkstudent : 20 h/semaine pendant le semestre, temps plein pendant les vacances universitaires, à distance ou hybride.",
       experience: "EXPÉRIENCE PROFESSIONNELLE",
       skills: "COMPÉTENCES TECHNIQUES",
       projects: "PROJETS & ÉTUDES DE CAS",
-      //education: "FORMATION & DIPLÔMES",
+      education: "FORMATION & DIPLÔMES",
       languages: "LANGUES",
       links: "PORTFOLIO & CONTACT",
-      footer: "Généré depuis blaisetappa.dev — Contact : hello@blaisetappa.dev",
+      footer: `Généré depuis ${siteHost} — Contact : ${identity.email}`,
     },
   };
 
@@ -73,15 +75,23 @@ export function createCvPdf(lang: Lang): jsPDF {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
   doc.setTextColor(80, 80, 80);
-  doc.text(identity.role[lang], margin, y);
+  doc.text(identity.headline[lang], margin, y);
   y += 6;
 
-  // Header: Coordinates
+  // Header: Coordinates, split over two lines so each fits the content width
   doc.setFontSize(9);
   doc.setTextColor(100, 100, 100);
-  const contactLine = `${identity.location}   |   ${identity.email}   |   github.com/BlaiseTAPPA   |   linkedin.com/in/blaise-tappa`;
-  doc.text(contactLine, margin, y);
-  y += 5;
+  const contactLines = [
+    `${identity.location}   |   ${identity.email}`,
+    `${siteHost}   |   ${stripScheme(identity.github)}   |   ${stripScheme(identity.linkedin)}`,
+  ];
+  for (const line of contactLines) {
+    for (const wrapped of doc.splitTextToSize(line, contentWidth) as string[]) {
+      doc.text(wrapped, margin, y);
+      y += 4.2;
+    }
+  }
+  y += 1;
 
   // Divider line
   doc.setDrawColor(210, 210, 210);
@@ -90,14 +100,16 @@ export function createCvPdf(lang: Lang): jsPDF {
   y += 5;
 
   // Availability banner box
-  doc.setFillColor(246, 246, 244);
-  doc.setDrawColor(220, 220, 220);
-  doc.roundedRect(margin, y, contentWidth, 8, 1, 1, "FD");
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
+  const availabilityLines = doc.splitTextToSize(t.availability, contentWidth - 8) as string[];
+  const bannerHeight = 4.6 + availabilityLines.length * 3.6;
+  doc.setFillColor(246, 246, 244);
+  doc.setDrawColor(220, 220, 220);
+  doc.roundedRect(margin, y, contentWidth, bannerHeight, 1, 1, "FD");
   doc.setTextColor(40, 40, 40);
-  doc.text(t.availability, margin + 4, y + 5.2);
-  y += 13;
+  doc.text(availabilityLines, margin + 4, y + 5.2);
+  y += bannerHeight + 5;
 
   function renderSectionHeader(title: string) {
     checkPageBreak(14);
@@ -112,7 +124,33 @@ export function createCvPdf(lang: Lang): jsPDF {
     y += 5;
   }
 
-  // 1. Experience
+  // 1. Education (student status first: the core Werkstudent requirement)
+  renderSectionHeader(t.education);
+  for (const edu of education) {
+    checkPageBreak(10);
+    const period = edu.period?.[lang];
+    const periodWidth = period ? doc.getTextWidth(period) + 6 : 0;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9.5);
+    doc.setTextColor(30, 30, 30);
+    const schoolLines = doc.splitTextToSize(edu.school, contentWidth - periodWidth) as string[];
+    doc.text(schoolLines, margin, y);
+    if (period) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(110, 110, 110);
+      doc.text(period, margin + contentWidth - doc.getTextWidth(period), y);
+    }
+    y += schoolLines.length * 4.2;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(70, 70, 70);
+    doc.text(edu.detail[lang], margin, y);
+    y += 5.5;
+  }
+  y += 2;
+
+  // 2. Experience
   renderSectionHeader(t.experience);
   for (const exp of experience) {
     checkPageBreak(22);
@@ -150,7 +188,7 @@ export function createCvPdf(lang: Lang): jsPDF {
 
   y += 2;
 
-  // 2. Technical Toolkit
+  // 3. Technical Toolkit
   renderSectionHeader(t.skills);
   checkPageBreak(12);
   doc.setFont("helvetica", "normal");
@@ -160,7 +198,7 @@ export function createCvPdf(lang: Lang): jsPDF {
   doc.text(skillsText, margin, y);
   y += 8;
 
-  // 3. Featured Case Studies
+  // 4. Featured Case Studies
   renderSectionHeader(t.projects);
   for (const proj of projects.slice(0, 4)) {
     checkPageBreak(18);
@@ -192,60 +230,20 @@ export function createCvPdf(lang: Lang): jsPDF {
 
   y += 2;
 
-  // 4. Education & Languages in 2 columns
-  checkPageBreak(25);
- // renderSectionHeader(t.education + " & " + t.languages);
-
-  const colWidth = (contentWidth - 10) / 2;
-  const startY = y;
-
-  // Left col: Education
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.setTextColor(30, 30, 30);
-  //doc.text(t.education, margin, y);
-  y += 4.5;
-
-  for (const edu of education) {
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8.5);
-    doc.setTextColor(40, 40, 40);
-    doc.text(edu.school, margin, y);
-    y += 3.5;
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(80, 80, 80);
-    doc.text(`${edu.detail[lang]} (${edu.period})`, margin, y);
-    y += 4.5;
-  }
-
-  const endEduY = y;
-  y = startY;
-
-  // Right col: Languages
-  const rightMargin = margin + colWidth + 10;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.setTextColor(30, 30, 30);
-  doc.text(t.languages, rightMargin, y);
-  y += 4.5;
-
+  // 5. Languages
+  renderSectionHeader(t.languages);
   for (const langItem of languages) {
+    checkPageBreak(6);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8.5);
     doc.setTextColor(40, 40, 40);
-    doc.text(langItem.name[lang], rightMargin, y);
-    y += 3.5;
-
+    const name = langItem.name[lang];
+    doc.text(name, margin, y);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
     doc.setTextColor(80, 80, 80);
-    doc.text(langItem.level[lang], rightMargin, y);
+    doc.text(langItem.level[lang], margin + 32, y);
     y += 4.5;
   }
-
-  y = Math.max(endEduY, y) + 4;
 
   // Footer on each page
   const totalPages = doc.internal.pages.length - 1;

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Calendar } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
 import { Page, Tags } from "@/components/site-chrome";
 import { identity, projects, skills } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
@@ -11,12 +11,25 @@ export function HomePage() {
   return (
     <Page>
       <section className="relative flex min-h-[92vh] items-end overflow-hidden border-b border-hairline">
-        <img
-          src="/images/hero-workspace.jpg"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 size-full object-cover opacity-45"
-        />
+        <picture>
+          <source
+            type="image/avif"
+            srcSet="/images/hero-workspace-768.avif 768w, /images/hero-workspace-1280.avif 1280w, /images/hero-workspace-1920.avif 1920w"
+            sizes="100vw"
+          />
+          <img
+            src="/images/hero-workspace-1280.webp"
+            srcSet="/images/hero-workspace-768.webp 768w, /images/hero-workspace-1280.webp 1280w, /images/hero-workspace-1920.webp 1920w"
+            sizes="100vw"
+            width={1920}
+            height={1088}
+            alt=""
+            aria-hidden="true"
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover opacity-45"
+          />
+        </picture>
         <div className="absolute inset-0 bg-canvas/55" aria-hidden="true" />
 
         <div className="shell relative z-10 w-full pt-40 pb-20 md:pb-28">
@@ -24,7 +37,7 @@ export function HomePage() {
             <div className="rise">
               <p className="caption-mono">{identity.location}</p>
               <h1 className="display-xl mt-6">{identity.name}</h1>
-              <p className="display-sm mt-4 text-body-strong">{identity.role[lang]}</p>
+              <p className="display-sm mt-4 text-body-strong">{identity.headline[lang]}</p>
               <p className="body-md mt-8 max-w-xl">{t("heroPitch")}</p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link to="/projects" className="btn-outline">
@@ -36,7 +49,7 @@ export function HomePage() {
               </div>
             </div>
 
-            <aside className="hidden w-80 bg-surface-card p-4 lg:block">
+            <aside className="w-full bg-surface-card p-4 lg:w-80">
               <p className="caption-mono text-body-strong">{t("availableTitle")}</p>
               <p className="body-sm mt-3">{t("availableBody")}</p>
               <Link to="/projects" className="link-mono mt-4 inline-block">
@@ -109,19 +122,20 @@ export function HomePage() {
               {t("contactMe")}
             </Link>
             <a
-              href={identity.calendar}
+              href={`mailto:${identity.email}`}
+              className="btn-outline inline-flex items-center gap-2 bg-canvas/80 backdrop-blur-sm"
+            >
+              <Mail className="size-4" />
+              <span>{t("emailMe")}</span>
+            </a>
+            <a
+              href={identity.linkedin}
               target="_blank"
               rel="noreferrer"
               className="btn-outline inline-flex items-center gap-2 bg-canvas/80 backdrop-blur-sm"
             >
-              <Calendar className="size-4" />
-              <span>
-                {lang === "fr"
-                  ? "Planifier 15 min d'échange"
-                  : lang === "de"
-                    ? "15-Min.-Gespräch buchen"
-                    : "Book 15-min call"}
-              </span>
+              <Linkedin className="size-4" />
+              <span>{t("linkedinProfile")}</span>
             </a>
           </div>
         </div>
