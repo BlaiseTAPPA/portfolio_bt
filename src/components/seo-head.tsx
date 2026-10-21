@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLang } from "@/lib/i18n";
-import { getSeoMetadata, type SeoData } from "@/lib/seo";
+import { getSeoMetadata } from "@/lib/seo";
 
 interface SeoHeadProps {
   customTitle?: string;
@@ -74,7 +74,7 @@ export function SeoHead({
       canonical.setAttribute("rel", "canonical");
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute("href", url.split("?")[0].split("#")[0]);
+    canonical.setAttribute("href", url.split(/[?#]/)[0] ?? url);
 
     // 6. JSON-LD Structured Data
     const jsonLdId = "seo-json-ld";
