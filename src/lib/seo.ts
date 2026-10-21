@@ -1,260 +1,171 @@
-import { identity, projects, posts, type Lang } from "./content.ts";
+import type { Metadata } from "next";
+import {
+  education,
+  identity,
+  languages,
+  locales,
+  posts,
+  projects,
+  type Lang,
+  type Post,
+  type Project,
+} from "./content";
 
-export type SeoData = {
+/** Locale-free route paths: `""` is the home page, every other path starts with `/`. */
+export const staticPaths = [
+  "",
+  "/about",
+  "/projects",
+  "/blog",
+  "/hiring",
+  "/cv",
+  "/contact",
+] as const;
+
+export function localizedPath(locale: Lang, path: string): string {
+  return `/${locale}${path}`;
+}
+
+export function absoluteUrl(path: string): string {
+  return new URL(path, identity.siteUrl).toString();
+}
+
+/** hreflang map for one page: every locale plus `x-default` (the default locale, D16). */
+export function languageAlternates(path: string): Record<string, string> {
+  return {
+    ...Object.fromEntries(locales.map((l) => [l, localizedPath(l, path)])),
+    "x-default": localizedPath("de", path),
+  };
+}
+
+const ogLocale: Record<Lang, string> = { de: "de_DE", en: "en_GB", fr: "fr_FR" };
+
+type OgImage = { url: string; width: number; height: number };
+
+export const defaultOgImage: OgImage = { url: "/og.png", width: 1200, height: 630 };
+/** Every project and post image is a 1600×912 JPEG in /public/images. */
+export const contentImage = (url: string): OgImage => ({ url, width: 1600, height: 912 });
+
+type PageMetaInput = {
+  locale: Lang;
+  path: string;
   title: string;
   description: string;
-  image: string;
-  imageAlt: string;
-  type: "website" | "article" | "profile";
-  url?: string;
-  author?: string;
+  image?: OgImage;
+  type?: "website" | "article" | "profile";
   publishedTime?: string;
-  jsonLd?: Record<string, unknown>;
 };
 
-export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoData {
-  const cleanPath = pathname.replace(/\/$/, "") || "/";
-  const baseUrl = (origin || identity.siteUrl).replace(/\/$/, "");
-  const ogImage = `${baseUrl}/og.png`;
+/** Title, description, canonical, hreflang, Open Graph and Twitter for one page in one locale. */
+export function pageMetadata({
+  locale,
+  path,
+  title,
+  description,
+  image = defaultOgImage,
+  type = "website",
+  publishedTime,
+}: PageMetaInput): Metadata {
+  const url = localizedPath(locale, path);
+  const images = [{ ...image, alt: title }];
+  const base = {
+    url,
+    title,
+    description,
+    siteName: "Blaise Tappa — Portfolio",
+    locale: ogLocale[locale],
+    alternateLocale: locales.filter((l) => l !== locale).map((l) => ogLocale[l]),
+    images,
+  };
 
-  // 1. Project Detail (/projects/:slug)
-  if (cleanPath.startsWith("/projects/")) {
-    const slug = cleanPath.replace("/projects/", "");
-    const proj = projects.find((p) => p.slug === slug);
-    if (proj) {
-      const title =
-        lang === "fr"
-          ? `${proj.name} — Étude de cas | Blaise Tappa`
-          : lang === "de"
-            ? `${proj.name} – Fallstudie | Blaise Tappa`
-            : `${proj.name} — Case Study | Blaise Tappa`;
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: url, languages: languageAlternates(path) },
+    openGraph:
+      type === "article"
+        ? {
+            ...base,
+            type: "article",
+            authors: [identity.name],
+            ...(publishedTime ? { publishedTime } : {}),
+          }
+        : { ...base, type },
+    twitter: { card: "summary_large_image", title, description, images },
+  };
+}
 
-      const description =
-        proj.excerpt[lang] ||
-        `Technical case study of ${proj.name}, built with ${proj.stack.slice(0, 3).join(", ")}.`;
-
-      const imageUrl = proj.image?.startsWith("http") ? proj.image : `${baseUrl}${proj.image}`;
-
-      return {
-        title,
-        description,
-        image: imageUrl,
-        imageAlt: `${proj.name} — Technical Architecture & Interface`,
-        type: "article",
-        url: `${baseUrl}${cleanPath}`,
-        author: identity.name,
-        jsonLd: {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: proj.name,
-          applicationCategory: "WebApplication",
-          operatingSystem: "All",
-          description: proj.excerpt[lang],
-          author: {
-            "@type": "Person",
-            name: identity.name,
-            url: baseUrl,
-          },
+/** Home page: the Person a recruiter is looking at (D5: no nationality). */
+export function personJsonLd(locale: Lang) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": absoluteUrl("/#person"),
+        name: identity.name,
+        jobTitle: identity.role[locale],
+        url: absoluteUrl(localizedPath(locale, "")),
+        image: absoluteUrl("/images/portrait-896.webp"),
+        email: `mailto:${identity.email}`,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Germersheim",
+          addressRegion: "Rheinland-Pfalz",
+          addressCountry: "DE",
         },
-      };
-    }
-  }
+        alumniOf: education.map((e) => ({
+          "@type": "EducationalOrganization",
+          name: e.school.split(" · ")[0],
+        })),
+        knowsLanguage: languages.map((l) => l.name.en),
+        sameAs: [identity.github, identity.linkedin],
+      },
+      {
+        "@type": "WebSite",
+        "@id": absoluteUrl("/#website"),
+        name: "Blaise Tappa — Portfolio",
+        url: absoluteUrl(localizedPath(locale, "")),
+        inLanguage: locale,
+        author: { "@id": absoluteUrl("/#person") },
+      },
+    ],
+  };
+}
 
-  // 2. Blog Post Detail (/blog/:slug)
-  if (cleanPath.startsWith("/blog/")) {
-    const slug = cleanPath.replace("/blog/", "");
-    const post = posts.find((p) => p.slug === slug);
-    if (post) {
-      const title = `${post.title[lang]} | Blaise Tappa`;
-      const description = post.excerpt[lang];
-      const imageUrl = post.image.startsWith("http") ? post.image : `${baseUrl}${post.image}`;
+export function projectJsonLd(project: Project, locale: Lang) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: project.name,
+    applicationCategory: "WebApplication",
+    operatingSystem: "All",
+    description: project.excerpt[locale],
+    image: absoluteUrl(project.image),
+    url: absoluteUrl(localizedPath(locale, `/projects/${project.slug}`)),
+    author: { "@type": "Person", name: identity.name, url: identity.siteUrl },
+  };
+}
 
-      return {
-        title,
-        description,
-        image: imageUrl,
-        imageAlt: post.title[lang],
-        type: "article",
-        url: `${baseUrl}${cleanPath}`,
-        author: identity.name,
-        publishedTime: post.date,
-        jsonLd: {
-          "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          headline: post.title[lang],
-          description: post.excerpt[lang],
-          datePublished: post.date,
-          author: {
-            "@type": "Person",
-            name: identity.name,
-            url: baseUrl,
-          },
-          image: imageUrl,
-        },
-      };
-    }
-  }
+export function postJsonLd(post: Post, locale: Lang) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title[locale],
+    description: post.excerpt[locale],
+    datePublished: post.date,
+    inLanguage: locale,
+    image: absoluteUrl(post.image),
+    url: absoluteUrl(localizedPath(locale, `/blog/${post.slug}`)),
+    author: { "@type": "Person", name: identity.name, url: identity.siteUrl },
+  };
+}
 
-  // 3. Static Pages
-  switch (cleanPath) {
-    case "/projects":
-      return {
-        title:
-          lang === "fr"
-            ? "Projets & Études de cas — Blaise Tappa"
-            : lang === "de"
-              ? "Projekte & Fallstudien – Blaise Tappa"
-              : "Projects & Engineering Case Studies — Blaise Tappa",
-        description:
-          lang === "fr"
-            ? "Explorez les réalisations techniques et architectures de Blaise Tappa : React, TypeScript, Next.js et intégrations IA."
-            : lang === "de"
-              ? "Technische Fallstudien von Blaise Tappa: React, TypeScript, Next.js und KI-Integration."
-              : "Engineering case studies by Blaise Tappa: React, TypeScript, Next.js and AI integration.",
-        image: `${baseUrl}/images/project-signalist.jpg`,
-        imageAlt: "Blaise Tappa — Engineering Portfolio Projects",
-        type: "website",
-        url: `${baseUrl}/projects`,
-      };
-
-    case "/about":
-      return {
-        title:
-          lang === "fr"
-            ? "À propos de Blaise Tappa — Ingénieur & Développeur"
-            : lang === "de"
-              ? "Über Blaise Tappa – Frontend-Entwickler & Werkstudent"
-              : "About Blaise Tappa — Frontend Developer & Werkstudent",
-        description:
-          lang === "fr"
-            ? "Parcours, philosophie de développement et formation de Blaise Tappa. Spécialisé en React, TypeScript et intégration d'IA."
-            : lang === "de"
-              ? "Werdegang, Studium und Berufserfahrung von Blaise Tappa, Frontend-Entwickler und Werkstudent. Schwerpunkte: React, TypeScript und KI-Integration."
-              : "Background, software craftsmanship philosophy, and education of Blaise Tappa. Specialized in React, TypeScript, and AI systems.",
-        image: ogImage,
-        imageAlt: "Blaise Tappa — Frontend Developer · Werkstudent",
-        type: "profile",
-        url: `${baseUrl}/about`,
-        jsonLd: {
-          "@context": "https://schema.org",
-          "@type": "Person",
-          name: identity.name,
-          jobTitle: identity.role[lang],
-          email: identity.email,
-          sameAs: [identity.github, identity.linkedin],
-        },
-      };
-
-    case "/blog":
-      return {
-        title:
-          lang === "fr"
-            ? "Articles & Réflexions techniques — Blaise Tappa"
-            : lang === "de"
-              ? "Blog: Technische Notizen – Blaise Tappa"
-              : "Technical Writing & Architecture Notes — Blaise Tappa",
-        description:
-          lang === "fr"
-            ? "Articles sur l'intégration de Gemini dans React, l'architecture événementielle avec Inngest et l'apprentissage de l'allemand en tant que développeur."
-            : lang === "de"
-              ? "Beiträge zur Integration von Gemini in React, zu ereignisgesteuerter Architektur mit Inngest und zum Deutschlernen als Entwickler."
-              : "Notes on integrating Gemini into React, event-driven architecture with Inngest, and learning German as a developer.",
-        image: `${baseUrl}/images/post-gemini.jpg`,
-        imageAlt: "Blaise Tappa Technical Blog",
-        type: "website",
-        url: `${baseUrl}/blog`,
-      };
-
-    case "/hiring":
-      return {
-        title:
-          lang === "fr"
-            ? "Espace recrutement — Blaise Tappa, Werkstudent Frontend"
-            : lang === "de"
-              ? "Für Recruiter – Blaise Tappa, Werkstudent Frontend"
-              : "For recruiters — Blaise Tappa, Werkstudent Frontend",
-        description:
-          lang === "fr"
-            ? "Informations clés, expérience et études de cas de Blaise Tappa pour un poste Werkstudent frontend (20 h/semaine). CV PDF disponible."
-            : lang === "de"
-              ? "Eckdaten, Berufserfahrung und Fallstudien von Blaise Tappa für Werkstudentenstellen im Frontend (20 Std./Woche). Lebenslauf als PDF."
-              : "Key facts, experience and case studies of Blaise Tappa for Werkstudent frontend roles (20 h/week). CV PDF available.",
-        image: ogImage,
-        imageAlt: "Blaise Tappa — Hiring & Profile Evaluation",
-        type: "website",
-        url: `${baseUrl}/hiring`,
-      };
-
-    case "/cv":
-      return {
-        title:
-          lang === "fr"
-            ? "Curriculum Vitæ — Blaise Tappa"
-            : lang === "de"
-              ? "Lebenslauf – Blaise Tappa"
-              : "Curriculum Vitae — Blaise Tappa",
-        description:
-          lang === "fr"
-            ? "Consultez et téléchargez le CV complet de Blaise Tappa : expériences chez OMOA Group, Société Logex, compétences React/TypeScript et diplômes."
-            : lang === "de"
-              ? "Lebenslauf von Blaise Tappa: Studium an der SRH, Berufserfahrung bei OMOA Group und Société Logex, Kenntnisse in React und TypeScript. Als PDF verfügbar."
-              : "Complete CV of Blaise Tappa: professional experience at OMOA Group, Logex, technical skills, and computer science degree. Instant PDF download.",
-        image: ogImage,
-        imageAlt: "Blaise Tappa — Curriculum Vitae",
-        type: "website",
-        url: `${baseUrl}/cv`,
-      };
-
-    case "/contact":
-      return {
-        title:
-          lang === "fr"
-            ? "Contact — Blaise Tappa"
-            : lang === "de"
-              ? "Kontakt – Blaise Tappa"
-              : "Contact — Blaise Tappa",
-        description:
-          lang === "fr"
-            ? "Contactez Blaise Tappa par e-mail ou LinkedIn pour un poste Werkstudent frontend."
-            : lang === "de"
-              ? "Kontakt zu Blaise Tappa per E-Mail oder LinkedIn – für Werkstudentenstellen im Frontend."
-              : "Reach Blaise Tappa by email or LinkedIn about Werkstudent frontend roles.",
-        image: ogImage,
-        imageAlt: "Blaise Tappa — Contact",
-        type: "website",
-        url: `${baseUrl}/contact`,
-      };
-
-    case "/":
-    default:
-      return {
-        title:
-          lang === "fr"
-            ? "Blaise Tappa — Développeur Frontend · Werkstudent"
-            : lang === "de"
-              ? "Blaise Tappa – Frontend-Entwickler · Werkstudent"
-              : "Blaise Tappa — Frontend Developer · Werkstudent",
-        description:
-          lang === "fr"
-            ? "Portfolio de Blaise Tappa, développeur frontend et étudiant en informatique (B.Sc.) à Germersheim : React, TypeScript, Next.js. Disponible en Werkstudent, 20 h/semaine."
-            : lang === "de"
-              ? "Portfolio von Blaise Tappa, Frontend-Entwickler und Informatikstudent (B.Sc.) in Germersheim: React, TypeScript, Next.js. Verfügbar als Werkstudent, 20 Std./Woche."
-              : "Portfolio of Blaise Tappa, frontend developer and computer science student (B.Sc.) in Germersheim: React, TypeScript, Next.js. Available as a Werkstudent, 20 h/week.",
-        image: ogImage,
-        imageAlt: "Blaise Tappa — Frontend-Entwickler · Werkstudent",
-        type: "website",
-        url: `${baseUrl}/`,
-        jsonLd: {
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          name: "Blaise Tappa Portfolio",
-          url: baseUrl,
-          author: {
-            "@type": "Person",
-            name: identity.name,
-            jobTitle: identity.role[lang],
-          },
-        },
-      };
-  }
+/** Every page path (locale-free), for the sitemap. */
+export function allPaths(): string[] {
+  return [
+    ...staticPaths,
+    ...projects.map((p) => `/projects/${p.slug}`),
+    ...posts.map((p) => `/blog/${p.slug}`),
+  ];
 }

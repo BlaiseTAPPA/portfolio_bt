@@ -11,36 +11,41 @@ My portfolio as a frontend developer and computer science student: case studies,
 
 ## Stack
 
-| Area     | Tools                                                             |
-| -------- | ----------------------------------------------------------------- |
-| UI       | React 19.3, React Router 7.18, Tailwind CSS 4.3, Framer Motion 13 |
-| Language | TypeScript 5.9 (strict, see below)                                |
-| Build    | Vite 8.3 (Rolldown)                                               |
-| PDF CV   | jsPDF 4, generated in the browser from the content model          |
-| Quality  | ESLint 9 + typescript-eslint, Prettier 3, GitHub Actions          |
-| Hosting  | Vercel (static build, SPA rewrite in `vercel.json`)               |
+| Area      | Tools                                                                             |
+| --------- | --------------------------------------------------------------------------------- |
+| Framework | Next.js 16.4 (App Router, static generation), React 19.3                          |
+| i18n      | next-intl 4: `/de`, `/en`, `/fr` routes, Accept-Language detection, hreflang      |
+| UI        | Tailwind CSS 4.3, Framer Motion 13 (one client island), `next/font`, `next/image` |
+| Language  | TypeScript 5.9 (strict, see below)                                                |
+| PDF CV    | jsPDF 4, generated in the browser from the content model                          |
+| Quality   | ESLint 9 (`eslint-config-next`), Prettier 3, GitHub Actions                       |
+| Hosting   | Vercel                                                                            |
 
 ## Architecture decisions
 
-**One typed, localized content model.** Every fact on the site (profile, projects, experience, education, blog posts) lives in [`src/lib/content.ts`](src/lib/content.ts). Translatable fields are typed as `Record<Lang, string>`, and objects are checked with `satisfies`. Adding a locale to `locales` makes the compiler point at every missing translation. Pages render this data and hold no facts of their own, and the PDF CV is built from the same source, so site and CV can't drift apart.
+**Every page is prerendered, per locale.** All routes are Server Components and are generated at build time for German, English and French (`generateStaticParams` for locales, projects and blog posts). Crawlers and link previews (LinkedIn, Slack, WhatsApp) get complete HTML with the right title, description and image, with no user-agent sniffing. Only the parts that need the browser are client components: header menu and language switch, footer clock, contact form, CV download/print buttons and the project grid animation.
 
-**UI strings are split from content.** Shared labels are in [`src/lib/i18n.ts`](src/lib/i18n.ts), page-specific copy in [`src/lib/page-copy.ts`](src/lib/page-copy.ts). `npm run check:i18n` fails on empty strings, missing locales or informal "du" forms in the German copy.
+**Localized URLs.** Each page exists at `/de/…`, `/en/…` and `/fr/…`; German is the default. [`src/proxy.ts`](src/proxy.ts) sends `/` to the visitor's language (cookie, then `Accept-Language`) and permanently redirects the old unprefixed URLs (`/cv` → `/de/cv`, 308), so links in older CVs and on LinkedIn keep working. The language switch links to the same page in the other language, and `<html lang>` is rendered on the server.
 
-**Strict TypeScript.** Beyond `strict`, the project enables `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noPropertyAccessFromIndexSignature`, `noImplicitReturns`, `noUnusedLocals` and `noUnusedParameters`. The browser code (`tsconfig.json`) and the Node code (`tsconfig.node.json`: dev server, scripts, Vite config) are checked separately, each with the right globals.
+**SEO from the Metadata API.** [`src/lib/seo.ts`](src/lib/seo.ts) builds each page's title, description, canonical URL, hreflang alternates (+ `x-default`), Open Graph and Twitter tags. The home page carries `Person` JSON-LD, projects `SoftwareApplication` and posts `BlogPosting`. [`sitemap.ts`](src/app/sitemap.ts) lists every page in every locale with its alternates.
 
-**Small initial bundle.** The jsPDF engine (~400 kB) is loaded only when someone clicks "download CV" ([`src/lib/cv-download.ts`](src/lib/cv-download.ts)). The dependency list holds only what the app imports.
+**One typed, localized content model.** Every fact on the site (profile, projects, experience, education, blog posts) lives in [`src/lib/content.ts`](src/lib/content.ts). Translatable fields are typed as `Record<Lang, string>`, so adding a locale makes the compiler point at every missing translation. Pages render this data and hold no facts of their own, and the PDF CV is built from the same source, so site and CV can't drift apart.
 
-**Dev server.** `npm run dev` starts [`server.ts`](server.ts), an Express server that wraps Vite. It also serves a PDF endpoint and injects per-route meta tags for crawlers, so link previews can be tested locally. Production on Vercel is the static build.
+**UI strings are split from content.** Interface copy lives in [`messages/{de,en,fr}.json`](messages), typed against the German file, so a wrong key fails the typecheck. `npm run check:i18n` fails on empty strings, missing keys, mismatched placeholders or informal "du" forms in the German copy.
+
+**Strict TypeScript.** Beyond `strict`, the project enables `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noPropertyAccessFromIndexSignature`, `noImplicitReturns`, `noUnusedLocals` and `noUnusedParameters`. Route props use Next's generated `PageProps<"/[locale]/…">` types.
+
+**Fast on mobile.** Fonts are self-hosted at build time by `next/font` (no request to Google, `display: swap`). The hero image is preloaded and served as AVIF/WebP at the screen's width. Framer Motion loads through `LazyMotion` on the projects page only, and jsPDF (~400 kB) loads only when someone clicks "download CV" ([`src/lib/cv-download.ts`](src/lib/cv-download.ts)).
 
 ## Scripts
 
 | Command                | What it does                                  |
 | ---------------------- | --------------------------------------------- |
 | `npm run dev`          | Dev server on http://localhost:3000           |
-| `npm run build`        | Typecheck, then production build into `dist/` |
-| `npm run preview`      | Serve the production build                    |
-| `npm run typecheck`    | `tsc` for browser and Node code               |
-| `npm run lint`         | ESLint (incl. Prettier rules)                 |
+| `npm run build`        | Production build (static pages into `.next/`) |
+| `npm run start`        | Serve the production build                    |
+| `npm run typecheck`    | Generate route types, then `tsc`              |
+| `npm run lint`         | ESLint (Next.js rules, incl. Prettier)        |
 | `npm run format`       | Format everything with Prettier               |
 | `npm run format:check` | Check formatting without writing              |
 | `npm run check:i18n`   | Check translations for gaps and "du" forms    |
@@ -57,23 +62,24 @@ npm run dev
 ## Project structure
 
 ```text
-├── .github/workflows/ci.yml   CI: typecheck, lint, format, i18n, build
-├── public/                    Images (AVIF/WebP), OG image, robots.txt
-├── scripts/check-i18n.ts      Translation check
-├── server.ts                  Express dev server (Vite middleware, PDF, crawler meta)
+├── .github/workflows/ci.yml     CI: typecheck, lint, format, i18n, build
+├── messages/{de,en,fr}.json     UI strings per locale
+├── public/                      Images, OG image, favicon
+├── scripts/check-i18n.ts        Translation check
 ├── src/
-│   ├── main.tsx               Entry point
-│   ├── App.tsx                Routes
-│   ├── components/            Site header/footer, <head> management
+│   ├── app/
+│   │   ├── [locale]/            One folder per route (layout, pages, localized 404)
+│   │   ├── sitemap.ts           sitemap.xml with hreflang alternates
+│   │   └── robots.ts            robots.txt
+│   ├── components/              Header, footer, client islands, contact form
+│   ├── i18n/                    next-intl routing, navigation and request config
 │   ├── lib/
-│   │   ├── content.ts         Typed, localized content model (single source of truth)
-│   │   ├── i18n.ts            Language context and shared UI strings
-│   │   ├── page-copy.ts       Page-specific UI strings
-│   │   ├── seo.ts             Per-route titles, descriptions, JSON-LD
-│   │   └── cv-pdf.ts          PDF CV built from content.ts
-│   ├── pages/                 One component per route
-│   └── styles.css             Tailwind 4 theme and base styles
-└── vercel.json                SPA rewrite
+│   │   ├── content.ts           Typed, localized content model (single source of truth)
+│   │   ├── seo.ts               Metadata, hreflang and JSON-LD builders
+│   │   └── cv-pdf.ts            PDF CV built from content.ts
+│   ├── proxy.ts                 Locale detection and redirects of old URLs
+│   └── styles.css               Tailwind 4 theme and base styles
+└── next.config.ts
 ```
 
 ## About me

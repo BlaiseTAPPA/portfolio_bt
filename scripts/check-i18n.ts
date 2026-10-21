@@ -1,14 +1,15 @@
 /**
  * Dev-only i18n check: `npm run check:i18n`.
  *
- * Walks every localized structure (UI dictionary, page copy, PDF copy and content data) and fails if
+ * Walks every localized structure (messages/*.json, PDF copy and content data) and fails if
  * a locale is missing, a string is empty, locales disagree on keys / list length / {placeholders},
  * or a German string uses the informal "du" form.
  */
 import * as content from "../src/lib/content.ts";
-import { dict } from "../src/lib/i18n.ts";
-import * as pageCopy from "../src/lib/page-copy.ts";
 import { cvPdfCopy } from "../src/lib/cv-pdf.ts";
+import de from "../messages/de.json";
+import en from "../messages/en.json";
+import fr from "../messages/fr.json";
 
 const locales: readonly string[] = content.locales;
 const DU_FORM = /\b(du|dich|dir|dein(e[mnrs]?)?|euch|eu(er|re[mnrs]?))\b/i;
@@ -73,9 +74,8 @@ function walk(value: unknown, path: string) {
   for (const [k, v] of Object.entries(value)) walk(v, `${path}.${k}`);
 }
 
-walk(dict, "dict");
+walk({ de, en, fr } satisfies Record<content.Lang, unknown>, "messages");
 walk(cvPdfCopy, "cvPdfCopy");
-for (const [name, value] of Object.entries(pageCopy)) walk(value, `pageCopy.${name}`);
 for (const [name, value] of Object.entries(content)) {
   if (typeof value !== "function") walk(value, `content.${name}`);
 }

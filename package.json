@@ -4,46 +4,36 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "start": "node server.ts",
-    "build": "npm run typecheck && vite build",
-    "build:dev": "vite build --mode development",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:i18n": "tsx scripts/check-i18n.ts"
   },
   "dependencies": {
-    "express": "^5.2.1",
     "framer-motion": "^13.4.6",
     "jspdf": "^4.2.1",
     "lucide-react": "^0.575.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.18.4"
+    "next": "^16.4.2",
+    "next-intl": "^4.14.9",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.32.0",
-    "@tailwindcss/vite": "^4.2.1",
-    "@types/express": "^5.0.6",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22.16.5",
     "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^5.2.0",
+    "@types/react-dom": "^19.3.0",
     "eslint": "^9.32.0",
+    "eslint-config-next": "^16.4.2",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^15.15.0",
     "prettier": "^3.7.3",
     "tailwindcss": "^4.2.1",
     "tsx": "^4.23.15",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.56.1",
-    "vite": "^8.3.5",
-    "vite-tsconfig-paths": "^6.0.2"
+    "typescript": "^5.8.3"
   }
 }

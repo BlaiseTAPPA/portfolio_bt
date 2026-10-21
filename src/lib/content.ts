@@ -1,4 +1,4 @@
-export const locales = ["en", "de", "fr"] as const;
+export const locales = ["de", "en", "fr"] as const;
 export type Lang = (typeof locales)[number];
 
 export type Localized = Record<Lang, string>;
@@ -57,6 +57,30 @@ export const keyFacts: { label: Localized; value: Localized }[] = [
   {
     label: { en: "German", de: "Deutsch", fr: "Allemand" },
     value: { en: "B1, aiming for B2", de: "B1, Ziel B2", fr: "B1, objectif B2" },
+  },
+];
+
+/** "At a glance" box on the About page. */
+export const aboutFacts: { label: Localized; value: Localized }[] = [
+  {
+    label: { en: "Based in", de: "Wohnort", fr: "Localisation" },
+    value: { en: "Germersheim, DE", de: "Germersheim, DE", fr: "Germersheim, Allemagne" },
+  },
+  {
+    label: { en: "Studying", de: "Studium", fr: "Études" },
+    value: { en: "B.Sc. Computer Science", de: "B.Sc. Computer Science", fr: "B.Sc. Informatique" },
+  },
+  {
+    label: { en: "Availability", de: "Verfügbarkeit", fr: "Disponibilité" },
+    value: {
+      en: "20 h / week, remote or hybrid",
+      de: "20 Std./Woche, remote oder hybrid",
+      fr: "20 h / semaine, remote ou hybride",
+    },
+  },
+  {
+    label: { en: "Open to", de: "Offen für", fr: "Statut recherché" },
+    value: { en: "Werkstudent roles", de: "Werkstudentenstellen", fr: "Werkstudent" },
   },
 ];
 

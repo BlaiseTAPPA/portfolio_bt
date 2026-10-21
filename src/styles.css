@@ -53,9 +53,10 @@
   --color-ring: var(--hairline-strong);
   --color-ring-offset-background: var(--canvas);
 
-  --font-display: "Antonio", "Oswald", sans-serif;
-  --font-body: "PT Serif", Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Self-hosted by next/font (src/app/[locale]/layout.tsx), which sets these variables on <html>. */
+  --font-display: var(--font-antonio), "Oswald", sans-serif;
+  --font-body: var(--font-pt-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
   --spacing-section: 120px;
 }
