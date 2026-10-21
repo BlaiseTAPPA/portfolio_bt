@@ -14,7 +14,8 @@ export type SeoData = {
 
 export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoData {
   const cleanPath = pathname.replace(/\/$/, "") || "/";
-  const baseUrl = origin.replace(/\/$/, "");
+  const baseUrl = (origin || identity.siteUrl).replace(/\/$/, "");
+  const ogImage = `${baseUrl}/og.png`;
 
   // 1. Project Detail (/projects/:slug)
   if (cleanPath.startsWith("/projects/")) {
@@ -34,7 +35,7 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
 
       const imageUrl = proj.image?.startsWith("http")
         ? proj.image
-        : `${baseUrl}${proj.image || "/images/hero-workspace.jpg"}`;
+        : `${baseUrl}${proj.image}`;
 
       return {
         title,
@@ -54,7 +55,7 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           author: {
             "@type": "Person",
             name: identity.name,
-            url: baseUrl || "https://blaisetappa.dev",
+            url: baseUrl,
           },
         },
       };
@@ -88,7 +89,7 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           author: {
             "@type": "Person",
             name: identity.name,
-            url: baseUrl || "https://blaisetappa.dev",
+            url: baseUrl,
           },
           image: imageUrl,
         },
@@ -124,16 +125,16 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "À propos de Blaise Tappa — Ingénieur & Développeur"
             : lang === "de"
-              ? "Über Blaise Tappa — Full-Stack-Entwickler"
-              : "About Blaise Tappa — Full-Stack / Frontend Developer",
+              ? "Über Blaise Tappa — Frontend-Entwickler & Werkstudent"
+              : "About Blaise Tappa — Frontend Developer & Werkstudent",
         description:
           lang === "fr"
             ? "Parcours, philosophie de développement et formation de Blaise Tappa. Spécialisé en React, TypeScript et intégration d'IA."
             : lang === "de"
               ? "Werdegang, Philosophie und Ausbildung von Blaise Tappa. Spezialisiert auf React, TypeScript und KI-Systeme."
               : "Background, software craftsmanship philosophy, and education of Blaise Tappa. Specialized in React, TypeScript, and AI systems.",
-        image: `${baseUrl}/images/portrait.jpg`,
-        imageAlt: "Blaise Tappa portrait",
+        image: ogImage,
+        imageAlt: "Blaise Tappa — Frontend Developer · Werkstudent",
         type: "profile",
         url: `${baseUrl}/about`,
         jsonLd: {
@@ -142,7 +143,6 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           name: identity.name,
           jobTitle: identity.role[lang],
           email: identity.email,
-          nationality: "German / French",
           sameAs: [identity.github, identity.linkedin],
         },
       };
@@ -171,17 +171,17 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
       return {
         title:
           lang === "fr"
-            ? "Espace Recrutement & Profil — Blaise Tappa"
+            ? "Espace recrutement — Blaise Tappa, Werkstudent Frontend"
             : lang === "de"
-              ? "Recruiting & Profil-Shortlist — Blaise Tappa"
-              : "Hiring & Recruiter Fit Evaluation — Blaise Tappa",
+              ? "Für Recruiter — Blaise Tappa, Werkstudent Frontend"
+              : "For recruiters — Blaise Tappa, Werkstudent Frontend",
         description:
           lang === "fr"
-            ? "Évaluez l'adéquation de Blaise Tappa pour vos postes étudiants (Werkstudent 20h/semaine), missions freelance ou rôles Frontend."
+            ? "Informations clés, expérience et études de cas de Blaise Tappa pour un poste Werkstudent frontend (20 h/semaine). CV PDF disponible."
             : lang === "de"
-              ? "Prüfen Sie das Profil von Blaise Tappa für Werkstudentenstellen (20 Std./Woche), Freelance-Projekte oder Frontend-Teams."
-              : "Evaluate Blaise Tappa for Werkstudent roles (20h/week), freelance contracts, or frontend positions. Direct 15-min booking and CV PDF available.",
-        image: `${baseUrl}/images/hero-workspace.jpg`,
+              ? "Eckdaten, Berufserfahrung und Fallstudien von Blaise Tappa für Werkstudentenstellen im Frontend (20 Std./Woche). Lebenslauf als PDF."
+              : "Key facts, experience and case studies of Blaise Tappa for Werkstudent frontend roles (20 h/week). CV PDF available.",
+        image: ogImage,
         imageAlt: "Blaise Tappa — Hiring & Profile Evaluation",
         type: "website",
         url: `${baseUrl}/hiring`,
@@ -201,7 +201,7 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
             : lang === "de"
               ? "Vollständiger Lebenslauf von Blaise Tappa: Stationen bei OMOA Group, Logex, React/TypeScript-Expertise und SRH-Studium."
               : "Complete CV of Blaise Tappa: professional experience at OMOA Group, Logex, technical skills, and computer science degree. Instant PDF download.",
-        image: `${baseUrl}/images/hero-workspace.jpg`,
+        image: ogImage,
         imageAlt: "Blaise Tappa — Curriculum Vitae",
         type: "website",
         url: `${baseUrl}/cv`,
@@ -211,17 +211,17 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
       return {
         title:
           lang === "fr"
-            ? "Contact & Rendez-vous — Blaise Tappa"
+            ? "Contact — Blaise Tappa"
             : lang === "de"
-              ? "Kontakt & Terminbuchung — Blaise Tappa"
-              : "Contact & Book a Meeting — Blaise Tappa",
+              ? "Kontakt — Blaise Tappa"
+              : "Contact — Blaise Tappa",
         description:
           lang === "fr"
-            ? "Prenez contact avec Blaise Tappa ou réservez un créneau de 15 minutes en visioconférence pour échanger sur vos opportunités."
+            ? "Contactez Blaise Tappa par e-mail ou LinkedIn pour un poste Werkstudent frontend."
             : lang === "de"
-              ? "Kontaktieren Sie Blaise Tappa oder buchen Sie direkt einen 15-Minuten-Videocall für ein erstes Kennenlernen."
-              : "Get in touch with Blaise Tappa or book an informal 15-minute video call to discuss engineering roles and projects.",
-        image: `${baseUrl}/images/hero-workspace.jpg`,
+              ? "Kontakt zu Blaise Tappa per E-Mail oder LinkedIn – für Werkstudentenstellen im Frontend."
+              : "Reach Blaise Tappa by email or LinkedIn about Werkstudent frontend roles.",
+        image: ogImage,
         imageAlt: "Blaise Tappa — Contact",
         type: "website",
         url: `${baseUrl}/contact`,
@@ -232,25 +232,25 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
       return {
         title:
           lang === "fr"
-            ? "Blaise Tappa — Développeur Full-Stack / Frontend"
+            ? "Blaise Tappa — Développeur Frontend · Werkstudent"
             : lang === "de"
-              ? "Blaise Tappa — Full-Stack- / Frontend-Entwickler"
-              : "Blaise Tappa — Full-Stack / Frontend Developer",
+              ? "Blaise Tappa — Frontend-Entwickler · Werkstudent"
+              : "Blaise Tappa — Frontend Developer · Werkstudent",
         description:
           lang === "fr"
-            ? "Portfolio de Blaise Tappa, développeur Full-Stack / Frontend spécialisé en React, TypeScript, Next.js et intégration d'IA. Disponible pour contrat étudiant et missions."
+            ? "Portfolio de Blaise Tappa, développeur frontend et étudiant en informatique (B.Sc.) à Germersheim : React, TypeScript, Next.js. Disponible en Werkstudent, 20 h/semaine."
             : lang === "de"
-              ? "Portfolio von Blaise Tappa, Full-Stack- / Frontend-Entwickler mit Fokus auf React, TypeScript, Next.js und KI-Systeme. Verfügbar als Werkstudent und Freelancer."
-              : "Portfolio of Blaise Tappa, Full-Stack / Frontend Developer focused on React, TypeScript, Next.js, and AI integrations. Available for Werkstudent roles & freelance.",
-        image: `${baseUrl}/images/hero-workspace.jpg`,
-        imageAlt: "Blaise Tappa — Full-Stack / Frontend Developer",
+              ? "Portfolio von Blaise Tappa, Frontend-Entwickler und Informatikstudent (B.Sc.) in Germersheim: React, TypeScript, Next.js. Verfügbar als Werkstudent, 20 Std./Woche."
+              : "Portfolio of Blaise Tappa, frontend developer and computer science student (B.Sc.) in Germersheim: React, TypeScript, Next.js. Available as a Werkstudent, 20 h/week.",
+        image: ogImage,
+        imageAlt: "Blaise Tappa — Frontend-Entwickler · Werkstudent",
         type: "website",
         url: `${baseUrl}/`,
         jsonLd: {
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "Blaise Tappa Portfolio",
-          url: baseUrl || "https://blaisetappa.dev",
+          url: baseUrl,
           author: {
             "@type": "Person",
             name: identity.name,

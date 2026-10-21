@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { Download, Calendar, Printer, ExternalLink, ArrowLeft } from "lucide-react";
-import { Page } from "@/components/site-chrome";
+import { Download, Mail, Printer, ArrowLeft } from "lucide-react";
+import { EducationList, KeyFacts, Page } from "@/components/site-chrome";
 import { useLang } from "@/lib/i18n";
-import { identity, skills, experience, education, languages, projects } from "@/lib/content";
+import { identity, skills, experience, languages, projects } from "@/lib/content";
 import { downloadCvPdf } from "@/lib/cv-pdf";
 
 const copy = {
@@ -16,7 +16,7 @@ const copy = {
     contact: "Contact",
     print: "Print format",
     downloadPdf: "Download PDF",
-    bookMeeting: "Book 15-min call",
+    email: "Email me",
     back: "Back to hiring",
     onlineProfile: "View on portfolio",
   },
@@ -25,12 +25,12 @@ const copy = {
     experience: "Berufserfahrung",
     skills: "Kenntnisse",
     projects: "Ausgewählte Projekte",
-    education: "Ausbildung",
+    education: "Studium",
     languages: "Sprachen",
     contact: "Kontakt",
     print: "Druckansicht",
     downloadPdf: "PDF herunterladen",
-    bookMeeting: "15-Min.-Termin buchen",
+    email: "E-Mail schreiben",
     back: "Zurück zu Recruiting",
     onlineProfile: "Im Portfolio ansehen",
   },
@@ -44,7 +44,7 @@ const copy = {
     contact: "Contact",
     print: "Format impression",
     downloadPdf: "Télécharger le PDF",
-    bookMeeting: "Planifier 15 min d'échange",
+    email: "M'écrire",
     back: "Retour à l'espace recrutement",
     onlineProfile: "Voir sur le portfolio",
   },
@@ -71,7 +71,7 @@ export function CvPage() {
       <div className="shell pt-40 pb-24">
         <p className="caption-mono">{c.eyebrow}</p>
         <h1 className="display-lg mt-4">{identity.name}</h1>
-        <p className="title-md mt-4">{identity.role[lang]}</p>
+        <p className="title-md mt-4">{identity.headline[lang]}</p>
         <p className="body-sm mt-2 text-muted">{identity.location}</p>
 
         {/* Action bar for recruiters & visitors */}
@@ -84,15 +84,9 @@ export function CvPage() {
             <Download className="size-4" />
             <span>{c.downloadPdf}</span>
           </button>
-          <a
-            href={identity.calendar}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-outline inline-flex items-center gap-2"
-          >
-            <Calendar className="size-4" />
-            <span>{c.bookMeeting}</span>
-            <ExternalLink className="size-3.5 opacity-60" />
+          <a href={`mailto:${identity.email}`} className="btn-outline inline-flex items-center gap-2">
+            <Mail className="size-4" />
+            <span>{c.email}</span>
           </a>
           <button
             type="button"
@@ -108,7 +102,12 @@ export function CvPage() {
           </Link>
         </div>
 
+        <KeyFacts className="mt-12 max-w-2xl" />
+
         <div className="mt-16">
+          <Row id="education" title={c.education}>
+            <EducationList />
+          </Row>
           <Row id="experience" title={c.experience}>
             <ul className="space-y-10">
               {experience.map((r) => (
@@ -154,19 +153,6 @@ export function CvPage() {
               ))}
             </ul>
           </Row>
-{/*           <Row id="education" title={c.education}>
-            <ul className="space-y-4">
-              {education.map((e) => (
-                <li key={e.school} className="flex items-baseline justify-between gap-4">
-                  <div>
-                    <p className="title-md">{e.school}</p>
-                    <p className="body-sm mt-1">{e.detail[lang]}</p>
-                  </div>
-                  <span className="caption-mono">{e.period}</span>
-                </li>
-              ))}
-            </ul>
-          </Row> */}
           <Row id="languages" title={c.languages}>
             <ul className="space-y-3">
               {languages.map((l) => (
@@ -182,11 +168,6 @@ export function CvPage() {
               <li>
                 <a className="link-mono" href={`mailto:${identity.email}`}>
                   {identity.email}
-                </a>
-              </li>
-              <li>
-                <a className="link-mono" href={identity.calendar} target="_blank" rel="noreferrer">
-                  Cal.com (15 min call)
                 </a>
               </li>
               <li>

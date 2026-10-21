@@ -3,8 +3,6 @@ import { motion, type Variants } from "framer-motion";
 import { Page, PageHeader, Tags } from "@/components/site-chrome";
 import { projects } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
-import { ProjectMatcher } from "@/components/project-matcher";
-import { ProjectBuilder } from "@/components/project-builder";
 
 // Staggered entrance animation orchestrator matching the design system's 'rise' utility
 // (0.8s, cubic-bezier(0.22, 1, 0.36, 1), 16px vertical translation)
@@ -77,10 +75,6 @@ export function ProjectsPage() {
           ))}
         </motion.div>
       </section>
-
-      <ProjectMatcher />
-
-      <ProjectBuilder />
     </Page>
   );
 }

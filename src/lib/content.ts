@@ -7,16 +7,52 @@ export const identity = {
   name: "Blaise Tappa",
   alias: "Donnie",
   role: {
-    en: "Full-Stack / Frontend Developer",
-    de: "Full-Stack- / Frontend-Entwickler",
-    fr: "Développeur Full-Stack / Frontend",
+    en: "Frontend Developer",
+    de: "Frontend-Entwickler",
+    fr: "Développeur Frontend",
+  } satisfies Localized,
+  headline: {
+    en: "Frontend Developer · Computer Science Student (B.Sc.) · Werkstudent",
+    de: "Frontend-Entwickler · Informatikstudent (B.Sc.) · Werkstudent",
+    fr: "Développeur Frontend · Étudiant en informatique (B.Sc.) · Werkstudent",
   } satisfies Localized,
   location: "Germersheim, Rheinland-Pfalz, Germany",
   email: "melvynngaba@gmail.com",
+  // TODO(owner): D13 — replace with a custom domain once one is connected in Vercel.
+  siteUrl: "https://portfolio-bt-iota.vercel.app",
   github: "https://github.com/BlaiseTAPPA",
+  // TODO(owner): D14 — LinkedIn URL not verified (LinkedIn blocks automated checks).
   linkedin: "https://linkedin.com/in/blaise-tappa",
-  calendar: "https://cal.com/blaise-tappa/15min",
 };
+
+/** "Eckdaten": the German-market facts a recruiter screens for first. */
+// TODO(owner): D3 — add a work-authorization row once the wording is confirmed; omitted until then.
+export const keyFacts: { label: Localized; value: Localized }[] = [
+  {
+    label: { en: "Hours", de: "Stunden", fr: "Volume horaire" },
+    value: {
+      en: "20 h/week during semester, full-time during semester breaks",
+      de: "20 Std./Woche im Semester, Vollzeit in den Semesterferien",
+      fr: "20 h/semaine pendant le semestre, temps plein pendant les vacances universitaires",
+    },
+  },
+  {
+    label: { en: "Start", de: "Start", fr: "Début" },
+    value: { en: "Immediately", de: "Ab sofort", fr: "Immédiatement" },
+  },
+  {
+    label: { en: "Location", de: "Ort", fr: "Lieu" },
+    value: {
+      en: "Germersheim · remote or hybrid",
+      de: "Germersheim · remote oder hybrid",
+      fr: "Germersheim · à distance ou hybride",
+    },
+  },
+  {
+    label: { en: "German", de: "Deutsch", fr: "Allemand" },
+    value: { en: "B1, aiming for B2", de: "B1, Ziel B2", fr: "B1, objectif B2" },
+  },
+];
 
 export const skills = [
   "React",
@@ -28,13 +64,18 @@ export const skills = [
   "Docker",
 ];
 
+/** `live` = a public, usable deployment; `repo` = a public source repository. */
+export type ProjectLinkType = "live" | "repo";
+export type ProjectLink = { type: ProjectLinkType; url: string };
+
 export type Project = {
   slug: string;
   name: string;
   year: string;
   stack: string[];
-  demo?: string;
-  repo?: string;
+  links: ProjectLink[];
+  /** Client work that can't be shown publicly; rendered as "Client project (NDA)" instead of links. */
+  nda?: boolean;
   excerpt: Localized;
   problem: Localized;
   approach: Localized;
@@ -57,8 +98,8 @@ export const projects: Project[] = [
       "TradingView",
       "Vercel",
     ],
-    demo: "https://blaisist-stock-tracker-app.vercel.app/",
-    repo: "https://github.com/BlaiseTAPPA/blaisist_stock-tracker-app.git",
+    // TODO(owner): D11 — the deployed app redirects to /sign-in; add it back as `live` once a demo login or Loom URL exists.
+    links: [{ type: "repo", url: "https://github.com/BlaiseTAPPA/blaisist_stock-tracker-app" }],
     image: "/images/project-signalist.jpg",
     excerpt: {
       en: "Real-time financial market intelligence and analytics platform.",
@@ -111,8 +152,10 @@ export const projects: Project[] = [
       "Gemini 2.5 Flash",
       "Docker",
     ],
-    demo: "https://roomify-five-eta.vercel.app/",
-    repo: "https://github.com/BlaiseTAPPA/roomify.git",
+    links: [
+      { type: "live", url: "https://roomify-five-eta.vercel.app/" },
+      { type: "repo", url: "https://github.com/BlaiseTAPPA/roomify" },
+    ],
     image: "/images/project-roomify.jpg",
     excerpt: {
       en: "AI floor plan visualizer that turns uploaded plans into readable room layouts.",
@@ -158,8 +201,10 @@ export const projects: Project[] = [
     name: "Tankstellen-Finder",
     year: "2024",
     stack: ["React", "TypeScript", "Tankerkönig API", "Supabase / SQL", "Vercel"],
-    demo: "https://finder-delta-three.vercel.app/",
-    repo: "https://github.com/BlaiseTAPPA/Finder.git",
+    links: [
+      { type: "live", url: "https://finder-delta-three.vercel.app/" },
+      { type: "repo", url: "https://github.com/BlaiseTAPPA/Finder" },
+    ],
     image: "/images/project-tankstellen.jpg",
     excerpt: {
       en: "Real-time fuel price finder for Germany with geo-radius and route queries.",
@@ -202,8 +247,9 @@ export const projects: Project[] = [
     name: "Femmes d'Audace",
     year: "2024",
     stack: ["React 19", "TypeScript", "MongoDB", "Prisma", "Clerk"],
-    demo: "https://github.com/BlaiseTAPPA",
-    repo: "https://github.com/BlaiseTAPPA/na_app.git",
+    // TODO(owner): D9/D10 — add links once a public URL exists or na_app is made public.
+    links: [],
+    nda: true,
     image: "/images/project-femmes.jpg",
     excerpt: {
       en: "E-learning platform with SSR-first architecture and a dependency-free calendar generator.",
@@ -247,7 +293,9 @@ export const projects: Project[] = [
     year: "2025",
     stack: ["React", "TypeScript", "AI-assisted design", "Client project"],
     image: "/images/project-bassam.jpg",
-    demo: "https://github.com/BlaiseTAPPA",
+    // TODO(owner): D9 — add a `live` link if the client allows a public URL.
+    links: [],
+    nda: true,
     excerpt: {
       en: "Tourism platform and directory for Grand-Bassam, Côte d'Ivoire.",
       de: "Tourismusplattform und Verzeichnis für Grand-Bassam, Côte d'Ivoire.",
@@ -371,28 +419,38 @@ export const experience: Role[] = [
   },
 ];
 
-export const education = [
+export type Education = {
+  school: string;
+  /** Omitted when dates aren't confirmed (D7). */
+  period?: Localized;
+  detail: Localized;
+};
+
+export const education: Education[] = [
   {
-    school: "SRH University",
-    period: "Present",
+    school: "SRH University · Campus Heidelberg",
+    period: {
+      en: "10.2026 — 06.2027 (expected)",
+      de: "10.2026 — 06.2027 (voraussichtlich)",
+      fr: "10.2026 — 06.2027 (prévu)",
+    },
     detail: {
-      en: "B.Sc. Computer Science",
-      de: "B.Sc. Informatik",
-      fr: "B.Sc. Informatique (Computer Science)",
-    } satisfies Localized,
+      en: "B.Sc. Computer Science (Fast Track) · enrolled",
+      de: "B.Sc. Computer Science (Fast Track) · immatrikuliert",
+      fr: "B.Sc. Computer Science (Fast Track) · inscrit",
+    },
   },
+  // TODO(owner): D7 — add exact periods and degree titles for the two entries below.
   {
     school: "Lomé Business School",
-    period: "2022-2025",
     detail: {
       en: "Software Engineering",
       de: "Software-Ingenieurwesen",
       fr: "Ingénierie logicielle",
     } satisfies Localized,
   },
-    {
+  {
     school: "Ecole Superieure Privee d'Ingenierie et de Technologie (ESPRIT)",
-    period: "2018-2022",
     detail: {
       en: "Software Engineering",
       de: "Software-Ingenieurwesen",
@@ -416,7 +474,7 @@ export const languages = [
   },
   {
     name: { en: "German", de: "Deutsch", fr: "Allemand" },
-    level: { en: "B1", de: "B1", fr: "B1" },
+    level: { en: "B1, aiming for B2", de: "B1, Ziel B2", fr: "B1, objectif B2" },
   },
 ];
 

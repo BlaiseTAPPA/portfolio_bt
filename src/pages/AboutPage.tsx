@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { AboutQa } from "@/components/about-qa";
-import { Page, PageHeader } from "@/components/site-chrome";
-import { education, experience, identity, languages, skills } from "@/lib/content";
+import { EducationList, Page, PageHeader } from "@/components/site-chrome";
+import { experience, identity, languages, skills } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 
 const facts = {
@@ -9,19 +8,19 @@ const facts = {
     { label: "Based in", value: "Germersheim, DE" },
     { label: "Studying", value: "B.Sc. Computer Science" },
     { label: "Availability", value: "20 h / week, remote or hybrid" },
-    { label: "Open to", value: "Werkstudent & freelance" },
+    { label: "Open to", value: "Werkstudent roles" },
   ],
   de: [
     { label: "Wohnort", value: "Germersheim, DE" },
     { label: "Studium", value: "B.Sc. Informatik" },
     { label: "Verfügbarkeit", value: "20 Std./Woche, remote oder hybrid" },
-    { label: "Offen für", value: "Werkstudent & Freelance" },
+    { label: "Offen für", value: "Werkstudentenstellen" },
   ],
   fr: [
     { label: "Localisation", value: "Germersheim, Allemagne" },
     { label: "Études", value: "B.Sc. Informatique" },
     { label: "Disponibilité", value: "20 h / semaine, remote ou hybride" },
-    { label: "Statut recherché", value: "Werkstudent & freelance" },
+    { label: "Statut recherché", value: "Werkstudent" },
   ],
 };
 
@@ -48,12 +47,24 @@ export function AboutPage() {
       <section className="section-y">
         <div className="shell grid gap-16 lg:grid-cols-[360px_1fr] lg:items-start">
           <div className="lg:sticky lg:top-24">
-            <img
-              src="/images/portrait.jpg"
-              alt={`Portrait of ${identity.name}`}
-              className="w-full object-cover"
-              loading="lazy"
-            />
+            <picture>
+              <source
+                type="image/avif"
+                srcSet="/images/portrait-448.avif 448w, /images/portrait-720.avif 720w, /images/portrait-896.avif 896w"
+                sizes="(min-width: 1024px) 360px, calc(100vw - 32px)"
+              />
+              <img
+                src="/images/portrait-720.webp"
+                srcSet="/images/portrait-448.webp 448w, /images/portrait-720.webp 720w, /images/portrait-896.webp 896w"
+                sizes="(min-width: 1024px) 360px, calc(100vw - 32px)"
+                width={896}
+                height={1200}
+                alt={`Portrait of ${identity.name}`}
+                className="h-auto w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <div className="mt-8 border border-hairline p-6">
               <p className="caption-mono">{l.facts}</p>
               <dl className="mt-5 space-y-4">
@@ -100,21 +111,10 @@ export function AboutPage() {
               ))}
             </ol>
 
-{/*             <h2 className="display-sm mt-20">{t("education")}</h2>
-            <ul className="mt-10 divide-y divide-hairline border-y border-hairline">
-              {education.map((item) => (
-                <li
-                  key={item.school}
-                  className="flex flex-col gap-2 py-6 md:flex-row md:items-baseline md:justify-between"
-                >
-                  <div>
-                    <p className="title-md">{item.school}</p>
-                    <p className="body-sm mt-2">{item.detail[lang]}</p>
-                  </div>
-                  <span className="caption-mono">{item.period}</span>
-                </li>
-              ))}
-            </ul> */}
+            <h2 className="display-sm mt-20">{t("education")}</h2>
+            <div className="mt-10">
+              <EducationList />
+            </div>
 
             <h2 className="display-sm mt-20">{t("languagesTitle")}</h2>
             <ul className="mt-10 space-y-8 border-y border-hairline py-8">
@@ -145,8 +145,6 @@ export function AboutPage() {
           </div>
         </div>
       </section>
-
-      <AboutQa />
     </Page>
   );
 }

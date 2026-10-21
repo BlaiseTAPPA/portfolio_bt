@@ -1,7 +1,12 @@
 import { useParams, Link } from "react-router-dom";
 import { Page, Tags } from "@/components/site-chrome";
-import { projects } from "@/lib/content";
+import { projects, type ProjectLinkType } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
+
+const linkLabelKey = { live: "liveDemo", repo: "githubRepo" } as const satisfies Record<
+  ProjectLinkType,
+  string
+>;
 
 export function ProjectDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -49,17 +54,19 @@ export function ProjectDetailPage() {
       <section className="border-b border-hairline py-10">
         <div className="shell flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <Tags items={project.stack} />
-          <div className="flex flex-wrap gap-4">
-            {project.demo ? (
-              <a href={project.demo} target="_blank" rel="noreferrer" className="btn-outline">
-                {t("liveDemo")}
+          <div className="flex flex-wrap items-center gap-4">
+            {project.links.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className={link.type === "live" ? "btn-outline" : "btn-ghost"}
+              >
+                {t(linkLabelKey[link.type])}
               </a>
-            ) : null}
-            {project.repo ? (
-              <a href={project.repo} target="_blank" rel="noreferrer" className="btn-ghost">
-                {t("githubRepo")}
-              </a>
-            ) : null}
+            ))}
+            {project.nda ? <span className="caption-mono">{t("ndaLabel")}</span> : null}
           </div>
         </div>
       </section>

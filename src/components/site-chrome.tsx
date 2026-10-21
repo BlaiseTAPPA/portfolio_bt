@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState, type ReactNode } from "react";
-import { identity } from "@/lib/content";
+import { education, identity, keyFacts } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 
 const navItems = [
@@ -281,5 +281,53 @@ export function Page({ children }: { children: ReactNode }) {
       <main className="flex-1">{children}</main>
       <SiteFooter />
     </div>
+  );
+}
+
+export function KeyFacts({
+  className = "",
+  hideTitle = false,
+}: {
+  className?: string;
+  hideTitle?: boolean;
+}) {
+  const { t, lang } = useLang();
+  return (
+    <div className={`border border-hairline p-6 ${className}`}>
+      {hideTitle ? null : <h2 className="caption-mono text-body-strong">{t("keyFactsTitle")}</h2>}
+      <dl className={hideTitle ? "space-y-4" : "mt-5 space-y-4"}>
+        {keyFacts.map((f) => (
+          <div
+            key={f.label.en}
+            className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+          >
+            <dt className="caption-mono">{f.label[lang]}</dt>
+            <dd className="body-sm text-body-strong sm:text-right">{f.value[lang]}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
+export function EducationList() {
+  const { lang } = useLang();
+  return (
+    <ul className="divide-y divide-hairline border-y border-hairline">
+      {education.map((item) => (
+        <li
+          key={item.school}
+          className="flex flex-col gap-2 py-6 md:flex-row md:items-baseline md:justify-between md:gap-6"
+        >
+          <div>
+            <p className="title-md">{item.school}</p>
+            <p className="body-sm mt-2">{item.detail[lang]}</p>
+          </div>
+          {item.period ? (
+            <span className="caption-mono shrink-0">{item.period[lang]}</span>
+          ) : null}
+        </li>
+      ))}
+    </ul>
   );
 }
