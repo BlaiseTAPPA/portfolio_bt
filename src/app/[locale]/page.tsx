@@ -1,35 +1,38 @@
-import { Link } from "react-router-dom";
+import Image from "next/image";
 import { Linkedin, Mail } from "lucide-react";
-import { Page, Tags } from "@/components/site-chrome";
+import { getTranslations } from "next-intl/server";
+import { JsonLd } from "@/components/json-ld";
+import { Tags } from "@/components/site-chrome";
+import { resolveLocale } from "@/i18n/locale";
+import { Link } from "@/i18n/navigation";
 import { identity, projects, skills } from "@/lib/content";
-import { useLang } from "@/lib/i18n";
+import { pageMetadata, personJsonLd } from "@/lib/seo";
 
-export function HomePage() {
-  const { t, lang } = useLang();
+export async function generateMetadata({ params }: PageProps<"/[locale]">) {
+  const locale = await resolveLocale(params);
+  const t = await getTranslations({ locale, namespace: "meta.home" });
+  return pageMetadata({ locale, path: "", title: t("title"), description: t("description") });
+}
+
+export default async function HomePage({ params }: PageProps<"/[locale]">) {
+  const lang = await resolveLocale(params);
+  const t = await getTranslations("common");
   const featured = projects.slice(0, 3);
 
   return (
-    <Page>
+    <>
+      <JsonLd data={personJsonLd(lang)} />
       <section className="relative flex min-h-[92vh] items-end overflow-hidden border-b border-hairline">
-        <picture>
-          <source
-            type="image/avif"
-            srcSet="/images/hero-workspace-768.avif 768w, /images/hero-workspace-1280.avif 1280w, /images/hero-workspace-1920.avif 1920w"
-            sizes="100vw"
-          />
-          <img
-            src="/images/hero-workspace-1280.webp"
-            srcSet="/images/hero-workspace-768.webp 768w, /images/hero-workspace-1280.webp 1280w, /images/hero-workspace-1920.webp 1920w"
-            sizes="100vw"
-            width={1920}
-            height={1088}
-            alt=""
-            aria-hidden="true"
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover opacity-45"
-          />
-        </picture>
+        {/* LCP element: preloaded, served as AVIF/WebP at the viewport's width. */}
+        <Image
+          src="/images/hero-workspace-1920.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          preload
+          sizes="100vw"
+          className="object-cover opacity-45"
+        />
         <div className="absolute inset-0 bg-canvas/55" aria-hidden="true" />
 
         <div className="shell relative z-10 w-full pt-40 pb-20 md:pb-28">
@@ -40,10 +43,10 @@ export function HomePage() {
               <p className="display-sm mt-4 text-body-strong">{identity.headline[lang]}</p>
               <p className="body-md mt-8 max-w-xl">{t("heroPitch")}</p>
               <div className="mt-10 flex flex-wrap gap-4">
-                <Link to="/projects" className="btn-outline">
+                <Link href="/projects" className="btn-outline">
                   {t("viewProjects")}
                 </Link>
-                <Link to="/contact" className="btn-ghost">
+                <Link href="/contact" className="btn-ghost">
                   {t("getInTouch")}
                 </Link>
               </div>
@@ -52,7 +55,7 @@ export function HomePage() {
             <aside className="w-full bg-surface-card p-4 lg:w-80">
               <p className="caption-mono text-body-strong">{t("availableTitle")}</p>
               <p className="body-sm mt-3">{t("availableBody")}</p>
-              <Link to="/projects" className="link-mono mt-4 inline-block">
+              <Link href="/projects" className="link-mono mt-4 inline-block">
                 {t("exploreWork")}
               </Link>
             </aside>
@@ -81,13 +84,15 @@ export function HomePage() {
           <div className="mt-14 grid gap-12 md:grid-cols-3">
             {featured.map((project) => (
               <article key={project.slug}>
-                <Link to={`/projects/${project.slug}`} className="group block">
+                <Link href={`/projects/${project.slug}`} className="group block">
                   <div className="aspect-video overflow-hidden bg-surface-soft">
-                    <img
+                    <Image
                       src={project.image}
-                      alt={t("projectImageAlt").replace("{name}", project.name)}
+                      alt={t("projectImageAlt", { name: project.name })}
+                      width={1600}
+                      height={912}
+                      sizes="(min-width: 1280px) 384px, (min-width: 768px) 30vw, 100vw"
                       className="size-full object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-100"
-                      loading="lazy"
                     />
                   </div>
                   <h3 className="title-md mt-6">{project.name}</h3>
@@ -99,26 +104,27 @@ export function HomePage() {
               </article>
             ))}
           </div>
-          <Link to="/projects" className="link-mono mt-14 inline-block">
+          <Link href="/projects" className="link-mono mt-14 inline-block">
             {t("allProjects")} →
           </Link>
         </div>
       </section>
 
       <section className="relative overflow-hidden border-y border-hairline">
-        <img
+        <Image
           src="/images/cta-band.jpg"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 size-full object-cover opacity-35"
-          loading="lazy"
+          fill
+          sizes="100vw"
+          className="object-cover opacity-35"
         />
         <div className="absolute inset-0 bg-canvas/60" aria-hidden="true" />
         <div className="shell relative z-10 flex flex-col items-center py-24 text-center md:py-32">
           <h2 className="display-md">{t("ctaHeadline")}</h2>
           <p className="body-md mt-5 max-w-lg">{t("ctaBody")}</p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link to="/contact" className="btn-outline bg-ink text-canvas">
+            <Link href="/contact" className="btn-outline bg-ink text-canvas">
               {t("contactMe")}
             </Link>
             <a
@@ -140,6 +146,6 @@ export function HomePage() {
           </div>
         </div>
       </section>
-    </Page>
+    </>
   );
 }

@@ -1,147 +1,10 @@
-import { Link, NavLink } from "react-router-dom";
-import { useEffect, useState, type ReactNode } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { education, identity, keyFacts } from "@/lib/content";
-import { useLang } from "@/lib/i18n";
-
-const navItems = [
-  { to: "/", key: "navHome" },
-  { to: "/projects", key: "navProjects" },
-  { to: "/about", key: "navAbout" },
-  { to: "/blog", key: "navBlog" },
-  { to: "/hiring", key: "navHiring" },
-  { to: "/contact", key: "navContact" },
-] as const;
-
-function LangSwitch() {
-  const { lang, setLang } = useLang();
-  return (
-    <div className="flex items-center gap-2 nav-mono text-muted">
-      <button
-        type="button"
-        onClick={() => setLang("en")}
-        className={lang === "en" ? "text-ink" : "hover:text-ink transition-colors"}
-        aria-pressed={lang === "en"}
-      >
-        EN
-      </button>
-      <span aria-hidden="true" className="text-muted-soft">
-        |
-      </span>
-      <button
-        type="button"
-        onClick={() => setLang("de")}
-        className={lang === "de" ? "text-ink" : "hover:text-ink transition-colors"}
-        aria-pressed={lang === "de"}
-      >
-        DE
-      </button>
-      <span aria-hidden="true" className="text-muted-soft">
-        |
-      </span>
-      <button
-        type="button"
-        onClick={() => setLang("fr")}
-        className={lang === "fr" ? "text-ink" : "hover:text-ink transition-colors"}
-        aria-pressed={lang === "fr"}
-      >
-        FR
-      </button>
-    </div>
-  );
-}
-
-export function SiteHeader() {
-  const { t } = useLang();
-  const [open, setOpen] = useState(false);
-
-  return (
-    <header className="absolute inset-x-0 top-0 z-50">
-      <div className="shell flex h-14 items-center justify-between">
-        <Link to="/" className="wordmark" onClick={() => setOpen(false)}>
-          Blaise Tappa
-        </Link>
-
-        <nav className="hidden items-center gap-8 md:flex" aria-label={t("navPrimary")}>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                `nav-mono transition-colors ${isActive ? "text-ink" : "text-muted hover:text-ink"}`
-              }
-            >
-              {t(item.key)}
-            </NavLink>
-          ))}
-          <LangSwitch />
-        </nav>
-
-        <div className="flex items-center gap-4 md:hidden">
-          <LangSwitch />
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-label={open ? t("close") : t("menu")}
-            className="flex size-11 items-center justify-center rounded-full border border-hairline-strong text-ink"
-          >
-            <span aria-hidden="true" className="nav-mono">
-              {open ? "×" : "≡"}
-            </span>
-          </button>
-        </div>
-      </div>
-
-      {open ? (
-        <nav className="border-y border-hairline bg-canvas md:hidden" aria-label={t("navMobile")}>
-          <div className="shell flex flex-col py-4">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === "/"}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `nav-mono py-4 ${isActive ? "text-ink" : "text-muted"}`
-                }
-              >
-                {t(item.key)}
-              </NavLink>
-            ))}
-          </div>
-        </nav>
-      ) : null}
-    </header>
-  );
-}
+import { BackToTop, BerlinClock } from "./footer-islands";
 
 export function SiteFooter() {
-  const { t, lang } = useLang();
-  const [clock, setClock] = useState("");
-
-  useEffect(() => {
-    const locale = lang === "de" ? "de-DE" : lang === "fr" ? "fr-FR" : "en-GB";
-    const timeFmt = new Intl.DateTimeFormat(locale, {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-      timeZone: "Europe/Berlin",
-    });
-    const zoneFmt = new Intl.DateTimeFormat(locale, {
-      timeZone: "Europe/Berlin",
-      timeZoneName: "short",
-    });
-    const tick = () => {
-      const zone =
-        zoneFmt.formatToParts(new Date()).find((part) => part.type === "timeZoneName")?.value ??
-        "CET";
-      setClock(`${timeFmt.format(new Date())} ${zone}`);
-    };
-    tick();
-    const id = window.setInterval(tick, 30_000);
-    return () => window.clearInterval(id);
-  }, [lang]);
+  const t = useTranslations("common");
 
   const columns: { heading: string; links: { label: string; to?: string; href?: string }[] }[] = [
     {
@@ -181,7 +44,7 @@ export function SiteFooter() {
                   <li key={link.label}>
                     {link.to ? (
                       <Link
-                        to={link.to}
+                        href={link.to}
                         className="body-md italic text-body transition-colors duration-300 hover:text-link"
                       >
                         {link.label}
@@ -209,11 +72,9 @@ export function SiteFooter() {
                 <span aria-hidden="true" className="size-1.5 bg-link" />
                 {t("footerStatus")}
               </span>
-              <span className="caption-mono text-muted-soft">
-                {t("footerLocation").replace("{time}", clock)}
-              </span>
+              <BerlinClock />
             </div>
-            <Link to="/contact" className="btn-ghost mt-8 md:mt-0">
+            <Link href="/contact" className="btn-ghost mt-8 md:mt-0">
               {t("getInTouch")}
             </Link>
           </div>
@@ -228,13 +89,7 @@ export function SiteFooter() {
             <p className="caption-mono">
               © {new Date().getFullYear()} {identity.name}. {t("rights")}
             </p>
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="caption-mono transition-colors duration-300 hover:text-link"
-            >
-              {t("backToTop")}
-            </button>
+            <BackToTop label={t("backToTop")} />
           </div>
         </div>
       </div>
@@ -274,16 +129,6 @@ export function Tags({ items }: { items: string[] }) {
   );
 }
 
-export function Page({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex min-h-screen flex-col bg-canvas">
-      <SiteHeader />
-      <main className="flex-1">{children}</main>
-      <SiteFooter />
-    </div>
-  );
-}
-
 export function KeyFacts({
   className = "",
   hideTitle = false,
@@ -291,7 +136,8 @@ export function KeyFacts({
   className?: string;
   hideTitle?: boolean;
 }) {
-  const { t, lang } = useLang();
+  const t = useTranslations("common");
+  const lang = useLocale();
   return (
     <div className={`border border-hairline p-6 ${className}`}>
       {hideTitle ? null : <h2 className="caption-mono text-body-strong">{t("keyFactsTitle")}</h2>}
@@ -311,7 +157,7 @@ export function KeyFacts({
 }
 
 export function EducationList() {
-  const { lang } = useLang();
+  const lang = useLocale();
   return (
     <ul className="divide-y divide-hairline border-y border-hairline">
       {education.map((item) => (

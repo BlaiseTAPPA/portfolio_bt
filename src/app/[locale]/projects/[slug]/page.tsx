@@ -1,49 +1,68 @@
-import { useParams, Link } from "react-router-dom";
-import { Page, Tags } from "@/components/site-chrome";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+import { JsonLd } from "@/components/json-ld";
+import { Tags } from "@/components/site-chrome";
+import { resolveLocale } from "@/i18n/locale";
+import { Link } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 import { projects, type ProjectLinkType } from "@/lib/content";
-import { useLang } from "@/lib/i18n";
+import { contentImage, pageMetadata, projectJsonLd } from "@/lib/seo";
 
 const linkLabelKey = { live: "liveDemo", repo: "githubRepo" } as const satisfies Record<
   ProjectLinkType,
   string
 >;
 
-export function ProjectDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
-  const { t, lang } = useLang();
+export const dynamicParams = false;
 
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) => projects.map(({ slug }) => ({ locale, slug })));
+}
+
+type Props = PageProps<"/[locale]/projects/[slug]">;
+
+async function resolveProject(params: Props["params"]) {
+  const locale = await resolveLocale(params);
+  const { slug } = await params;
   const index = projects.findIndex((p) => p.slug === slug);
-  const project = index !== -1 ? projects[index] : undefined;
+  const project = projects[index];
+  if (!project) notFound();
+  return { locale, project, next: projects[(index + 1) % projects.length]! };
+}
 
-  if (!project) {
-    return (
-      <Page>
-        <section className="section-y">
-          <div className="shell text-center py-20">
-            <h1 className="display-lg">{t("projectNotFoundTitle")}</h1>
-            <p className="body-md mt-4 text-muted">{t("projectNotFoundBody")}</p>
-            <Link to="/projects" className="btn-outline mt-8 inline-block">
-              {t("backToProjects")}
-            </Link>
-          </div>
-        </section>
-      </Page>
-    );
-  }
+export async function generateMetadata({ params }: Props) {
+  const { locale, project } = await resolveProject(params);
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return pageMetadata({
+    locale,
+    path: `/projects/${project.slug}`,
+    title: `${t("caseStudyTitle", { name: project.name })} | Blaise Tappa`,
+    description: project.excerpt[locale],
+    image: contentImage(project.image),
+    type: "article",
+  });
+}
 
-  const next = projects[(index + 1) % projects.length]!;
+export default async function ProjectDetailPage({ params }: Props) {
+  const { locale: lang, project, next } = await resolveProject(params);
+  const t = await getTranslations("common");
 
   return (
-    <Page>
+    <>
+      <JsonLd data={projectJsonLd(project, lang)} />
       <section className="relative flex min-h-[70vh] items-end overflow-hidden border-b border-hairline">
-        <img
+        <Image
           src={project.image}
-          alt={t("projectImageAlt").replace("{name}", project.name)}
-          className="absolute inset-0 size-full object-cover opacity-45"
+          alt={t("projectImageAlt", { name: project.name })}
+          fill
+          preload
+          sizes="100vw"
+          className="object-cover opacity-45"
         />
         <div className="absolute inset-0 bg-canvas/55" aria-hidden="true" />
         <div className="shell relative z-10 pt-40 pb-16">
-          <Link to="/projects" className="link-mono">
+          <Link href="/projects" className="link-mono">
             {t("backToProjects")}
           </Link>
           <h1 className="display-xl mt-6">{project.name}</h1>
@@ -93,14 +112,15 @@ export function ProjectDetailPage() {
       </section>
 
       <section className="border-t border-hairline">
-        <Link to={`/projects/${next.slug}`} className="group block">
+        <Link href={`/projects/${next.slug}`} className="group block">
           <div className="relative flex min-h-[45vh] items-center overflow-hidden">
-            <img
+            <Image
               src={next.image}
               alt=""
               aria-hidden="true"
-              className="absolute inset-0 size-full object-cover opacity-30 transition-opacity duration-500 group-hover:opacity-45"
-              loading="lazy"
+              fill
+              sizes="100vw"
+              className="object-cover opacity-30 transition-opacity duration-500 group-hover:opacity-45"
             />
             <div className="absolute inset-0 bg-canvas/60" aria-hidden="true" />
             <div className="shell relative z-10 py-20">
@@ -110,6 +130,6 @@ export function ProjectDetailPage() {
           </div>
         </Link>
       </section>
-    </Page>
+    </>
   );
 }

@@ -1,50 +1,55 @@
-import { Link } from "react-router-dom";
-import { EducationList, Page, PageHeader } from "@/components/site-chrome";
-import { experience, identity, languages, skills } from "@/lib/content";
-import { useLang } from "@/lib/i18n";
-import { aboutFacts, aboutLabels } from "@/lib/page-copy";
+import Image from "next/image";
+import { getTranslations } from "next-intl/server";
+import { EducationList, PageHeader } from "@/components/site-chrome";
+import { resolveLocale } from "@/i18n/locale";
+import { Link } from "@/i18n/navigation";
+import { aboutFacts, experience, identity, languages, skills } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export function AboutPage() {
-  const { t, lang } = useLang();
-  const l = aboutLabels[lang];
+export async function generateMetadata({ params }: PageProps<"/[locale]/about">) {
+  const locale = await resolveLocale(params);
+  const t = await getTranslations({ locale, namespace: "meta.about" });
+  return pageMetadata({
+    locale,
+    path: "/about",
+    title: t("title"),
+    description: t("description"),
+    type: "profile",
+  });
+}
+
+export default async function AboutPage({ params }: PageProps<"/[locale]/about">) {
+  const lang = await resolveLocale(params);
+  const t = await getTranslations("common");
+  const l = await getTranslations("about");
 
   return (
-    <Page>
+    <>
       <PageHeader title={t("navAbout")} intro={t("aboutIntro")} eyebrow={identity.location[lang]} />
 
       <section className="section-y">
         <div className="shell grid gap-16 lg:grid-cols-[360px_1fr] lg:items-start">
           <div className="lg:sticky lg:top-24">
-            <picture>
-              <source
-                type="image/avif"
-                srcSet="/images/portrait-448.avif 448w, /images/portrait-720.avif 720w, /images/portrait-896.avif 896w"
-                sizes="(min-width: 1024px) 360px, calc(100vw - 32px)"
-              />
-              <img
-                src="/images/portrait-720.webp"
-                srcSet="/images/portrait-448.webp 448w, /images/portrait-720.webp 720w, /images/portrait-896.webp 896w"
-                sizes="(min-width: 1024px) 360px, calc(100vw - 32px)"
-                width={896}
-                height={1200}
-                alt={t("portraitAlt").replace("{name}", identity.name)}
-                className="h-auto w-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
+            <Image
+              src="/images/portrait-896.webp"
+              width={896}
+              height={1200}
+              sizes="(min-width: 1024px) 360px, calc(100vw - 32px)"
+              alt={t("portraitAlt", { name: identity.name })}
+              className="h-auto w-full object-cover"
+            />
             <div className="mt-8 border border-hairline p-6">
-              <p className="caption-mono">{l.facts}</p>
+              <p className="caption-mono">{l("facts")}</p>
               <dl className="mt-5 space-y-4">
-                {aboutFacts[lang].map((f) => (
-                  <div key={f.label} className="flex items-baseline justify-between gap-4">
-                    <dt className="caption-mono">{f.label}</dt>
-                    <dd className="body-sm text-right text-body-strong">{f.value}</dd>
+                {aboutFacts.map((f) => (
+                  <div key={f.label.en} className="flex items-baseline justify-between gap-4">
+                    <dt className="caption-mono">{f.label[lang]}</dt>
+                    <dd className="body-sm text-right text-body-strong">{f.value[lang]}</dd>
                   </div>
                 ))}
               </dl>
-              <Link to="/projects" className="link-mono mt-6 inline-block">
-                {l.viewProjects}
+              <Link href="/projects" className="link-mono mt-6 inline-block">
+                {l("viewProjects")}
               </Link>
             </div>
           </div>
@@ -86,15 +91,18 @@ export function AboutPage() {
 
             <h2 className="display-sm mt-20">{t("languagesTitle")}</h2>
             <ul className="mt-10 divide-y divide-hairline border-y border-hairline">
-              {languages.map((lang_) => (
-                <li key={lang_.name.en} className="flex items-baseline justify-between gap-6 py-6">
-                  <span className="title-md">{lang_.name[lang]}</span>
-                  <span className="caption-mono text-right">{lang_.level[lang]}</span>
+              {languages.map((language) => (
+                <li
+                  key={language.name.en}
+                  className="flex items-baseline justify-between gap-6 py-6"
+                >
+                  <span className="title-md">{language.name[lang]}</span>
+                  <span className="caption-mono text-right">{language.level[lang]}</span>
                 </li>
               ))}
             </ul>
 
-            <h2 className="display-sm mt-20">{l.skillsTitle}</h2>
+            <h2 className="display-sm mt-20">{l("skillsTitle")}</h2>
             <ul className="mt-10 flex flex-wrap gap-3 border-y border-hairline py-8">
               {skills[lang].map((s) => (
                 <li key={s} className="caption-mono border border-hairline px-4 py-2">
@@ -105,6 +113,6 @@ export function AboutPage() {
           </div>
         </div>
       </section>
-    </Page>
+    </>
   );
 }
