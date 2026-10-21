@@ -35,7 +35,7 @@ export function HomePage() {
         <div className="shell relative z-10 w-full pt-40 pb-20 md:pb-28">
           <div className="grid gap-12 lg:grid-cols-[1fr_320px] lg:items-end">
             <div className="rise">
-              <p className="caption-mono">{identity.location}</p>
+              <p className="caption-mono">{identity.location[lang]}</p>
               <h1 className="display-xl mt-6">{identity.name}</h1>
               <p className="display-sm mt-4 text-body-strong">{identity.headline[lang]}</p>
               <p className="body-md mt-8 max-w-xl">{t("heroPitch")}</p>
@@ -62,7 +62,7 @@ export function HomePage() {
 
       <section className="border-b border-hairline py-8">
         <div className="shell flex flex-wrap items-center gap-x-6 gap-y-3">
-          {skills.map((skill, i) => (
+          {skills[lang].map((skill, i) => (
             <span key={skill} className="caption-mono flex items-center gap-6">
               {i > 0 ? (
                 <span aria-hidden="true" className="text-muted-soft">
@@ -85,7 +85,7 @@ export function HomePage() {
                   <div className="aspect-video overflow-hidden bg-surface-soft">
                     <img
                       src={project.image}
-                      alt={`${project.name} interface`}
+                      alt={t("projectImageAlt").replace("{name}", project.name)}
                       className="size-full object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-100"
                       loading="lazy"
                     />

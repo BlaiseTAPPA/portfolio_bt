@@ -4,58 +4,11 @@ import { KeyFacts, Page, PageHeader } from "@/components/site-chrome";
 import { useLang } from "@/lib/i18n";
 import { experience, skills, languages, projects, identity } from "@/lib/content";
 import { downloadCvPdf } from "@/lib/cv-pdf";
-
-const copy = {
-  en: {
-    eyebrow: "For recruiters",
-    title: "Hiring",
-    intro:
-      "Everything you need to screen me for a Werkstudent role on one page: key facts, experience, skills and case studies. Email or LinkedIn is the fastest way to reach me.",
-    status: "Werkstudent · 20 h / week · Germersheim / Remote",
-    downloadPdf: "Download CV (PDF)",
-    cv: "View online CV",
-    background: "Professional background",
-    fullCv: "Full CV",
-    skills: "Key skills",
-    projects: "Relevant case studies",
-    allProjects: "All projects",
-    viewCase: "View case study",
-  },
-  de: {
-    eyebrow: "Für Recruiter",
-    title: "Einstellung",
-    intro:
-      "Alles für eine erste Einschätzung als Werkstudent auf einer Seite: Eckdaten, Berufserfahrung, Kenntnisse und Fallstudien. Am schnellsten erreichen Sie mich per E-Mail oder LinkedIn.",
-    status: "Werkstudent · 20 Std./Woche · Germersheim / Remote",
-    downloadPdf: "Lebenslauf als PDF",
-    cv: "Online-Lebenslauf",
-    background: "Beruflicher Werdegang",
-    fullCv: "Vollständiger Lebenslauf",
-    skills: "Kernkompetenzen",
-    projects: "Relevante Fallstudien",
-    allProjects: "Alle Projekte",
-    viewCase: "Fallstudie ansehen",
-  },
-  fr: {
-    eyebrow: "Pour recruteurs",
-    title: "Recrutement",
-    intro:
-      "Tout ce qu'il faut pour évaluer ma candidature en Werkstudent sur une seule page : informations clés, expérience, compétences et études de cas. Le plus rapide : e-mail ou LinkedIn.",
-    status: "Werkstudent · 20 h / semaine · Germersheim / Remote",
-    downloadPdf: "Télécharger le CV (PDF)",
-    cv: "Voir le CV en ligne",
-    background: "Parcours professionnel",
-    fullCv: "CV complet",
-    skills: "Compétences clés",
-    projects: "Études de cas pertinentes",
-    allProjects: "Tous les projets",
-    viewCase: "Voir l'étude de cas",
-  },
-};
+import { hiringCopy } from "@/lib/page-copy";
 
 export function HiringPage() {
   const { t, lang } = useLang();
-  const c = copy[lang];
+  const c = hiringCopy[lang];
 
   return (
     <Page>
@@ -158,14 +111,14 @@ export function HiringPage() {
           </div>
           <div>
             <div className="flex flex-wrap gap-2">
-              {skills.map((s) => (
+              {skills[lang].map((s) => (
                 <span key={s} className="border border-hairline px-3 py-1 font-mono text-xs">
                   {s}
                 </span>
               ))}
             </div>
             <div className="mt-8 border-t border-hairline pt-6">
-              <p className="caption-mono text-muted mb-4">{"Languages"}</p>
+              <p className="caption-mono text-muted mb-4">{t("languagesTitle")}</p>
               <div className="flex flex-wrap gap-4">
                 {languages.map((l) => (
                   <span key={l.name.en} className="body-sm">

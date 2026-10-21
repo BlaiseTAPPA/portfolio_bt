@@ -20,8 +20,8 @@ export function ProjectDetailPage() {
       <Page>
         <section className="section-y">
           <div className="shell text-center py-20">
-            <h1 className="display-lg">Project not found</h1>
-            <p className="body-md mt-4 text-muted">The requested case study could not be found.</p>
+            <h1 className="display-lg">{t("projectNotFoundTitle")}</h1>
+            <p className="body-md mt-4 text-muted">{t("projectNotFoundBody")}</p>
             <Link to="/projects" className="btn-outline mt-8 inline-block">
               {t("backToProjects")}
             </Link>
@@ -38,7 +38,7 @@ export function ProjectDetailPage() {
       <section className="relative flex min-h-[70vh] items-end overflow-hidden border-b border-hairline">
         <img
           src={project.image}
-          alt={`${project.name} interface`}
+          alt={t("projectImageAlt").replace("{name}", project.name)}
           className="absolute inset-0 size-full object-cover opacity-45"
         />
         <div className="absolute inset-0 bg-canvas/55" aria-hidden="true" />

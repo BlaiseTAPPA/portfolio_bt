@@ -61,7 +61,7 @@ export function SiteHeader() {
           Blaise Tappa
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-8 md:flex" aria-label={t("navPrimary")}>
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -94,7 +94,7 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <nav className="border-y border-hairline bg-canvas md:hidden" aria-label="Mobile">
+        <nav className="border-y border-hairline bg-canvas md:hidden" aria-label={t("navMobile")}>
           <div className="shell flex flex-col py-4">
             {navItems.map((item) => (
               <NavLink
@@ -323,9 +323,7 @@ export function EducationList() {
             <p className="title-md">{item.school}</p>
             <p className="body-sm mt-2">{item.detail[lang]}</p>
           </div>
-          {item.period ? (
-            <span className="caption-mono shrink-0">{item.period[lang]}</span>
-          ) : null}
+          {item.period ? <span className="caption-mono shrink-0">{item.period[lang]}</span> : null}
         </li>
       ))}
     </ul>

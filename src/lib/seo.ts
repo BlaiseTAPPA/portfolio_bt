@@ -26,16 +26,14 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
         lang === "fr"
           ? `${proj.name} — Étude de cas | Blaise Tappa`
           : lang === "de"
-            ? `${proj.name} — Fallstudie | Blaise Tappa`
+            ? `${proj.name} – Fallstudie | Blaise Tappa`
             : `${proj.name} — Case Study | Blaise Tappa`;
 
       const description =
         proj.excerpt[lang] ||
         `Technical case study of ${proj.name}, built with ${proj.stack.slice(0, 3).join(", ")}.`;
 
-      const imageUrl = proj.image?.startsWith("http")
-        ? proj.image
-        : `${baseUrl}${proj.image}`;
+      const imageUrl = proj.image?.startsWith("http") ? proj.image : `${baseUrl}${proj.image}`;
 
       return {
         title,
@@ -105,14 +103,14 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "Projets & Études de cas — Blaise Tappa"
             : lang === "de"
-              ? "Projekte & Fallstudien — Blaise Tappa"
+              ? "Projekte & Fallstudien – Blaise Tappa"
               : "Projects & Engineering Case Studies — Blaise Tappa",
         description:
           lang === "fr"
-            ? "Explorez les réalisations techniques et architectures de Blaise Tappa : React, TypeScript, Next.js, WebSockets et intégrations IA."
+            ? "Explorez les réalisations techniques et architectures de Blaise Tappa : React, TypeScript, Next.js et intégrations IA."
             : lang === "de"
-              ? "Erkunden Sie die technischen Fallstudien von Blaise Tappa: React, TypeScript, Next.js, WebSockets und KI-Integrationen."
-              : "Explore production engineering case studies by Blaise Tappa: React, TypeScript, Next.js, real-time WebSockets, and AI integrations.",
+              ? "Technische Fallstudien von Blaise Tappa: React, TypeScript, Next.js und KI-Integration."
+              : "Engineering case studies by Blaise Tappa: React, TypeScript, Next.js and AI integration.",
         image: `${baseUrl}/images/project-signalist.jpg`,
         imageAlt: "Blaise Tappa — Engineering Portfolio Projects",
         type: "website",
@@ -125,13 +123,13 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "À propos de Blaise Tappa — Ingénieur & Développeur"
             : lang === "de"
-              ? "Über Blaise Tappa — Frontend-Entwickler & Werkstudent"
+              ? "Über Blaise Tappa – Frontend-Entwickler & Werkstudent"
               : "About Blaise Tappa — Frontend Developer & Werkstudent",
         description:
           lang === "fr"
             ? "Parcours, philosophie de développement et formation de Blaise Tappa. Spécialisé en React, TypeScript et intégration d'IA."
             : lang === "de"
-              ? "Werdegang, Philosophie und Ausbildung von Blaise Tappa. Spezialisiert auf React, TypeScript und KI-Systeme."
+              ? "Werdegang, Studium und Berufserfahrung von Blaise Tappa, Frontend-Entwickler und Werkstudent. Schwerpunkte: React, TypeScript und KI-Integration."
               : "Background, software craftsmanship philosophy, and education of Blaise Tappa. Specialized in React, TypeScript, and AI systems.",
         image: ogImage,
         imageAlt: "Blaise Tappa — Frontend Developer · Werkstudent",
@@ -153,14 +151,14 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "Articles & Réflexions techniques — Blaise Tappa"
             : lang === "de"
-              ? "Blog & Technische Notizen — Blaise Tappa"
+              ? "Blog: Technische Notizen – Blaise Tappa"
               : "Technical Writing & Architecture Notes — Blaise Tappa",
         description:
           lang === "fr"
-            ? "Retours d'expérience sur React 19, les LLMs en production, TypeScript et les workflows d'ingénierie modernes."
+            ? "Articles sur l'intégration de Gemini dans React, l'architecture événementielle avec Inngest et l'apprentissage de l'allemand en tant que développeur."
             : lang === "de"
-              ? "Erfahrungsberichte zu React 19, LLM-APIs in der Produktion, TypeScript und modernen Frontend-Architekturen."
-              : "Deep-dives into React 19, Gemini LLM integrations in production, TypeScript design patterns, and engineering workflows.",
+              ? "Beiträge zur Integration von Gemini in React, zu ereignisgesteuerter Architektur mit Inngest und zum Deutschlernen als Entwickler."
+              : "Notes on integrating Gemini into React, event-driven architecture with Inngest, and learning German as a developer.",
         image: `${baseUrl}/images/post-gemini.jpg`,
         imageAlt: "Blaise Tappa Technical Blog",
         type: "website",
@@ -173,7 +171,7 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "Espace recrutement — Blaise Tappa, Werkstudent Frontend"
             : lang === "de"
-              ? "Für Recruiter — Blaise Tappa, Werkstudent Frontend"
+              ? "Für Recruiter – Blaise Tappa, Werkstudent Frontend"
               : "For recruiters — Blaise Tappa, Werkstudent Frontend",
         description:
           lang === "fr"
@@ -193,13 +191,13 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "Curriculum Vitæ — Blaise Tappa"
             : lang === "de"
-              ? "Lebenslauf — Blaise Tappa"
+              ? "Lebenslauf – Blaise Tappa"
               : "Curriculum Vitae — Blaise Tappa",
         description:
           lang === "fr"
             ? "Consultez et téléchargez le CV complet de Blaise Tappa : expériences chez OMOA Group, Société Logex, compétences React/TypeScript et diplômes."
             : lang === "de"
-              ? "Vollständiger Lebenslauf von Blaise Tappa: Stationen bei OMOA Group, Logex, React/TypeScript-Expertise und SRH-Studium."
+              ? "Lebenslauf von Blaise Tappa: Studium an der SRH, Berufserfahrung bei OMOA Group und Société Logex, Kenntnisse in React und TypeScript. Als PDF verfügbar."
               : "Complete CV of Blaise Tappa: professional experience at OMOA Group, Logex, technical skills, and computer science degree. Instant PDF download.",
         image: ogImage,
         imageAlt: "Blaise Tappa — Curriculum Vitae",
@@ -213,7 +211,7 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "Contact — Blaise Tappa"
             : lang === "de"
-              ? "Kontakt — Blaise Tappa"
+              ? "Kontakt – Blaise Tappa"
               : "Contact — Blaise Tappa",
         description:
           lang === "fr"
@@ -234,7 +232,7 @@ export function getSeoMetadata(pathname: string, lang: Lang, origin = ""): SeoDa
           lang === "fr"
             ? "Blaise Tappa — Développeur Frontend · Werkstudent"
             : lang === "de"
-              ? "Blaise Tappa — Frontend-Entwickler · Werkstudent"
+              ? "Blaise Tappa – Frontend-Entwickler · Werkstudent"
               : "Blaise Tappa — Frontend Developer · Werkstudent",
         description:
           lang === "fr"

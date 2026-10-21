@@ -1,4 +1,5 @@
-export type Lang = "en" | "de" | "fr";
+export const locales = ["en", "de", "fr"] as const;
+export type Lang = (typeof locales)[number];
 
 export type Localized = Record<Lang, string>;
 export type LocalizedList = Record<Lang, string[]>;
@@ -16,7 +17,12 @@ export const identity = {
     de: "Frontend-Entwickler · Informatikstudent (B.Sc.) · Werkstudent",
     fr: "Développeur Frontend · Étudiant en informatique (B.Sc.) · Werkstudent",
   } satisfies Localized,
-  location: "Germersheim, Rheinland-Pfalz, Germany",
+  location: {
+    en: "Germersheim, Rhineland-Palatinate, Germany",
+    de: "Germersheim, Rheinland-Pfalz, Deutschland",
+    fr: "Germersheim, Rhénanie-Palatinat, Allemagne",
+  } satisfies Localized,
+  // D13: the one contact address used by the site, footer, PDF CV and JSON-LD.
   email: "melvynngaba@gmail.com",
   // TODO(owner): D13 — replace with a custom domain once one is connected in Vercel.
   siteUrl: "https://portfolio-bt-iota.vercel.app",
@@ -54,15 +60,13 @@ export const keyFacts: { label: Localized; value: Localized }[] = [
   },
 ];
 
-export const skills = [
-  "React",
-  "TypeScript",
-  "Next.js",
-  "Node.js",
-  "PostgreSQL / MongoDB",
-  "AI Integration",
-  "Docker",
-];
+const sharedSkills = ["React", "TypeScript", "Next.js", "Node.js", "PostgreSQL / MongoDB"];
+
+export const skills: LocalizedList = {
+  en: [...sharedSkills, "AI Integration", "Docker"],
+  de: [...sharedSkills, "KI-Integration", "Docker"],
+  fr: [...sharedSkills, "Intégration IA", "Docker"],
+};
 
 /** `live` = a public, usable deployment; `repo` = a public source repository. */
 export type ProjectLinkType = "live" | "repo";
@@ -103,17 +107,17 @@ export const projects: Project[] = [
     image: "/images/project-signalist.jpg",
     excerpt: {
       en: "Real-time financial market intelligence and analytics platform.",
-      de: "Plattform für Echtzeit-Marktanalysen und Finanzdaten-Intelligenz.",
+      de: "Plattform für Finanzmarktdaten und -analysen in Echtzeit.",
       fr: "Plateforme d'intelligence et d'analyse des marchés financiers en temps réel.",
     },
     problem: {
       en: "Retail investors track markets across a dozen disconnected tools. Signalist pulls live market data, watchlists, alerts and news into one dashboard, and keeps every view current without the user reloading anything.",
-      de: "Privatanleger verfolgen Märkte über ein Dutzend getrennter Tools. Signalist bündelt Live-Marktdaten, Watchlists, Alerts und News in einem Dashboard und hält jede Ansicht aktuell, ohne dass neu geladen werden muss.",
+      de: "Privatanleger verfolgen Märkte mit einem Dutzend getrennter Tools. Signalist bündelt Live-Marktdaten, Watchlists, Preisalarme und Nachrichten in einem Dashboard und hält jede Ansicht aktuell, ohne dass die Seite neu geladen werden muss.",
       fr: "Les investisseurs particuliers suivent les marchés sur une multitude d'outils déconnectés. Signalist regroupe données en direct, listes de suivi, alertes et actualités dans un tableau de bord unique, actualisé en continu sans rechargement de page.",
     },
     approach: {
       en: "The application is built on Next.js with TypeScript in strict mode. Market data arrives from the Finnhub API, is normalised in a typed data layer and persisted in MongoDB. Background work — alert evaluation, digest mails, data reconciliation — runs as Inngest event-driven jobs rather than inside request handlers.",
-      de: "Die Anwendung basiert auf Next.js mit TypeScript im Strict Mode. Marktdaten kommen über die Finnhub-API, werden in einer typisierten Datenschicht normalisiert und in MongoDB gespeichert. Hintergrundarbeit — Alert-Auswertung, Digest-Mails, Datenabgleich — läuft als ereignisgesteuerte Inngest-Jobs statt in Request-Handlern.",
+      de: "Die Anwendung basiert auf Next.js mit TypeScript im Strict Mode. Marktdaten kommen über die Finnhub-API, werden in einer typisierten Datenschicht normalisiert und in MongoDB gespeichert. Hintergrundaufgaben – Auswertung der Preisalarme, Zusammenfassungs-Mails, Datenabgleich – laufen als ereignisgesteuerte Inngest-Jobs statt in Request-Handlern.",
       fr: "L'application repose sur Next.js avec TypeScript en mode strict. Les flux boursiers de l'API Finnhub sont normalisés dans une couche de données typée et persistés dans MongoDB. Les tâches d'arrière-plan (évaluation des alertes, e-mails récapitulatifs, réconciliation) s'exécutent via des jobs événementiels Inngest hors du cycle de requête.",
     },
     highlights: {
@@ -125,9 +129,9 @@ export const projects: Project[] = [
         "Deployed on Vercel with preview environments per branch.",
       ],
       de: [
-        "Ereignisgesteuerte Hintergrund-Pipeline mit Inngest: Alerts und Digests sind vom Request-Zyklus entkoppelt und werden bei Fehlern erneut ausgeführt.",
+        "Ereignisgesteuerte Hintergrund-Pipeline mit Inngest: Preisalarme und Zusammenfassungen sind vom Request-Zyklus entkoppelt und werden bei Fehlern automatisch wiederholt.",
         "Typisierte Datenschicht über der Finnhub-API mit Caching, damit Chart-Ansichten trotz Rate-Limits reaktionsschnell bleiben.",
-        "TradingView-Charting als reine Client-Insel eingebunden, damit das Server-Rendering erhalten bleibt.",
+        "TradingView-Charts als reine Client-Komponente eingebunden, damit das Server-Rendering erhalten bleibt.",
         "Session- und Kontoverwaltung mit BetterAuth inklusive geschützter Dashboard-Routen.",
         "Deployment auf Vercel mit Preview-Umgebungen pro Branch.",
       ],
@@ -159,7 +163,7 @@ export const projects: Project[] = [
     image: "/images/project-roomify.jpg",
     excerpt: {
       en: "AI floor plan visualizer that turns uploaded plans into readable room layouts.",
-      de: "KI-Grundriss-Visualisierer, der hochgeladene Pläne in lesbare Raumlayouts übersetzt.",
+      de: "KI-gestützte Grundriss-Visualisierung, die hochgeladene Pläne in verständliche Raumaufteilungen übersetzt.",
       fr: "Visualiseur de plans d'étage assisté par IA transformant les plans bruts en agencements de pièces lisibles.",
     },
     problem: {
@@ -169,7 +173,7 @@ export const projects: Project[] = [
     },
     approach: {
       en: "A React Router v7 application with a drag-and-drop upload surface, Puter.js for client-side storage and Gemini 2.5 Flash for multimodal interpretation. The whole app ships as a multi-stage Docker image so the runtime layer stays small.",
-      de: "Eine React-Router-v7-Anwendung mit Drag-and-drop-Upload, Puter.js für clientseitige Speicherung und Gemini 2.5 Flash für multimodale Auswertung. Die App wird als Multi-Stage-Docker-Image ausgeliefert, damit die Runtime-Schicht klein bleibt.",
+      de: "Eine React-Router-v7-Anwendung mit Drag-and-drop-Upload, Puter.js für clientseitige Speicherung und Gemini 2.5 Flash für multimodale Auswertung. Die App wird als Multi-Stage-Docker-Image ausgeliefert, damit das Laufzeit-Image klein bleibt.",
       fr: "Application React Router v7 avec interface de téléversement glisser-déposer, Puter.js pour le stockage côté client et Gemini 2.5 Flash pour l'analyse multimodale. L'application est conteneurisée via un build Docker multi-stage pour une empreinte d'exécution minimale.",
     },
     highlights: {
@@ -181,11 +185,11 @@ export const projects: Project[] = [
         "Streaming result view so users see partial output instead of a spinner.",
       ],
       de: [
-        "Generative-KI-Integration mit Gemini 2.5 Flash inklusive Prompt-Strukturierung und Validierung der Antwort vor dem Rendern.",
+        "Integration generativer KI mit Gemini 2.5 Flash inklusive strukturierter Prompts und Validierung der Antwort vor dem Rendern.",
         "Drag-and-drop-Upload mit clientseitiger Dateivalidierung und Fortschrittsanzeige.",
-        "Multi-Stage-Docker-Build mit getrennten Schichten für Dependencies, Build und Runtime.",
-        "Tailwind-CSS-v4-Token-Ebene, damit das Theme in CSS statt in Komponenten-Props lebt.",
-        "Streaming-Ergebnisansicht: Nutzer sehen Teilausgaben statt eines Spinners.",
+        "Multi-Stage-Docker-Build mit getrennten Schichten für Abhängigkeiten, Build und Laufzeit.",
+        "Design-Tokens mit Tailwind CSS v4: Das Theme ist in CSS definiert statt in Komponenten-Props.",
+        "Gestreamte Ergebnisansicht: Nutzer sehen erste Teilergebnisse statt eines Ladeindikators.",
       ],
       fr: [
         "Intégration d'IA générative avec Gemini 2.5 Flash, comprenant l'ingénierie de prompt et la validation stricte des schémas JSON avant rendu.",
@@ -258,12 +262,12 @@ export const projects: Project[] = [
     },
     problem: {
       en: "A cohort-based learning programme needed course delivery, enrolment and scheduling in one place, usable on low-bandwidth connections.",
-      de: "Ein kohortenbasiertes Lernprogramm brauchte Kursauslieferung, Anmeldung und Terminplanung an einem Ort — nutzbar auch bei geringer Bandbreite.",
+      de: "Ein kohortenbasiertes Lernprogramm brauchte Kursbereitstellung, Anmeldung und Terminplanung an einem Ort – nutzbar auch bei geringer Bandbreite.",
       fr: "Un programme de formation par cohortes nécessitait la diffusion des cours, les inscriptions et la planification d'ateliers sur une plateforme unique et fluide même sur connexions à faible débit.",
     },
     approach: {
       en: "React 19 with server rendering as the default path, Prisma over MongoDB for the data model and Clerk for authentication. Session scheduling exports to calendars through an ICS generator written from the RFC 5545 spec instead of pulling a library.",
-      de: "React 19 mit Server-Rendering als Standardpfad, Prisma über MongoDB für das Datenmodell und Clerk für die Authentifizierung. Termine werden über einen ICS-Generator exportiert, der direkt nach RFC 5545 implementiert wurde statt über eine Bibliothek.",
+      de: "React 19 mit Server-Rendering als Standardpfad, Prisma über MongoDB für das Datenmodell und Clerk für die Authentifizierung. Termine werden über einen eigenen ICS-Generator exportiert, der direkt nach RFC 5545 implementiert ist – ohne externe Bibliothek.",
       fr: "React 19 avec rendu serveur par défaut, Prisma sur MongoDB pour le modèle de données et Clerk pour l'authentification. Export d'agendas vers les calendriers via un générateur ICS développé directement selon la spécification RFC 5545 sans bibliothèque externe.",
     },
     highlights: {
@@ -277,7 +281,7 @@ export const projects: Project[] = [
         "SSR-first-Architektur: Inhaltsseiten rendern serverseitig, Interaktivität nur dort, wo sie nötig ist.",
         "ICS-Kalendergenerator ohne Abhängigkeiten nach RFC 5545, inklusive Zeitzonen und Wiederholungen.",
         "Prisma-Schema für Kohorten, Module und Anmeldestatus.",
-        "Rollenbasierter Zugriff mit Clerk für Lernende, Trainer und Admins.",
+        "Rollenbasierter Zugriff mit Clerk für Lernende, Trainer und Administratoren.",
       ],
       fr: [
         "Architecture SSR-first : contenu généré côté serveur, interactivité client injectée uniquement là où c'est nécessaire.",
@@ -291,7 +295,8 @@ export const projects: Project[] = [
     slug: "grand-bassam-tourisme",
     name: "Grand-Bassam Tourisme",
     year: "2025",
-    stack: ["React", "TypeScript", "AI-assisted design", "Client project"],
+    // "AI-assisted design" and "Client project" aren't technologies (and rendered untranslated); both are covered by `approach` and `nda`.
+    stack: ["React", "TypeScript"],
     image: "/images/project-bassam.jpg",
     // TODO(owner): D9 — add a `live` link if the client allows a public URL.
     links: [],
@@ -321,8 +326,8 @@ export const projects: Project[] = [
       de: [
         "Verzeichnis-Datenmodell für Orte, Kategorien und redaktionelle Inhalte.",
         "KI-gestützte Design- und Entwicklungsphase für schnelle Prototyp-Iterationen mit dem Kunden.",
-        "Inhaltsstruktur vorbereitet für französisches und englisches Publikum.",
-        "Bildgeführtes Layout, optimiert für Mobile-first und geringe Bandbreite.",
+        "Inhaltsstruktur für französisch- und englischsprachige Besucher vorbereitet.",
+        "Bildstarkes Layout, mobil zuerst konzipiert und für geringe Bandbreite optimiert.",
       ],
       fr: [
         "Modèle de données complet pour les établissements, catégories et articles éditoriaux.",
@@ -341,33 +346,36 @@ export type Role = {
   points: LocalizedList;
 };
 
+// R9/D8: titles stay as held; bullets lead with hands-on build work, coordination comes after.
+// Only facts and numbers the owner already supplied are used. No "years of experience" claim (D8 open).
 export const experience: Role[] = [
   {
     company: "OMOA Group",
     title: {
       en: "IT Project Coordinator / Frontend Liaison",
-      de: "IT-Projektkoordinator / Frontend-Schnittstelle",
+      de: "IT-Projektkoordinator / Ansprechpartner Frontend",
       fr: "Coordinateur de projets IT / Référent Frontend",
     },
     period: "06.2024 — 09.2025",
+    // TODO(decision): name what was built in React (screens, components, product) and the stack around it.
     points: {
       en: [
+        "React frontend work across product teams as the frontend liaison.",
+        "Kept load times below 1.5 s on 3G connections.",
         "Coordinated delivery of 20+ enterprise web products.",
-        "Worked in React across product teams as the frontend liaison.",
         "Supported PCI DSS compliance requirements in delivery work.",
-        "Held load times below 1.5s on 3G connections.",
       ],
       de: [
-        "Koordination der Auslieferung von über 20 Enterprise-Webprodukten.",
-        "Als Frontend-Schnittstelle teamübergreifend mit React gearbeitet.",
-        "Unterstützung der PCI-DSS-Compliance-Anforderungen in der Umsetzung.",
-        "Ladezeiten unter 1,5 s bei 3G-Verbindungen gehalten.",
+        "Frontend-Arbeit mit React in mehreren Produktteams als Ansprechpartner für das Frontend.",
+        "Ladezeiten bei 3G-Verbindungen unter 1,5 s gehalten.",
+        "Koordination der Umsetzung von über 20 Webprodukten für Unternehmenskunden.",
+        "Umsetzung der PCI-DSS-Compliance-Anforderungen begleitet.",
       ],
       fr: [
-        "Coordination de la livraison de plus de 20 produits web d'entreprise.",
-        "Travail avec React au sein des équipes produit en tant que référent technique frontend.",
-        "Prise en compte des exigences de conformité PCI DSS dans les livrables.",
+        "Développement frontend avec React au sein des équipes produit en tant que référent frontend.",
         "Maintien des temps de chargement sous 1,5 s sur réseau mobile 3G.",
+        "Coordination de la livraison de plus de 20 produits web d'entreprise.",
+        "Prise en compte des exigences de conformité PCI DSS dans les livrables.",
       ],
     },
   },
@@ -379,18 +387,19 @@ export const experience: Role[] = [
       fr: "Évaluateur Frontend & UI/UX",
     },
     period: "09.2023 — 04.2024",
+    // TODO(decision): add the framework/stack and scope of the redesign (e.g. number of screens or modules).
     points: {
       en: [
-        "Assessed technical feasibility of proposed interface work.",
         "Redesigned the frontend around a component-based architecture.",
+        "Assessed the technical feasibility of proposed interface changes.",
       ],
       de: [
-        "Bewertung der technischen Machbarkeit geplanter Interface-Arbeiten.",
-        "Neugestaltung des Frontends auf Basis einer komponentenbasierten Architektur.",
+        "Neuaufbau des Frontends auf Basis einer komponentenbasierten Architektur.",
+        "Technische Machbarkeit geplanter Änderungen an der Benutzeroberfläche bewertet.",
       ],
       fr: [
-        "Évaluation de la faisabilité technique des propositions d'interfaces.",
         "Refonte du frontend vers une architecture modulaire basée sur des composants.",
+        "Évaluation de la faisabilité technique des propositions d'interfaces.",
       ],
     },
   },
@@ -402,18 +411,14 @@ export const experience: Role[] = [
       fr: "Assistant IT / Support QA",
     },
     period: "08.2020 — 08.2022",
+    // TODO(decision): name the test tooling used for the automation.
     points: {
-      en: [
-        "Built test automation for recurring regression checks.",
-        "Reduced manual QA time by 30%.",
-      ],
+      en: ["Built test automation for recurring regression checks, cutting manual QA time by 30%."],
       de: [
-        "Testautomatisierung für wiederkehrende Regressionsprüfungen aufgebaut.",
-        "Manuellen QA-Aufwand um 30 % reduziert.",
+        "Testautomatisierung für wiederkehrende Regressionstests aufgebaut und den manuellen QA-Aufwand um 30 % reduziert.",
       ],
       fr: [
-        "Mise en place de tests automatisés pour les vérifications de non-régression.",
-        "Réduction de 30 % du temps consacré aux tests manuels d'assurance qualité.",
+        "Mise en place de tests automatisés de non-régression, réduisant de 30 % le temps consacré aux tests manuels.",
       ],
     },
   },
@@ -445,15 +450,15 @@ export const education: Education[] = [
     school: "Lomé Business School",
     detail: {
       en: "Software Engineering",
-      de: "Software-Ingenieurwesen",
+      de: "Softwaretechnik",
       fr: "Ingénierie logicielle",
     } satisfies Localized,
   },
   {
-    school: "Ecole Superieure Privee d'Ingenierie et de Technologie (ESPRIT)",
+    school: "École Supérieure Privée d'Ingénierie et de Technologies (ESPRIT)",
     detail: {
       en: "Software Engineering",
-      de: "Software-Ingenieurwesen",
+      de: "Softwaretechnik",
       fr: "Ingénierie logicielle",
     } satisfies Localized,
   },
@@ -464,7 +469,7 @@ export const languages = [
     name: { en: "English", de: "Englisch", fr: "Anglais" },
     level: {
       en: "Fluent — TOEFL iBT certified",
-      de: "Fließend — TOEFL iBT zertifiziert",
+      de: "Fließend (TOEFL iBT)",
       fr: "Courant — certifié TOEFL iBT",
     },
   },
@@ -474,6 +479,7 @@ export const languages = [
   },
   {
     name: { en: "German", de: "Deutsch", fr: "Allemand" },
+    // TODO(owner): D24 — append the target date ("Ziel B2 bis …") once known.
     level: { en: "B1, aiming for B2", de: "B1, Ziel B2", fr: "B1, objectif B2" },
   },
 ];
@@ -481,7 +487,7 @@ export const languages = [
 export type Post = {
   slug: string;
   date: string;
-  tags: string[];
+  tags: LocalizedList;
   image: string;
   title: Localized;
   excerpt: Localized;
@@ -493,7 +499,11 @@ export const posts: Post[] = [
   {
     slug: "gemini-in-react",
     date: "2025-08-14",
-    tags: ["AI", "React", "Gemini"],
+    tags: {
+      en: ["AI", "React", "Gemini"],
+      de: ["KI", "React", "Gemini"],
+      fr: ["IA", "React", "Gemini"],
+    },
     image: "/images/post-gemini.jpg",
     title: {
       en: "Integrating Gemini into a React app",
@@ -513,10 +523,10 @@ export const posts: Post[] = [
         "The third decision was to keep the prompt in version control next to the code that calls it. Prompts are behaviour. Treating them as configuration that lives elsewhere makes regressions impossible to trace.",
       ],
       de: [
-        "Eine generierte Antwort ist keine abgerufene Antwort. Sie kommt langsam, sie kommt teilweise, und sie kann falsch kommen. Jede Interface-Entscheidung in Roomify folgte aus diesen drei Eigenschaften, nicht aus dem Modell selbst.",
-        "Die erste Entscheidung war Streaming. Eine Grundriss-Auswertung dauert einige Sekunden; ein Spinner über diese Zeit wirkt wie eine kaputte Seite. Teilausgaben während des Eintreffens zu rendern verwandelt Wartezeit in Lesezeit.",
-        "Die zweite Entscheidung war Validierung vor dem Rendern. Das Modell liefert strukturierte Ausgaben, die die Anwendung gegen ein Schema prüft, bevor irgendetwas eine Komponente erreicht. Schlägt die Prüfung fehl, sieht der Nutzer einen klaren Retry-Zustand statt eines halb gefüllten Layouts.",
-        "Die dritte Entscheidung war, den Prompt neben dem aufrufenden Code zu versionieren. Prompts sind Verhalten. Sie als externe Konfiguration zu behandeln macht Regressionen unauffindbar.",
+        "Eine generierte Antwort ist keine abgerufene Antwort. Sie kommt langsam, sie kommt teilweise, und sie kann falsch kommen. Jede Designentscheidung in der Oberfläche von Roomify folgte aus diesen drei Eigenschaften, nicht aus dem Modell selbst.",
+        "Die erste Entscheidung war Streaming. Eine Grundriss-Auswertung dauert einige Sekunden; ein Spinner über diese Zeit wirkt wie eine kaputte Seite. Teilergebnisse schon während des Eintreffens anzuzeigen, verwandelt Wartezeit in Lesezeit.",
+        "Die zweite Entscheidung war Validierung vor dem Rendern. Das Modell liefert strukturierte Ausgaben, die die Anwendung gegen ein Schema prüft, bevor irgendetwas eine Komponente erreicht. Schlägt die Prüfung fehl, sieht der Nutzer einen klaren Fehlerzustand mit der Möglichkeit, es erneut zu versuchen, statt eines halb gefüllten Layouts.",
+        "Die dritte Entscheidung war, den Prompt neben dem aufrufenden Code zu versionieren. Prompts sind Verhalten. Sie als externe Konfiguration zu behandeln, macht Regressionen unauffindbar.",
       ],
       fr: [
         "Une réponse générée n'est pas une simple réponse d'API. Elle arrive avec un délai, par bribes, et peut comporter des erreurs. Chaque choix d'interface dans Roomify a découlé de ces trois constats plutôt que du modèle en lui-même.",
@@ -527,23 +537,27 @@ export const posts: Post[] = [
     },
     quote: {
       en: "Validate before you render. A generated answer is input, not output.",
-      de: "Validieren, bevor gerendert wird. Eine generierte Antwort ist Eingabe, keine Ausgabe.",
+      de: "Erst validieren, dann rendern. Eine generierte Antwort ist Eingabe, keine Ausgabe.",
       fr: "Validez toujours avant de rendre. Une réponse générée par l'IA est une entrée, pas un fait acquis.",
     },
   },
   {
     slug: "event-driven-inngest",
     date: "2025-06-02",
-    tags: ["Architecture", "Inngest", "Next.js"],
+    tags: {
+      en: ["Architecture", "Inngest", "Next.js"],
+      de: ["Architektur", "Inngest", "Next.js"],
+      fr: ["Architecture", "Inngest", "Next.js"],
+    },
     image: "/images/post-inngest.jpg",
     title: {
       en: "Building an event-driven pipeline with Inngest",
-      de: "Eine ereignisgesteuerte Pipeline mit Inngest bauen",
+      de: "Eine ereignisgesteuerte Pipeline mit Inngest aufbauen",
       fr: "Bâtir un pipeline événementiel avec Inngest",
     },
     excerpt: {
       en: "Moving alert evaluation out of the request cycle in Signalist.",
-      de: "Alert-Auswertung in Signalist aus dem Request-Zyklus herauslösen.",
+      de: "Die Auswertung von Preisalarmen in Signalist aus dem Request-Zyklus herauslösen.",
       fr: "Découpler l'évaluation des alertes du cycle de requête dans Signalist.",
     },
     body: {
@@ -554,10 +568,10 @@ export const posts: Post[] = [
         "The practical cost is that state becomes eventual. Interfaces have to show when data was last reconciled instead of implying it is live.",
       ],
       de: [
-        "Signalist wertet Preis-Alerts laufend aus. Die naive Variante dieser Arbeit läuft in Request-Handlern — dann bestimmt die langsamste Nutzeraktion die langsamste Seite.",
-        "Die Verlagerung nach Inngest macht aus jedem Alert ein Event mit eigener Retry-Policy. Ein fehlgeschlagener Drittanbieter-Aufruf lässt kein Seitenrendering scheitern, sondern einen Job, der erneut läuft.",
-        "Der praktische Gewinn ist Beobachtbarkeit. Jeder Job hat Namen, Payload und Historie. Einen verpassten Alert zu debuggen heißt, einen Lauf zu lesen, statt einen Request aus Logs zu rekonstruieren.",
-        "Der praktische Preis: Zustand wird eventual. Oberflächen müssen zeigen, wann Daten zuletzt abgeglichen wurden, statt Aktualität zu suggerieren.",
+        "Signalist wertet Preisalarme laufend aus. In der naiven Variante läuft diese Arbeit in Request-Handlern – dann bestimmt die langsamste Nutzeraktion die langsamste Seite.",
+        "Die Verlagerung nach Inngest macht aus jedem Preisalarm ein Event mit eigener Wiederholungsstrategie. Ein fehlgeschlagener Aufruf eines Drittanbieters lässt nicht mehr das Rendern einer Seite scheitern, sondern nur einen Job, der erneut ausgeführt wird.",
+        "Der praktische Gewinn ist Beobachtbarkeit. Jeder Job hat Namen, Payload und Historie. Um einen verpassten Preisalarm zu debuggen, liest man einen einzelnen Lauf nach, statt einen Request aus Logs zu rekonstruieren.",
+        "Der praktische Preis: Daten sind nur noch letztendlich konsistent (Eventual Consistency). Oberflächen müssen zeigen, wann Daten zuletzt abgeglichen wurden, statt Aktualität zu suggerieren.",
       ],
       fr: [
         "Signalist évalue en continu les alertes de seuils boursiers. L'approche naïve consisterait à exécuter ce traitement dans les gestionnaires de requêtes HTTP, au risque que l'action la plus lente ralentisse l'ensemble du site.",
@@ -575,7 +589,11 @@ export const posts: Post[] = [
   {
     slug: "german-while-shipping",
     date: "2025-03-21",
-    tags: ["Career", "Germany", "Language"],
+    tags: {
+      en: ["Career", "Germany", "Language"],
+      de: ["Karriere", "Deutschland", "Sprache"],
+      fr: ["Carrière", "Allemagne", "Langues"],
+    },
     image: "/images/post-german.jpg",
     title: {
       en: "Learning German while shipping production code",
@@ -597,8 +615,8 @@ export const posts: Post[] = [
       de: [
         "Fachvokabular kommt zuerst, Alltagsvokabular zuletzt. Ich konnte einen Pull-Request-Kommentar auf Deutsch lesen, lange bevor ich in einer Bäckerei in Germersheim entspannt bestellen konnte.",
         "Die nützliche Gewohnheit: Dokumentation auf Deutsch lesen, Commits auf Englisch schreiben. Das eine baut Verständnis auf, das andere hält das Repository für alle lesbar.",
-        "Stand-ups sind der schwierige Teil. Hörverstehen unter Zeitdruck ist eine andere Fähigkeit als Lesen und verbessert sich nur, wenn man im Raum bleibt.",
-        "Der ehrliche Stand: B1 auf dem Weg zu B2 — und im deutschsprachigen Engineering-Team gut aufgehoben, solange Englisch für Spezifikationen verfügbar bleibt.",
+        "Stand-ups sind der schwierige Teil. Hörverstehen unter Zeitdruck ist eine andere Fähigkeit als Lesen und verbessert sich nur durch regelmäßige Teilnahme.",
+        "Der ehrliche Stand: B1 auf dem Weg zu B2 – und in einem deutschsprachigen Entwicklungsteam gut einsetzbar, solange Spezifikationen auch auf Englisch verfügbar sind.",
       ],
       fr: [
         "Le vocabulaire technique s'acquiert bien plus vite que le vocabulaire du quotidien. J'étais capable de comprendre des commentaires de Pull Request en allemand des mois avant d'être à l'aise pour commander dans une boulangerie à Germersheim.",
@@ -609,7 +627,7 @@ export const posts: Post[] = [
     },
     quote: {
       en: "Comprehension grows in the room, not in the app.",
-      de: "Verständnis wächst im Raum, nicht in der App.",
+      de: "Verstehen lernt man im Gespräch, nicht in der App.",
       fr: "La maîtrise d'une langue se forge dans les échanges réels d'équipe, pas seulement dans les applications d'apprentissage.",
     },
   },

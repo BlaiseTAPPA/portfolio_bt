@@ -2,47 +2,15 @@ import { Link } from "react-router-dom";
 import { EducationList, Page, PageHeader } from "@/components/site-chrome";
 import { experience, identity, languages, skills } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
-
-const facts = {
-  en: [
-    { label: "Based in", value: "Germersheim, DE" },
-    { label: "Studying", value: "B.Sc. Computer Science" },
-    { label: "Availability", value: "20 h / week, remote or hybrid" },
-    { label: "Open to", value: "Werkstudent roles" },
-  ],
-  de: [
-    { label: "Wohnort", value: "Germersheim, DE" },
-    { label: "Studium", value: "B.Sc. Informatik" },
-    { label: "Verfügbarkeit", value: "20 Std./Woche, remote oder hybrid" },
-    { label: "Offen für", value: "Werkstudentenstellen" },
-  ],
-  fr: [
-    { label: "Localisation", value: "Germersheim, Allemagne" },
-    { label: "Études", value: "B.Sc. Informatique" },
-    { label: "Disponibilité", value: "20 h / semaine, remote ou hybride" },
-    { label: "Statut recherché", value: "Werkstudent" },
-  ],
-};
-
-const labels = {
-  en: { facts: "At a glance", skillsTitle: "Toolkit", viewProjects: "See the work →" },
-  de: { facts: "Auf einen Blick", skillsTitle: "Werkzeuge", viewProjects: "Zur Arbeit →" },
-  fr: {
-    facts: "En un coup d'œil",
-    skillsTitle: "Boîte à outils",
-    viewProjects: "Voir les projets →",
-  },
-};
-
-const languageScore: Record<string, number> = { English: 90, French: 100, German: 45 };
+import { aboutFacts, aboutLabels } from "@/lib/page-copy";
 
 export function AboutPage() {
   const { t, lang } = useLang();
-  const l = labels[lang];
+  const l = aboutLabels[lang];
 
   return (
     <Page>
-      <PageHeader title={t("navAbout")} intro={t("aboutIntro")} eyebrow={identity.location} />
+      <PageHeader title={t("navAbout")} intro={t("aboutIntro")} eyebrow={identity.location[lang]} />
 
       <section className="section-y">
         <div className="shell grid gap-16 lg:grid-cols-[360px_1fr] lg:items-start">
@@ -59,7 +27,7 @@ export function AboutPage() {
                 sizes="(min-width: 1024px) 360px, calc(100vw - 32px)"
                 width={896}
                 height={1200}
-                alt={`Portrait of ${identity.name}`}
+                alt={t("portraitAlt").replace("{name}", identity.name)}
                 className="h-auto w-full object-cover"
                 loading="lazy"
                 decoding="async"
@@ -68,7 +36,7 @@ export function AboutPage() {
             <div className="mt-8 border border-hairline p-6">
               <p className="caption-mono">{l.facts}</p>
               <dl className="mt-5 space-y-4">
-                {facts[lang].map((f) => (
+                {aboutFacts[lang].map((f) => (
                   <div key={f.label} className="flex items-baseline justify-between gap-4">
                     <dt className="caption-mono">{f.label}</dt>
                     <dd className="body-sm text-right text-body-strong">{f.value}</dd>
@@ -117,26 +85,18 @@ export function AboutPage() {
             </div>
 
             <h2 className="display-sm mt-20">{t("languagesTitle")}</h2>
-            <ul className="mt-10 space-y-8 border-y border-hairline py-8">
+            <ul className="mt-10 divide-y divide-hairline border-y border-hairline">
               {languages.map((lang_) => (
-                <li key={lang_.name.en}>
-                  <div className="flex items-baseline justify-between gap-6">
-                    <span className="title-md">{lang_.name[lang]}</span>
-                    <span className="caption-mono">{lang_.level[lang]}</span>
-                  </div>
-                  <div className="mt-3 h-px bg-hairline" role="presentation">
-                    <div
-                      className="h-px bg-ink transition-[width] duration-700"
-                      style={{ width: `${languageScore[lang_.name.en] ?? 50}%` }}
-                    />
-                  </div>
+                <li key={lang_.name.en} className="flex items-baseline justify-between gap-6 py-6">
+                  <span className="title-md">{lang_.name[lang]}</span>
+                  <span className="caption-mono text-right">{lang_.level[lang]}</span>
                 </li>
               ))}
             </ul>
 
             <h2 className="display-sm mt-20">{l.skillsTitle}</h2>
             <ul className="mt-10 flex flex-wrap gap-3 border-y border-hairline py-8">
-              {skills.map((s) => (
+              {skills[lang].map((s) => (
                 <li key={s} className="caption-mono border border-hairline px-4 py-2">
                   {s}
                 </li>

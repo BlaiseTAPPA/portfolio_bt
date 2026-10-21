@@ -1,6 +1,51 @@
 import { jsPDF } from "jspdf";
 import { education, experience, identity, languages, projects, skills, type Lang } from "./content";
 
+const stripScheme = (url: string) => url.replace(/^https?:\/\//, "");
+const siteHost = stripScheme(identity.siteUrl);
+
+export const cvPdfCopy = {
+  en: {
+    docTitle: "CURRICULUM VITAE",
+    availability:
+      "Available immediately for Werkstudent roles: 20 h/week during semester, full-time during semester breaks, remote or hybrid.",
+    experience: "PROFESSIONAL EXPERIENCE",
+    skills: "TECHNICAL TOOLKIT",
+    projects: "FEATURED CASE STUDIES",
+    education: "EDUCATION",
+    languages: "LANGUAGES",
+    links: "ONLINE & PORTFOLIO",
+    stack: "Stack",
+    footer: `Generated from ${siteHost} — Contact: ${identity.email}`,
+  },
+  de: {
+    docTitle: "LEBENSLAUF",
+    availability:
+      "Ab sofort verfügbar als Werkstudent: 20 Std./Woche im Semester, Vollzeit in den Semesterferien, remote oder hybrid.",
+    experience: "BERUFSERFAHRUNG",
+    skills: "TECHNISCHE KENNTNISSE",
+    projects: "AUSGEWÄHLTE PROJEKTE",
+    education: "STUDIUM",
+    languages: "SPRACHEN",
+    links: "LINKS & PORTFOLIO",
+    stack: "Tech-Stack",
+    footer: `Online-Version: ${siteHost} – Kontakt: ${identity.email}`,
+  },
+  fr: {
+    docTitle: "CURRICULUM VITÆ",
+    availability:
+      "Disponible immédiatement en Werkstudent : 20 h/semaine pendant le semestre, temps plein pendant les vacances universitaires, à distance ou hybride.",
+    experience: "EXPÉRIENCE PROFESSIONNELLE",
+    skills: "COMPÉTENCES TECHNIQUES",
+    projects: "PROJETS & ÉTUDES DE CAS",
+    education: "FORMATION & DIPLÔMES",
+    languages: "LANGUES",
+    links: "PORTFOLIO & CONTACT",
+    stack: "Technologies",
+    footer: `Généré depuis ${siteHost} — Contact : ${identity.email}`,
+  },
+};
+
 export function createCvPdf(lang: Lang): jsPDF {
   const doc = new jsPDF({
     orientation: "portrait",
@@ -21,48 +66,7 @@ export function createCvPdf(lang: Lang): jsPDF {
     }
   }
 
-  const stripScheme = (url: string) => url.replace(/^https?:\/\//, "");
-  const siteHost = stripScheme(identity.siteUrl);
-  const translations = {
-    en: {
-      docTitle: "CURRICULUM VITAE",
-      availability:
-        "Available immediately for Werkstudent roles: 20 h/week during semester, full-time during semester breaks, remote or hybrid.",
-      experience: "PROFESSIONAL EXPERIENCE",
-      skills: "TECHNICAL TOOLKIT",
-      projects: "FEATURED CASE STUDIES",
-      education: "EDUCATION",
-      languages: "LANGUAGES",
-      links: "ONLINE & PORTFOLIO",
-      footer: `Generated from ${siteHost} — Contact: ${identity.email}`,
-    },
-    de: {
-      docTitle: "LEBENSLAUF",
-      availability:
-        "Ab sofort verfügbar als Werkstudent: 20 Std./Woche im Semester, Vollzeit in den Semesterferien, remote oder hybrid.",
-      experience: "BERUFSERFAHRUNG",
-      skills: "TECHNISCHE KENNTNISSE",
-      projects: "AUSGEWÄHLTE PROJEKTE",
-      education: "STUDIUM",
-      languages: "SPRACHEN",
-      links: "LINKS & PORTFOLIO",
-      footer: `Erstellt auf ${siteHost} — Kontakt: ${identity.email}`,
-    },
-    fr: {
-      docTitle: "CURRICULUM VITÆ",
-      availability:
-        "Disponible immédiatement en Werkstudent : 20 h/semaine pendant le semestre, temps plein pendant les vacances universitaires, à distance ou hybride.",
-      experience: "EXPÉRIENCE PROFESSIONNELLE",
-      skills: "COMPÉTENCES TECHNIQUES",
-      projects: "PROJETS & ÉTUDES DE CAS",
-      education: "FORMATION & DIPLÔMES",
-      languages: "LANGUES",
-      links: "PORTFOLIO & CONTACT",
-      footer: `Généré depuis ${siteHost} — Contact : ${identity.email}`,
-    },
-  };
-
-  const t = translations[lang];
+  const t = cvPdfCopy[lang];
 
   // Header: Name
   doc.setFont("helvetica", "bold");
@@ -82,7 +86,7 @@ export function createCvPdf(lang: Lang): jsPDF {
   doc.setFontSize(9);
   doc.setTextColor(100, 100, 100);
   const contactLines = [
-    `${identity.location}   |   ${identity.email}`,
+    `${identity.location[lang]}   |   ${identity.email}`,
     `${siteHost}   |   ${stripScheme(identity.github)}   |   ${stripScheme(identity.linkedin)}`,
   ];
   for (const line of contactLines) {
@@ -194,7 +198,7 @@ export function createCvPdf(lang: Lang): jsPDF {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(40, 40, 40);
-  const skillsText = skills.join("   ·   ");
+  const skillsText = skills[lang].join("   ·   ");
   doc.text(skillsText, margin, y);
   y += 8;
 
@@ -224,7 +228,7 @@ export function createCvPdf(lang: Lang): jsPDF {
     doc.setFont("helvetica", "italic");
     doc.setFontSize(8);
     doc.setTextColor(110, 110, 110);
-    doc.text(`Stack: ${proj.stack.join(", ")}`, margin, y);
+    doc.text(`${t.stack}: ${proj.stack.join(", ")}`, margin, y);
     y += 5.5;
   }
 

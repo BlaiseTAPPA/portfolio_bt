@@ -13,8 +13,8 @@ export function BlogDetailPage() {
       <Page>
         <section className="section-y">
           <div className="shell text-center py-20">
-            <h1 className="display-lg">Article not found</h1>
-            <p className="body-md mt-4 text-muted">The requested blog post could not be found.</p>
+            <h1 className="display-lg">{t("articleNotFoundTitle")}</h1>
+            <p className="body-md mt-4 text-muted">{t("articleNotFoundBody")}</p>
             <Link to="/blog" className="btn-outline mt-8 inline-block">
               {t("backToBlog")}
             </Link>
@@ -34,7 +34,7 @@ export function BlogDetailPage() {
             </Link>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
               <span className="caption-mono">{formatDate(post.date, lang)}</span>
-              <Tags items={post.tags} />
+              <Tags items={post.tags[lang]} />
             </div>
             <h1 className="display-lg mt-6">{post.title[lang]}</h1>
           </div>

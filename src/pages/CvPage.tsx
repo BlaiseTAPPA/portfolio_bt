@@ -4,51 +4,7 @@ import { EducationList, KeyFacts, Page } from "@/components/site-chrome";
 import { useLang } from "@/lib/i18n";
 import { identity, skills, experience, languages, projects } from "@/lib/content";
 import { downloadCvPdf } from "@/lib/cv-pdf";
-
-const copy = {
-  en: {
-    eyebrow: "Curriculum vitae",
-    experience: "Professional experience",
-    skills: "Skills",
-    projects: "Selected projects",
-    education: "Education",
-    languages: "Languages",
-    contact: "Contact",
-    print: "Print format",
-    downloadPdf: "Download PDF",
-    email: "Email me",
-    back: "Back to hiring",
-    onlineProfile: "View on portfolio",
-  },
-  de: {
-    eyebrow: "Lebenslauf",
-    experience: "Berufserfahrung",
-    skills: "Kenntnisse",
-    projects: "Ausgewählte Projekte",
-    education: "Studium",
-    languages: "Sprachen",
-    contact: "Kontakt",
-    print: "Druckansicht",
-    downloadPdf: "PDF herunterladen",
-    email: "E-Mail schreiben",
-    back: "Zurück zu Recruiting",
-    onlineProfile: "Im Portfolio ansehen",
-  },
-  fr: {
-    eyebrow: "Curriculum vitæ",
-    experience: "Expérience professionnelle",
-    skills: "Compétences techniques",
-    projects: "Projets sélectionnés",
-    education: "Formation & Diplômes",
-    languages: "Langues",
-    contact: "Contact",
-    print: "Format impression",
-    downloadPdf: "Télécharger le PDF",
-    email: "M'écrire",
-    back: "Retour à l'espace recrutement",
-    onlineProfile: "Voir sur le portfolio",
-  },
-};
+import { cvCopy } from "@/lib/page-copy";
 
 function Row({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -64,7 +20,7 @@ function Row({ id, title, children }: { id: string; title: string; children: Rea
 
 export function CvPage() {
   const { lang } = useLang();
-  const c = copy[lang];
+  const c = cvCopy[lang];
 
   return (
     <Page>
@@ -72,7 +28,7 @@ export function CvPage() {
         <p className="caption-mono">{c.eyebrow}</p>
         <h1 className="display-lg mt-4">{identity.name}</h1>
         <p className="title-md mt-4">{identity.headline[lang]}</p>
-        <p className="body-sm mt-2 text-muted">{identity.location}</p>
+        <p className="body-sm mt-2 text-muted">{identity.location[lang]}</p>
 
         {/* Action bar for recruiters & visitors */}
         <div className="mt-8 flex flex-wrap items-center gap-3 print:hidden">
@@ -84,7 +40,10 @@ export function CvPage() {
             <Download className="size-4" />
             <span>{c.downloadPdf}</span>
           </button>
-          <a href={`mailto:${identity.email}`} className="btn-outline inline-flex items-center gap-2">
+          <a
+            href={`mailto:${identity.email}`}
+            className="btn-outline inline-flex items-center gap-2"
+          >
             <Mail className="size-4" />
             <span>{c.email}</span>
           </a>
@@ -130,7 +89,7 @@ export function CvPage() {
           </Row>
           <Row id="skills" title={c.skills}>
             <ul className="flex flex-wrap gap-3">
-              {skills.map((s) => (
+              {skills[lang].map((s) => (
                 <li key={s} className="caption-mono border border-hairline-strong px-4 py-2">
                   {s}
                 </li>
