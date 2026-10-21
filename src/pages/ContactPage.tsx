@@ -4,40 +4,11 @@ import { Page, PageHeader } from "@/components/site-chrome";
 import { identity } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
 import { downloadCvPdf } from "@/lib/cv-pdf";
-
-const copy = {
-  en: {
-    directEyebrow: "Fastest way to reach me",
-    directTitle: "Email or LinkedIn",
-    directIntro:
-      "For Werkstudent opportunities, send me an email or a message on LinkedIn.",
-    cvDownloadTitle: "Need my résumé right away?",
-    cvDownloadBtn: "Download CV (PDF)",
-    orWriteForm: "Or send a message below:",
-  },
-  de: {
-    directEyebrow: "Schnellster Weg zu mir",
-    directTitle: "E-Mail oder LinkedIn",
-    directIntro:
-      "Für Werkstudentenstellen schreiben Sie mir am besten eine E-Mail oder eine Nachricht auf LinkedIn.",
-    cvDownloadTitle: "Lebenslauf direkt herunterladen?",
-    cvDownloadBtn: "Lebenslauf als PDF laden",
-    orWriteForm: "Oder schreiben Sie mir über das Formular:",
-  },
-  fr: {
-    directEyebrow: "Le moyen le plus rapide",
-    directTitle: "E-mail ou LinkedIn",
-    directIntro:
-      "Pour un poste en Werkstudent, écrivez-moi par e-mail ou sur LinkedIn.",
-    cvDownloadTitle: "Besoin de mon CV immédiatement ?",
-    cvDownloadBtn: "Télécharger le CV (PDF)",
-    orWriteForm: "Ou envoyez-moi un message via le formulaire :",
-  },
-};
+import { contactCopy } from "@/lib/page-copy";
 
 export function ContactPage() {
   const { t, lang } = useLang();
-  const c = copy[lang];
+  const c = contactCopy[lang];
   const [values, setValues] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
   const [sent, setSent] = useState(false);
@@ -53,7 +24,7 @@ export function ContactPage() {
 
     setSent(true);
     window.location.href = `mailto:${identity.email}?subject=${encodeURIComponent(
-      `Portfolio enquiry — ${values.name}`,
+      t("mailSubject").replace("{name}", values.name),
     )}&body=${encodeURIComponent(`${values.message}\n\n${values.name} — ${values.email}`)}`;
   }
 
@@ -224,7 +195,7 @@ export function ContactPage() {
               </button>
             </div>
 
-            <p className="body-sm mt-10 text-muted">{identity.location}</p>
+            <p className="body-sm mt-10 text-muted">{identity.location[lang]}</p>
           </aside>
         </div>
       </section>

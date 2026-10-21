@@ -56,7 +56,7 @@ export function ProjectsPage() {
                 <div className="aspect-video overflow-hidden bg-surface-soft">
                   <img
                     src={project.image}
-                    alt={`${project.name} interface`}
+                    alt={t("projectImageAlt").replace("{name}", project.name)}
                     className="size-full object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-100"
                     loading="lazy"
                   />

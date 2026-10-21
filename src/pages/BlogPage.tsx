@@ -28,7 +28,7 @@ export function BlogPage() {
                 <h2 className="title-md mt-3">{post.title[lang]}</h2>
                 <p className="body-sm mt-3">{post.excerpt[lang]}</p>
                 <div className="mt-5">
-                  <Tags items={post.tags} />
+                  <Tags items={post.tags[lang]} />
                 </div>
                 <span className="link-mono mt-5 inline-block">{t("readArticle")}</span>
               </Link>
