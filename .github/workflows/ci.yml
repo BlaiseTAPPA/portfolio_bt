@@ -23,4 +23,4 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm run check:i18n
-      - run: npx vite build
+      - run: npm run build
