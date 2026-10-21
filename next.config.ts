@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  experimental: {
+    // Visitors are mostly first-time (recruiters): inline the small Tailwind sheet instead of a
+    // render-blocking request, so the first paint doesn't wait for a CSS round trip.
+    inlineCss: true,
+  },
 };
 
 export default withNextIntl(nextConfig);
