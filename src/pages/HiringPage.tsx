@@ -3,7 +3,7 @@ import { Download, Linkedin, Mail } from "lucide-react";
 import { KeyFacts, Page, PageHeader } from "@/components/site-chrome";
 import { useLang } from "@/lib/i18n";
 import { experience, skills, languages, projects, identity } from "@/lib/content";
-import { downloadCvPdf } from "@/lib/cv-pdf";
+import { downloadCvPdf } from "@/lib/cv-download";
 import { hiringCopy } from "@/lib/page-copy";
 
 export function HiringPage() {
@@ -40,7 +40,7 @@ export function HiringPage() {
             </a>
             <button
               type="button"
-              onClick={() => downloadCvPdf(lang)}
+              onClick={() => void downloadCvPdf(lang)}
               className="btn-outline text-xs inline-flex items-center gap-2 py-2 px-4"
             >
               <Download className="size-3.5" />

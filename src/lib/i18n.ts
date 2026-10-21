@@ -1,33 +1,15 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext } from "react";
 import type { Lang } from "./content";
 
-const STORAGE_KEY = "bt-lang";
+export const STORAGE_KEY = "bt-lang";
 
-type Ctx = { lang: Lang; setLang: (l: Lang) => void; t: (key: keyof typeof dict) => string };
+export type Ctx = { lang: Lang; setLang: (l: Lang) => void; t: (key: keyof typeof dict) => string };
 
-const LangContext = createContext<Ctx>({ lang: "en", setLang: () => {}, t: (k) => dict[k].en });
-
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("en");
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "de" || stored === "en" || stored === "fr") setLangState(stored);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
-
-  const setLang = useCallback((l: Lang) => {
-    setLangState(l);
-    window.localStorage.setItem(STORAGE_KEY, l);
-  }, []);
-
-  const t = useCallback((key: keyof typeof dict) => dict[key][lang], [lang]);
-
-  return <LangContext.Provider value={{ lang, setLang, t }}>{children}</LangContext.Provider>;
-}
+export const LangContext = createContext<Ctx>({
+  lang: "en",
+  setLang: () => {},
+  t: (k) => dict[k].en,
+});
 
 export function useLang() {
   return useContext(LangContext);

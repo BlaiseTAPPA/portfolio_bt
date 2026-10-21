@@ -18,7 +18,7 @@ app.get("/api/health", (_req: Request, res: Response) => {
 
 // 5. Direct CV PDF download endpoint
 app.get("/api/cv/download", (req: Request, res: Response) => {
-  const lang = (req.query.lang as "en" | "de" | "fr") || "en";
+  const lang = (req.query["lang"] as "en" | "de" | "fr") || "en";
   const validLang = lang === "de" || lang === "fr" ? lang : "en";
   try {
     const doc = createCvPdf(validLang);
@@ -109,7 +109,7 @@ const BOT_UA_REGEX =
   /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit|twitterbot|linkedinbot|slackbot|whatsapp|telegrambot|discordbot/i;
 
 const PORT = 3000;
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env["NODE_ENV"] === "production";
 
 async function startServer() {
   if (!isProduction) {
@@ -123,7 +123,7 @@ async function startServer() {
     app.use(async (req: Request, res: Response, next: NextFunction) => {
       const ua = req.headers["user-agent"] || "";
       const isBot = BOT_UA_REGEX.test(ua);
-      const isExplicitSeo = req.query.__seo === "1";
+      const isExplicitSeo = req.query["__seo"] === "1";
       const isNotAsset =
         !req.path.startsWith("/api") &&
         !req.path.startsWith("/@") &&
@@ -143,7 +143,7 @@ async function startServer() {
           console.warn("Crawler HTML transform error:", e);
         }
       }
-      next();
+      return next();
     });
 
     app.use(vite.middlewares);
@@ -157,7 +157,7 @@ async function startServer() {
         const protocol = req.protocol || "https";
         const transformed = injectSeoIntoHtml(rawHtml, req.path, host, protocol);
         res.status(200).set({ "Content-Type": "text/html" }).send(transformed);
-      } catch (err) {
+      } catch {
         res.sendFile(path.resolve(__dirname, "dist", "index.html"));
       }
     });

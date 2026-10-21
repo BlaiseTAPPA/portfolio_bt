@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { LanguageProvider } from "@/lib/i18n";
+import { LanguageProvider } from "@/lib/language-provider";
 import { SeoHead } from "@/components/seo-head";
 import { HomePage } from "@/pages/HomePage";
 import { AboutPage } from "@/pages/AboutPage";
@@ -13,8 +12,6 @@ import { ContactPage } from "@/pages/ContactPage";
 import { CvPage } from "@/pages/CvPage";
 import { HiringPage } from "@/pages/HiringPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-
-const queryClient = new QueryClient();
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -35,27 +32,23 @@ function ScrollToTop() {
 
 export function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <SeoHead />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/projects/:slug" element={<ProjectDetailPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogDetailPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/cv" element={<CvPage />} />
-            <Route path="/hiring" element={<HiringPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </BrowserRouter>
-      </LanguageProvider>
-    </QueryClientProvider>
+    <LanguageProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <SeoHead />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogDetailPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/cv" element={<CvPage />} />
+          <Route path="/hiring" element={<HiringPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 }
-
-export default App;

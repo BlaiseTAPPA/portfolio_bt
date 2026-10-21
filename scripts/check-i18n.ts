@@ -6,7 +6,7 @@
  * or a German string uses the informal "du" form.
  */
 import * as content from "../src/lib/content.ts";
-import { dict } from "../src/lib/i18n.tsx";
+import { dict } from "../src/lib/i18n.ts";
 import * as pageCopy from "../src/lib/page-copy.ts";
 import { cvPdfCopy } from "../src/lib/cv-pdf.ts";
 
