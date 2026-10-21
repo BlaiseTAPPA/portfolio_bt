@@ -1,0 +1,140 @@
+{
+  "common": {
+    "navHome": "Start",
+    "navProjects": "Projekte",
+    "navAbout": "Über mich",
+    "navBlog": "Blog",
+    "navHiring": "Für Recruiter",
+    "navContact": "Kontakt",
+    "navPrimary": "Hauptnavigation",
+    "navMobile": "Mobile Navigation",
+    "menu": "Menü",
+    "close": "Schließen",
+    "heroPitch": "Ich entwickle schnelle, barrierefreie Webanwendungen mit React, TypeScript und Next.js – von Echtzeit-Dashboards bis zu KI-gestützten Tools.",
+    "viewProjects": "Projekte ansehen",
+    "getInTouch": "Kontakt aufnehmen",
+    "availableTitle": "Verfügbar für Werkstudentenstellen",
+    "availableBody": "20 Std./Woche im Semester, Vollzeit in den Semesterferien. Remote oder hybrid im Raum Germersheim, ab sofort verfügbar.",
+    "keyFactsTitle": "Eckdaten",
+    "emailMe": "E-Mail schreiben",
+    "linkedinProfile": "LinkedIn-Profil",
+    "ndaLabel": "Kundenprojekt (NDA)",
+    "exploreWork": "Zu den Projekten →",
+    "featuredProjects": "Ausgewählte Projekte",
+    "allProjects": "Alle Projekte",
+    "viewCaseStudy": "Fallstudie ansehen →",
+    "ctaHeadline": "Lassen Sie uns zusammenarbeiten",
+    "ctaBody": "Offen für Werkstudentenstellen im Frontend – mit Sitz in Germersheim (Rheinland-Pfalz).",
+    "contactMe": "Kontakt aufnehmen",
+    "projectsIntro": "Fallstudien aus Kundenprojekten und eigenen Projekten – Architekturentscheidungen, Tech-Stack und die jeweilige Aufgabenstellung.",
+    "problem": "Ausgangslage",
+    "approach": "Vorgehen",
+    "technicalHighlights": "Technische Schwerpunkte",
+    "liveDemo": "Live-App",
+    "githubRepo": "GitHub-Repository",
+    "nextProject": "Nächstes Projekt",
+    "backToProjects": "← Alle Projekte",
+    "projectImageAlt": "Benutzeroberfläche von {name}",
+    "aboutIntro": "B.Sc.-Informatikstudent an der SRH University, wohnhaft in Germersheim. Ich arbeite an der Schnittstelle von Frontend und Delivery: Interface-Entwicklung, Performance und technische Entscheidungen, die auch Nicht-Techniker nachvollziehen können.",
+    "portraitAlt": "Porträt von {name}",
+    "experience": "Berufserfahrung",
+    "education": "Studium",
+    "languagesTitle": "Sprachen",
+    "blogIntro": "Notizen zu Architektur, KI-Integration und der Arbeit als Entwickler in Deutschland.",
+    "readArticle": "Artikel lesen →",
+    "backToBlog": "← Alle Artikel",
+    "contactTitle": "Kontakt aufnehmen",
+    "contactIntro": "Ich suche eine Werkstudentenstelle (20 Std./Woche, remote oder hybrid) und bin ab sofort verfügbar. Am schnellsten erreichen Sie mich per E-Mail oder über LinkedIn.",
+    "fieldName": "Name",
+    "fieldEmail": "E-Mail",
+    "fieldMessage": "Nachricht",
+    "send": "Senden",
+    "sent": "Vielen Dank – Ihre Nachricht ist vorbereitet. Ihr E-Mail-Programm wird geöffnet.",
+    "mailSubject": "Anfrage über das Portfolio – {name}",
+    "direct": "Direktkontakt",
+    "validationName": "Bitte geben Sie Ihren Namen ein.",
+    "validationEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "validationMessage": "Bitte schreiben Sie eine kurze Nachricht.",
+    "notFoundTitle": "Seite nicht gefunden",
+    "notFoundBody": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "goHome": "Zur Startseite",
+    "footerWork": "Portfolio",
+    "footerAbout": "Profil",
+    "footerConnect": "Direktkontakt",
+    "footerStatus": "Offen für Werkstudentenstellen",
+    "footerLocation": "Germersheim, DE – {time}",
+    "backToTop": "Nach oben ↑",
+    "rights": "Alle Rechte vorbehalten."
+  },
+  "about": {
+    "facts": "Auf einen Blick",
+    "skillsTitle": "Technische Kenntnisse",
+    "viewProjects": "Zu den Projekten →"
+  },
+  "contact": {
+    "directEyebrow": "So erreichen Sie mich am schnellsten",
+    "directTitle": "E-Mail oder LinkedIn",
+    "directIntro": "Für Werkstudentenstellen schreiben Sie mir am besten eine E-Mail oder eine Nachricht über LinkedIn.",
+    "cvDownloadTitle": "Sie benötigen gleich meinen Lebenslauf?",
+    "cvDownloadBtn": "Lebenslauf als PDF herunterladen",
+    "orWriteForm": "Oder schreiben Sie mir über das Formular:"
+  },
+  "cv": {
+    "eyebrow": "Lebenslauf",
+    "experience": "Berufserfahrung",
+    "skills": "Kenntnisse",
+    "projects": "Ausgewählte Projekte",
+    "education": "Studium",
+    "languages": "Sprachen",
+    "contact": "Kontakt",
+    "print": "Druckansicht",
+    "downloadPdf": "PDF herunterladen",
+    "email": "E-Mail schreiben",
+    "back": "Zurück zur Recruiter-Übersicht"
+  },
+  "hiring": {
+    "eyebrow": "Werkstudent · Frontend",
+    "title": "Für Recruiter",
+    "intro": "Alles, was Sie für eine erste Einschätzung meiner Bewerbung als Werkstudent brauchen, auf einer Seite: Eckdaten, Berufserfahrung, Kenntnisse und Fallstudien. Am schnellsten erreichen Sie mich per E-Mail oder über LinkedIn.",
+    "status": "Werkstudent · 20 Std./Woche · Germersheim / remote oder hybrid",
+    "downloadPdf": "Lebenslauf als PDF",
+    "cv": "Online-Lebenslauf",
+    "background": "Beruflicher Werdegang",
+    "fullCv": "Vollständiger Lebenslauf",
+    "skills": "Kernkompetenzen",
+    "projects": "Relevante Fallstudien",
+    "allProjects": "Alle Projekte",
+    "viewCase": "Fallstudie ansehen"
+  },
+  "meta": {
+    "home": {
+      "title": "Blaise Tappa – Frontend-Entwickler · Werkstudent",
+      "description": "Portfolio von Blaise Tappa, Frontend-Entwickler und Informatikstudent (B.Sc.) in Germersheim: React, TypeScript, Next.js. Verfügbar als Werkstudent, 20 Std./Woche."
+    },
+    "about": {
+      "title": "Über Blaise Tappa – Frontend-Entwickler & Werkstudent",
+      "description": "Werdegang, Studium und Berufserfahrung von Blaise Tappa, Frontend-Entwickler und Werkstudent. Schwerpunkte: React, TypeScript und KI-Integration."
+    },
+    "projects": {
+      "title": "Projekte & Fallstudien – Blaise Tappa",
+      "description": "Technische Fallstudien von Blaise Tappa: React, TypeScript, Next.js und KI-Integration."
+    },
+    "blog": {
+      "title": "Blog: Technische Notizen – Blaise Tappa",
+      "description": "Beiträge zur Integration von Gemini in React, zu ereignisgesteuerter Architektur mit Inngest und zum Deutschlernen als Entwickler."
+    },
+    "hiring": {
+      "title": "Für Recruiter – Blaise Tappa, Werkstudent Frontend",
+      "description": "Eckdaten, Berufserfahrung und Fallstudien von Blaise Tappa für Werkstudentenstellen im Frontend (20 Std./Woche). Lebenslauf als PDF."
+    },
+    "cv": {
+      "title": "Lebenslauf – Blaise Tappa",
+      "description": "Lebenslauf von Blaise Tappa: Studium an der SRH, Berufserfahrung bei OMOA Group und Société Logex, Kenntnisse in React und TypeScript. Als PDF verfügbar."
+    },
+    "contact": {
+      "title": "Kontakt – Blaise Tappa",
+      "description": "Kontakt zu Blaise Tappa per E-Mail oder LinkedIn – für Werkstudentenstellen im Frontend."
+    },
+    "caseStudyTitle": "{name} – Fallstudie"
+  }
+}

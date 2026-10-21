@@ -1,0 +1,140 @@
+{
+  "common": {
+    "navHome": "Home",
+    "navProjects": "Projects",
+    "navAbout": "About",
+    "navBlog": "Blog",
+    "navHiring": "Hiring",
+    "navContact": "Contact",
+    "navPrimary": "Primary",
+    "navMobile": "Mobile",
+    "menu": "Menu",
+    "close": "Close",
+    "heroPitch": "I build fast, accessible web products with React, TypeScript and Next.js — from real-time data dashboards to AI-assisted tools.",
+    "viewProjects": "View projects",
+    "getInTouch": "Get in touch",
+    "availableTitle": "Available for Werkstudent positions",
+    "availableBody": "20 h / week during semester, full-time during semester breaks. Remote or hybrid from Germersheim, available immediately.",
+    "keyFactsTitle": "Key facts",
+    "emailMe": "Email me",
+    "linkedinProfile": "LinkedIn profile",
+    "ndaLabel": "Client project (NDA)",
+    "exploreWork": "Explore my work →",
+    "featuredProjects": "Featured projects",
+    "allProjects": "All projects",
+    "viewCaseStudy": "View case study →",
+    "ctaHeadline": "Let's build something",
+    "ctaBody": "Open to Werkstudent roles in frontend development, based in Germersheim (Rheinland-Pfalz).",
+    "contactMe": "Contact me",
+    "projectsIntro": "Case studies from production work and self-directed builds — architecture decisions, stack, and what each one had to solve.",
+    "problem": "The problem",
+    "approach": "Approach",
+    "technicalHighlights": "Technical highlights",
+    "liveDemo": "Live app",
+    "githubRepo": "GitHub repo",
+    "nextProject": "Next project",
+    "backToProjects": "← All projects",
+    "projectImageAlt": "{name} interface",
+    "aboutIntro": "B.Sc. Computer Science student at SRH University, based in Germersheim. I work across the frontend and the delivery layer: interface engineering, performance, and keeping technical decisions legible to the people who fund them.",
+    "portraitAlt": "Portrait of {name}",
+    "experience": "Experience",
+    "education": "Education",
+    "languagesTitle": "Languages",
+    "blogIntro": "Notes on architecture, AI integration and working as a developer in Germany.",
+    "readArticle": "Read article →",
+    "backToBlog": "← All articles",
+    "contactTitle": "Get in touch",
+    "contactIntro": "Looking for a Werkstudent position (20 h / week, remote or hybrid) and available immediately. Email or LinkedIn is the fastest way to reach me.",
+    "fieldName": "Name",
+    "fieldEmail": "Email",
+    "fieldMessage": "Message",
+    "send": "Send",
+    "sent": "Thank you — your message is ready to send. Mail client opening.",
+    "mailSubject": "Portfolio enquiry — {name}",
+    "direct": "Direct",
+    "validationName": "Please enter your name.",
+    "validationEmail": "Please enter a valid email address.",
+    "validationMessage": "Please write a short message.",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist or has been moved.",
+    "goHome": "Go home",
+    "footerWork": "Work",
+    "footerAbout": "About",
+    "footerConnect": "Connect",
+    "footerStatus": "Open to Werkstudent roles",
+    "footerLocation": "Germersheim, DE — {time}",
+    "backToTop": "Back to top ↑",
+    "rights": "All rights reserved."
+  },
+  "about": {
+    "facts": "At a glance",
+    "skillsTitle": "Toolkit",
+    "viewProjects": "See the work →"
+  },
+  "contact": {
+    "directEyebrow": "Fastest way to reach me",
+    "directTitle": "Email or LinkedIn",
+    "directIntro": "For Werkstudent opportunities, send me an email or a message on LinkedIn.",
+    "cvDownloadTitle": "Need my résumé right away?",
+    "cvDownloadBtn": "Download CV (PDF)",
+    "orWriteForm": "Or send a message below:"
+  },
+  "cv": {
+    "eyebrow": "Curriculum vitae",
+    "experience": "Professional experience",
+    "skills": "Skills",
+    "projects": "Selected projects",
+    "education": "Education",
+    "languages": "Languages",
+    "contact": "Contact",
+    "print": "Print format",
+    "downloadPdf": "Download PDF",
+    "email": "Email me",
+    "back": "Back to hiring"
+  },
+  "hiring": {
+    "eyebrow": "For recruiters",
+    "title": "Hiring",
+    "intro": "Everything you need to screen me for a Werkstudent role on one page: key facts, experience, skills and case studies. Email or LinkedIn is the fastest way to reach me.",
+    "status": "Werkstudent · 20 h / week · Germersheim / Remote",
+    "downloadPdf": "Download CV (PDF)",
+    "cv": "View online CV",
+    "background": "Professional background",
+    "fullCv": "Full CV",
+    "skills": "Key skills",
+    "projects": "Relevant case studies",
+    "allProjects": "All projects",
+    "viewCase": "View case study"
+  },
+  "meta": {
+    "home": {
+      "title": "Blaise Tappa — Frontend Developer · Werkstudent",
+      "description": "Portfolio of Blaise Tappa, frontend developer and computer science student (B.Sc.) in Germersheim: React, TypeScript, Next.js. Available as a Werkstudent, 20 h/week."
+    },
+    "about": {
+      "title": "About Blaise Tappa — Frontend Developer & Werkstudent",
+      "description": "Background, software craftsmanship philosophy, and education of Blaise Tappa. Specialized in React, TypeScript, and AI systems."
+    },
+    "projects": {
+      "title": "Projects & Engineering Case Studies — Blaise Tappa",
+      "description": "Engineering case studies by Blaise Tappa: React, TypeScript, Next.js and AI integration."
+    },
+    "blog": {
+      "title": "Technical Writing & Architecture Notes — Blaise Tappa",
+      "description": "Notes on integrating Gemini into React, event-driven architecture with Inngest, and learning German as a developer."
+    },
+    "hiring": {
+      "title": "For recruiters — Blaise Tappa, Werkstudent Frontend",
+      "description": "Key facts, experience and case studies of Blaise Tappa for Werkstudent frontend roles (20 h/week). CV PDF available."
+    },
+    "cv": {
+      "title": "Curriculum Vitae — Blaise Tappa",
+      "description": "Complete CV of Blaise Tappa: professional experience at OMOA Group, Logex, technical skills, and computer science degree. Instant PDF download."
+    },
+    "contact": {
+      "title": "Contact — Blaise Tappa",
+      "description": "Reach Blaise Tappa by email or LinkedIn about Werkstudent frontend roles."
+    },
+    "caseStudyTitle": "{name} — Case Study"
+  }
+}
