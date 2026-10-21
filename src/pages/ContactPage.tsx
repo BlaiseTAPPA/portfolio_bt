@@ -3,7 +3,7 @@ import { Download, Mail, ExternalLink, Linkedin } from "lucide-react";
 import { Page, PageHeader } from "@/components/site-chrome";
 import { identity } from "@/lib/content";
 import { useLang } from "@/lib/i18n";
-import { downloadCvPdf } from "@/lib/cv-pdf";
+import { downloadCvPdf } from "@/lib/cv-download";
 import { contactCopy } from "@/lib/page-copy";
 
 export function ContactPage() {
@@ -64,7 +64,7 @@ export function ContactPage() {
               </a>
               <button
                 type="button"
-                onClick={() => downloadCvPdf(lang)}
+                onClick={() => void downloadCvPdf(lang)}
                 className="btn-outline inline-flex items-center justify-center gap-2.5 py-3 px-6 text-center leading-normal text-xs"
               >
                 <Download className="size-4" />
@@ -187,7 +187,7 @@ export function ContactPage() {
               <p className="caption-mono text-muted mb-3">{c.cvDownloadTitle}</p>
               <button
                 type="button"
-                onClick={() => downloadCvPdf(lang)}
+                onClick={() => void downloadCvPdf(lang)}
                 className="btn-outline text-xs inline-flex items-center gap-2 w-full justify-center"
               >
                 <Download className="size-3.5" />

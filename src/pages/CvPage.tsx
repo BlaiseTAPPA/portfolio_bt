@@ -3,7 +3,7 @@ import { Download, Mail, Printer, ArrowLeft } from "lucide-react";
 import { EducationList, KeyFacts, Page } from "@/components/site-chrome";
 import { useLang } from "@/lib/i18n";
 import { identity, skills, experience, languages, projects } from "@/lib/content";
-import { downloadCvPdf } from "@/lib/cv-pdf";
+import { downloadCvPdf } from "@/lib/cv-download";
 import { cvCopy } from "@/lib/page-copy";
 
 function Row({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
@@ -34,7 +34,7 @@ export function CvPage() {
         <div className="mt-8 flex flex-wrap items-center gap-3 print:hidden">
           <button
             type="button"
-            onClick={() => downloadCvPdf(lang)}
+            onClick={() => void downloadCvPdf(lang)}
             className="btn-outline bg-ink text-canvas inline-flex items-center gap-2"
           >
             <Download className="size-4" />
