@@ -10,6 +10,7 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
+    "check:i18n": "tsx scripts/check-i18n.ts",
     "format": "prettier --write ."
   },
   "overrides": {
